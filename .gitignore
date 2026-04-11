@@ -1,0 +1,13 @@
+# build artifacts
+/briefing
+
+# os
+.DS_Store
+
+# editor
+.idea/
+.vscode/
+
+# env
+.env
+.env.*
