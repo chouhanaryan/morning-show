@@ -21,7 +21,7 @@ pipeline:
 fetch:
   max_concurrent: 10
   timeout_seconds: 30
-  user_agent: "late-show-briefing/1.0 (+https://github.com/chouhanaryan/late-show)"
+  user_agent: "Mozilla/5.0 (compatible; Feedfetcher/1.0; +https://github.com/chouhanaryan/late-show)"
 
 deliver:
   reports_dir: data/reports
@@ -87,9 +87,6 @@ sources:
     category: cloud
   - name: Cloudflare Blog
     url: https://blog.cloudflare.com/rss
-    category: cloud
-  - name: Charity Majors
-    url: https://mipsytipsy.substack.com/feed
     category: cloud
   - name: Honeycomb Blog
     url: https://www.honeycomb.io/blog/feed
@@ -158,10 +155,10 @@ sources:
     url: https://www.understandingai.org/feed
     category: ai-commentary
   - name: Zvi Mowshowitz
-    url: https://substack.com/@thezvi/feed
+    url: https://thezvi.substack.com/feed
     category: ai-commentary
   - name: Gary Marcus
-    url: https://substack.com/@garymarcus/feed
+    url: https://garymarcus.substack.com/feed
     category: ai-commentary
   - name: Exponential View
     url: https://www.exponentialview.co/feed
@@ -189,10 +186,6 @@ sources:
   - name: arXiv CS
     url: https://arxiv.org/rss/cs
     category: ai-research
-  - name: Papers With Code
-    url: https://paperswithcode.com/latest/rss
-    category: ai-research
-
   # ---------- ML Engineering ----------
   - name: Lilian Weng (Lil'Log)
     url: https://lilianweng.github.io/index.xml
