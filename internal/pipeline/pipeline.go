@@ -219,8 +219,14 @@ func (p *Pipeline) runPass1(
 
 func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string) ([]scoreResult, llm.Usage, error) {
 	var total llm.Usage
+	// Pass 1 asks for a JSON array, so we must NOT set the provider's
+	// json_object response mode — that mode forces an object envelope and
+	// the model will wrap the array in {"scores": [...]}. The parser
+	// tolerates the envelope form as a safety net, but the bare array is
+	// the canonical shape.
+	//
 	// Attempt 1: normal system prompt.
-	content, usage, err := p.callLLM(ctx, pass1System, user, true)
+	content, usage, err := p.callLLM(ctx, pass1System, user, false)
 	total.Add(usage)
 	if err == nil {
 		if scores, perr := parseScoreResponse(content); perr == nil {
@@ -233,7 +239,7 @@ func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string) ([]scor
 	}
 
 	// Attempt 2: stricter suffix.
-	content, usage, err = p.callLLM(ctx, pass1System+pass1RetrySuffix, user, true)
+	content, usage, err = p.callLLM(ctx, pass1System+pass1RetrySuffix, user, false)
 	total.Add(usage)
 	if err != nil {
 		return nil, total, err

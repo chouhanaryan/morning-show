@@ -66,6 +66,34 @@ func TestParseScoreResponse(t *testing.T) {
 	}
 }
 
+// TestParseScoreResponse_WrappedInEnvelope exercises the tolerance path: some
+// providers (OpenRouter with json_object mode) force the output to be an
+// object, so the model wraps the array in a "scores" field.
+func TestParseScoreResponse_WrappedInEnvelope(t *testing.T) {
+	raw := `{"scores":[{"id":0,"score":8},{"id":1,"score":4}]}`
+	got, err := parseScoreResponse(raw)
+	if err != nil {
+		t.Fatalf("parseScoreResponse: %v", err)
+	}
+	if len(got) != 2 || got[0].Score != 8 || got[1].ID != 1 {
+		t.Errorf("unexpected: %+v", got)
+	}
+}
+
+// TestParseScoreResponse_UnknownEnvelopeKey exercises the last-resort fallback
+// where the object key isn't one of the known ones — the parser should still
+// find the first array-of-objects value.
+func TestParseScoreResponse_UnknownEnvelopeKey(t *testing.T) {
+	raw := `{"payload":[{"id":0,"score":9}]}`
+	got, err := parseScoreResponse(raw)
+	if err != nil {
+		t.Fatalf("parseScoreResponse: %v", err)
+	}
+	if len(got) != 1 || got[0].Score != 9 {
+		t.Errorf("unexpected: %+v", got)
+	}
+}
+
 func TestParseExtractResponse(t *testing.T) {
 	raw := `{"items":[{"id":0,"key_claims":["x"],"entities":["A"],"topic_tags":["t1"],"thread_signal":"foo"}]}`
 	got, err := parseExtractResponse(raw)
@@ -73,6 +101,28 @@ func TestParseExtractResponse(t *testing.T) {
 		t.Fatalf("parseExtractResponse: %v", err)
 	}
 	if len(got) != 1 || got[0].ThreadSignal != "foo" {
+		t.Errorf("unexpected: %+v", got)
+	}
+}
+
+func TestParseExtractResponse_BareArray(t *testing.T) {
+	raw := `[{"id":0,"key_claims":["x"],"entities":[],"topic_tags":[],"thread_signal":""}]`
+	got, err := parseExtractResponse(raw)
+	if err != nil {
+		t.Fatalf("parseExtractResponse: %v", err)
+	}
+	if len(got) != 1 || got[0].KeyClaims[0] != "x" {
+		t.Errorf("unexpected: %+v", got)
+	}
+}
+
+func TestParseExtractResponse_AlternateEnvelopeKey(t *testing.T) {
+	raw := `{"extractions":[{"id":0,"key_claims":["y"],"entities":[],"topic_tags":[],"thread_signal":"bar"}]}`
+	got, err := parseExtractResponse(raw)
+	if err != nil {
+		t.Fatalf("parseExtractResponse: %v", err)
+	}
+	if len(got) != 1 || got[0].ThreadSignal != "bar" {
 		t.Errorf("unexpected: %+v", got)
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -92,34 +93,109 @@ func findBalanced(s string, start int) int {
 }
 
 // parseScoreResponse decodes a Pass 1 response into a slice of scores.
+// It's tolerant to two shapes the model may emit:
+//   1. A bare JSON array (preferred): [{"id":0,"score":7}, ...]
+//   2. An object envelope forced by json_object response mode:
+//      {"scores":[...]}, {"items":[...]}, etc.
 func parseScoreResponse(content string) ([]scoreResult, error) {
 	raw, err := extractJSON(content)
 	if err != nil {
 		return nil, err
 	}
+	// Fast path: bare array.
 	var scores []scoreResult
-	if err := json.Unmarshal([]byte(raw), &scores); err != nil {
-		return nil, fmt.Errorf("decode score array: %w", err)
+	if err := json.Unmarshal([]byte(raw), &scores); err == nil {
+		return scores, nil
+	}
+	// Fallback: object wrapper. Look for an array value under a conventional
+	// key first, then any array-of-objects value (deterministic via sort).
+	inner, err := findArrayField(raw)
+	if err != nil {
+		return nil, fmt.Errorf("decode score response: %w", err)
+	}
+	if err := json.Unmarshal(inner, &scores); err != nil {
+		return nil, fmt.Errorf("decode score array from envelope: %w", err)
 	}
 	return scores, nil
 }
 
-// parseExtractResponse decodes a Pass 2 response into an items envelope.
+// parseExtractResponse decodes a Pass 2 response into a slice of extracted
+// items. Accepts either {"items":[...]} (preferred), another common envelope
+// key, or a bare array.
 func parseExtractResponse(content string) ([]ExtractedItem, error) {
 	raw, err := extractJSON(content)
 	if err != nil {
 		return nil, err
 	}
+	// Preferred shape: {"items": [...]}.
 	var env struct {
 		Items []ExtractedItem `json:"items"`
 	}
-	if err := json.Unmarshal([]byte(raw), &env); err != nil {
+	if err := json.Unmarshal([]byte(raw), &env); err == nil && len(env.Items) > 0 {
+		return env.Items, nil
+	}
+	// Bare array fallback.
+	var bare []ExtractedItem
+	if err := json.Unmarshal([]byte(raw), &bare); err == nil && len(bare) > 0 {
+		return bare, nil
+	}
+	// Any array-of-objects value inside an object envelope.
+	inner, err := findArrayField(raw)
+	if err != nil {
 		return nil, fmt.Errorf("decode extract envelope: %w", err)
 	}
-	if len(env.Items) == 0 {
+	var items []ExtractedItem
+	if err := json.Unmarshal(inner, &items); err != nil {
+		return nil, fmt.Errorf("decode extract array from envelope: %w", err)
+	}
+	if len(items) == 0 {
 		return nil, errors.New("extract envelope has zero items")
 	}
-	return env.Items, nil
+	return items, nil
+}
+
+// findArrayField looks inside a JSON object and returns the raw bytes of the
+// first array-valued field, preferring conventional envelope key names
+// (scores, items, results, data, articles, output). Returns an error if the
+// input is not an object or contains no array values.
+func findArrayField(raw string) (json.RawMessage, error) {
+	var obj map[string]json.RawMessage
+	if err := json.Unmarshal([]byte(raw), &obj); err != nil {
+		return nil, fmt.Errorf("not a json object: %w", err)
+	}
+	// Preferred keys first.
+	for _, key := range []string{"scores", "items", "results", "data", "articles", "output"} {
+		if v, ok := obj[key]; ok && isJSONArray(v) {
+			return v, nil
+		}
+	}
+	// Any array-of-objects value, in deterministic order.
+	keys := make([]string, 0, len(obj))
+	for k := range obj {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		if v := obj[k]; isJSONArray(v) {
+			return v, nil
+		}
+	}
+	return nil, fmt.Errorf("no array field in object (keys: %v)", keys)
+}
+
+// isJSONArray reports whether the first non-whitespace byte of v is '['.
+func isJSONArray(v json.RawMessage) bool {
+	for _, b := range v {
+		switch b {
+		case ' ', '\t', '\n', '\r':
+			continue
+		case '[':
+			return true
+		default:
+			return false
+		}
+	}
+	return false
 }
 
 var markdownHeaderRE = regexp.MustCompile(`(?m)^#{1,6}\s`)
