@@ -94,6 +94,9 @@ sources:
   - name: Honeycomb Blog
     url: https://www.honeycomb.io/blog/feed
     category: cloud
+  - name: ByteByteGo
+    url: https://blog.bytebytego.com/feed
+    category: cloud
 
   # ---------- IaC / Terraform ----------
   - name: HashiCorp Terraform Blog
@@ -154,6 +157,18 @@ sources:
   - name: Timothy B. Lee
     url: https://www.understandingai.org/feed
     category: ai-commentary
+  - name: Zvi Mowshowitz
+    url: https://substack.com/@thezvi/feed
+    category: ai-commentary
+  - name: Gary Marcus
+    url: https://substack.com/@garymarcus/feed
+    category: ai-commentary
+  - name: Exponential View
+    url: https://www.exponentialview.co/feed
+    category: ai-commentary
+  - name: AI Futures
+    url: https://blog.aifutures.org/feed
+    category: ai-commentary
 
   # ---------- AI research ----------
   - name: BAIR Blog (Berkeley AI)
@@ -206,4 +221,10 @@ sources:
     category: tech
   - name: Hamel Hussain
     url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_hamel.xml
+    category: tech
+  - name: Pragmatic Engineer (Gergely Orosz)
+    url: https://newsletter.pragmaticengineer.com/feed
+    category: tech
+  - name: Policy Tensor
+    url: https://policytensor.substack.com/feed
     category: tech
