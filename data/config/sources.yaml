@@ -97,27 +97,39 @@ sources:
 
   # ---------- IaC / Terraform ----------
   - name: HashiCorp Terraform Blog
-    url: https://www.hashicorp.com/blog/products/terraform/feed
+    url: https://www.hashicorp.com/blog/products/terraform/feed.xml
     category: iac
   - name: OpenTofu Blog
     url: https://opentofu.org/blog/rss.xml
-    category: iac
-  - name: Gruntwork Blog
-    url: https://www.gruntwork.io/blog/feed
-    category: iac
-  - name: weekly.tf (Anton Babenko)
-    url: https://weekly.tf/feed
     category: iac
   - name: Terraform GitHub Releases
     url: https://github.com/hashicorp/terraform/releases.atom
     category: iac
 
   # ---------- AI labs ----------
-  - name: Anthropic Blog
-    url: https://www.anthropic.com/rss.xml
+  - name: Anthropic News
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml
+    category: ai-lab
+  - name: Anthropic Engineering
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_engineering.xml
+    category: ai-lab
+  - name: Anthropic Research
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_research.xml
+    category: ai-lab
+  - name: Anthropic Red Team
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_red.xml
+    category: ai-lab
+  - name: Thinking Machines
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_thinkingmachines.xml
     category: ai-lab
   - name: OpenAI Blog
     url: https://openai.com/blog/rss.xml
+    category: ai-lab
+  - name: Google AI
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_google_ai.xml
+    category: ai-lab
+  - name: Windsurf Next Changelog
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_windsurf_next_changelog.xml
     category: ai-lab
 
   # ---------- AI commentary ----------
@@ -176,9 +188,6 @@ sources:
   - name: Eugene Yan
     url: https://eugeneyan.com/rss
     category: ml-engineering
-  - name: Sebastian Ruder
-    url: https://ruder.io/rss/index.rss
-    category: ml-engineering
 
   # ---------- Tech news ----------
   - name: Ars Technica
@@ -191,3 +200,10 @@ sources:
     url: https://www.wired.com/feed/rss
     category: tech
 
+  # ---------- People -------------
+  - name: Paul Graham
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_paulgraham.xml
+    category: tech
+  - name: Hamel Hussain
+    url: https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_hamel.xml
+    category: tech
