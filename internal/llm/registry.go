@@ -6,8 +6,9 @@ import "fmt"
 type Factory func(apiKey string, opts ...Option) Provider
 
 var registry = map[string]Factory{
-	"anthropic": NewAnthropicProvider,
-	"openai":    NewOpenAIProvider,
+	"anthropic":  NewAnthropicProvider,
+	"openai":     NewOpenAIProvider,
+	"openrouter": NewOpenRouterProvider,
 }
 
 // NewProvider looks up a factory by name and constructs a provider.

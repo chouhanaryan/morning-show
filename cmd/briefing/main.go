@@ -271,6 +271,8 @@ func defaultAPIKeyEnv(provider, fallback string) string {
 		return "ANTHROPIC_API_KEY"
 	case "openai":
 		return "OPENAI_API_KEY"
+	case "openrouter":
+		return "OPENROUTER_API_KEY"
 	}
 	if fallback != "" {
 		return fallback

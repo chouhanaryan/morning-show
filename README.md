@@ -26,11 +26,21 @@ data/reports/               # Generated briefings
 ## Quick start
 
 ```sh
-export ANTHROPIC_API_KEY=sk-ant-...
+export OPENROUTER_API_KEY=sk-or-v1-...
 make dry-run        # fetch, filter, run full pipeline, write report, no email
 ```
 
 Report lands in `data/reports/YYYY-MM-DD.md`.
+
+The default provider is [OpenRouter](https://openrouter.ai), which fronts
+~100 models (Anthropic, OpenAI, Google, Meta, Mistral, etc.) behind one key.
+Change `llm.model` in `data/config/sources.yaml` to any slug from
+<https://openrouter.ai/models>, or override on the CLI:
+
+```sh
+./briefing --model anthropic/claude-sonnet-4.5
+./briefing --provider openai --model gpt-4o   # direct, bypasses OpenRouter
+```
 
 ## Configuration
 
@@ -84,12 +94,15 @@ failure is a hard error.
 - `golang.org/x/time/rate` — LLM rate limiter
 - `github.com/wneessen/go-mail` — SMTP delivery
 
-No LLM SDKs — every provider is raw `net/http`.
+No LLM SDKs — every provider is raw `net/http`. Three providers ship in the
+box: `openrouter` (default), `anthropic` (direct), and `openai` (direct).
 
 ## Adding a provider
 
 Drop a new file in `internal/llm/` implementing `Provider`, then add a line
-to `registry` in `internal/llm/registry.go`.
+to `registry` in `internal/llm/registry.go`. OpenRouter is the smallest
+example — `internal/llm/openrouter.go` is ~100 lines and reuses the OpenAI
+request/response types because the wire format is identical.
 
 ## CI
 
