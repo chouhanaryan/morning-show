@@ -6,8 +6,8 @@ llm:
   model: anthropic/claude-sonnet-4.6
   # Cheaper model for mechanical JSON passes (scoring + extraction).
   # Falls back to model above if omitted.
-  pass1_model: anthropic/claude-haiku-4-5-20251001
-  pass2_model: anthropic/claude-haiku-4-5-20251001
+  pass1_model: anthropic/claude-haiku-4.5
+  pass2_model: anthropic/claude-haiku-4.5
   api_key_env: OPENROUTER_API_KEY
   max_concurrent: 5
   requests_per_minute: 50
