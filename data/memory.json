@@ -1,9 +1,9 @@
 {
-  "last_run": "2026-04-12T17:02:14.951980963Z",
+  "last_run": "2026-04-12T17:17:57.261109317Z",
   "seen_urls": {
     "009151dd1b43": "2026-04-12",
     "0281a115fd1f": "2026-04-12",
-    "0323ac208369": "2026-04-12",
+    "03b707df8a0d": "2026-04-12",
     "047e7bac94f5": "2026-04-12",
     "0acc43630b3d": "2026-04-12",
     "0b3b78bf445d": "2026-04-12",
@@ -11,6 +11,7 @@
     "132e369fd565": "2026-04-12",
     "13f00a8915d6": "2026-04-12",
     "16e50ecf09f0": "2026-04-12",
+    "16fc935264a6": "2026-04-12",
     "1a5f6a62910b": "2026-04-12",
     "1a6386a4517c": "2026-04-12",
     "1ab27be833ba": "2026-04-12",
@@ -21,6 +22,7 @@
     "2322ee0a7a29": "2026-04-12",
     "2382653bd87e": "2026-04-12",
     "25cf4a99fda8": "2026-04-12",
+    "28dd82d6463b": "2026-04-12",
     "2a9ae0687e85": "2026-04-12",
     "2d229c0fb3cf": "2026-04-12",
     "2deadea2b4e5": "2026-04-12",
@@ -34,6 +36,7 @@
     "3e49e5da6b1f": "2026-04-12",
     "3e73213b65c0": "2026-04-12",
     "431c14021dd1": "2026-04-12",
+    "44abd81cfc68": "2026-04-12",
     "451812d8917f": "2026-04-12",
     "455223126134": "2026-04-12",
     "45bfcecd12c2": "2026-04-12",
@@ -61,6 +64,7 @@
     "62bad3e0a17a": "2026-04-12",
     "63f78f0106b9": "2026-04-12",
     "646b342f150f": "2026-04-12",
+    "651a72929543": "2026-04-12",
     "654716bdc21e": "2026-04-12",
     "657026195ccd": "2026-04-12",
     "6a5750b8fbad": "2026-04-12",
@@ -68,7 +72,6 @@
     "6bad31924dfe": "2026-04-12",
     "6c04a4021ead": "2026-04-12",
     "6ca60305f1f8": "2026-04-12",
-    "718559ac0e11": "2026-04-12",
     "72be01894391": "2026-04-12",
     "74ba1c674273": "2026-04-12",
     "74df87e50a0f": "2026-04-12",
@@ -77,20 +80,17 @@
     "7bcd68b5d5cb": "2026-04-12",
     "7c3ec5bee7f7": "2026-04-12",
     "7e6599927f0a": "2026-04-12",
-    "7f57f3165681": "2026-04-12",
     "7f677a87884d": "2026-04-12",
     "8589c87e9bba": "2026-04-12",
+    "85b95a5b8386": "2026-04-12",
     "85ea4ce989be": "2026-04-12",
     "879c4d863c17": "2026-04-12",
     "880255debc54": "2026-04-12",
-    "8883a5a14b02": "2026-04-12",
     "8d18df8142a0": "2026-04-12",
     "95384e9055c3": "2026-04-12",
     "95b914cfaa16": "2026-04-12",
-    "9e3278e245e6": "2026-04-12",
     "a43422fe0f90": "2026-04-12",
     "a76d763a82ff": "2026-04-12",
-    "a8daccb1dafd": "2026-04-12",
     "a92781898e7c": "2026-04-12",
     "a99d13a094a7": "2026-04-12",
     "aa11c7bb9a37": "2026-04-12",
@@ -108,8 +108,10 @@
     "bdb849dd443b": "2026-04-12",
     "be80ce11fdbc": "2026-04-12",
     "bf61e413db21": "2026-04-12",
+    "c3ee473a8435": "2026-04-12",
     "c5952e84cd03": "2026-04-12",
     "c5d658625380": "2026-04-12",
+    "c71146c2ba9b": "2026-04-12",
     "c91fe1bf978c": "2026-04-12",
     "c9e7b6f9e1d9": "2026-04-12",
     "ca997e53a00d": "2026-04-12",
@@ -119,9 +121,11 @@
     "d4c77ffb6a7d": "2026-04-12",
     "d6b53e98cf9a": "2026-04-12",
     "d78a27ea5811": "2026-04-12",
+    "d9422495de69": "2026-04-12",
     "dd44fb3c11fb": "2026-04-12",
     "e00f2497ea41": "2026-04-12",
     "e0b38d6b592f": "2026-04-12",
+    "e1edc5774591": "2026-04-12",
     "e2f073acfbab": "2026-04-12",
     "e2f22bb38ec6": "2026-04-12",
     "e64adc534f37": "2026-04-12",
@@ -152,11 +156,17 @@
           "articles_fetched": 2,
           "articles_scored": 1,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.5,
-      "total_fetched": 2,
-      "total_scored": 1
+      "avg_hit_rate": 0.75,
+      "total_fetched": 4,
+      "total_scored": 3
     },
     "AWS Security Blog": {
       "name": "AWS Security Blog",
@@ -167,11 +177,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "Anthropic News": {
       "name": "Anthropic News",
@@ -182,11 +198,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 1,
-      "total_scored": 1
+      "total_fetched": 2,
+      "total_scored": 2
     },
     "Anthropic Red Team": {
       "name": "Anthropic Red Team",
@@ -197,11 +219,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 1,
-      "total_scored": 1
+      "total_fetched": 2,
+      "total_scored": 2
     },
     "Anthropic Research": {
       "name": "Anthropic Research",
@@ -212,11 +240,17 @@
           "articles_fetched": 4,
           "articles_scored": 1,
           "hit_rate": 0.25
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 4,
+          "articles_scored": 1,
+          "hit_rate": 0.25
         }
       ],
       "avg_hit_rate": 0.25,
-      "total_fetched": 4,
-      "total_scored": 1
+      "total_fetched": 8,
+      "total_scored": 2
     },
     "Ars Technica": {
       "name": "Ars Technica",
@@ -227,11 +261,17 @@
           "articles_fetched": 20,
           "articles_scored": 5,
           "hit_rate": 0.25
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 20,
+          "articles_scored": 4,
+          "hit_rate": 0.2
         }
       ],
-      "avg_hit_rate": 0.25,
-      "total_fetched": 20,
-      "total_scored": 5
+      "avg_hit_rate": 0.225,
+      "total_fetched": 40,
+      "total_scored": 9
     },
     "BleepingComputer": {
       "name": "BleepingComputer",
@@ -242,11 +282,17 @@
           "articles_fetched": 15,
           "articles_scored": 11,
           "hit_rate": 0.7333333333333333
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 15,
+          "articles_scored": 12,
+          "hit_rate": 0.8
         }
       ],
-      "avg_hit_rate": 0.7333333333333333,
-      "total_fetched": 15,
-      "total_scored": 11
+      "avg_hit_rate": 0.7666666666666667,
+      "total_fetched": 30,
+      "total_scored": 23
     },
     "ByteByteGo": {
       "name": "ByteByteGo",
@@ -257,11 +303,17 @@
           "articles_fetched": 5,
           "articles_scored": 4,
           "hit_rate": 0.8
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 5,
+          "articles_scored": 3,
+          "hit_rate": 0.6
         }
       ],
-      "avg_hit_rate": 0.8,
-      "total_fetched": 5,
-      "total_scored": 4
+      "avg_hit_rate": 0.7,
+      "total_fetched": 10,
+      "total_scored": 7
     },
     "Cloudflare Blog": {
       "name": "Cloudflare Blog",
@@ -272,11 +324,17 @@
           "articles_fetched": 3,
           "articles_scored": 3,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 4,
+          "articles_scored": 4,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 3,
-      "total_scored": 3
+      "total_fetched": 7,
+      "total_scored": 7
     },
     "Exponential View": {
       "name": "Exponential View",
@@ -287,11 +345,17 @@
           "articles_fetched": 4,
           "articles_scored": 3,
           "hit_rate": 0.75
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 4,
+          "articles_scored": 3,
+          "hit_rate": 0.75
         }
       ],
       "avg_hit_rate": 0.75,
-      "total_fetched": 4,
-      "total_scored": 3
+      "total_fetched": 8,
+      "total_scored": 6
     },
     "Google AI": {
       "name": "Google AI",
@@ -302,11 +366,17 @@
           "articles_fetched": 10,
           "articles_scored": 10,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 10,
+          "articles_scored": 10,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 10,
-      "total_scored": 10
+      "total_fetched": 20,
+      "total_scored": 20
     },
     "Google Research Blog": {
       "name": "Google Research Blog",
@@ -317,11 +387,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "Graham Cluley": {
       "name": "Graham Cluley",
@@ -332,11 +408,17 @@
           "articles_fetched": 3,
           "articles_scored": 2,
           "hit_rate": 0.6666666666666666
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 3,
+          "articles_scored": 2,
+          "hit_rate": 0.6666666666666666
         }
       ],
       "avg_hit_rate": 0.6666666666666666,
-      "total_fetched": 3,
-      "total_scored": 2
+      "total_fetched": 6,
+      "total_scored": 4
     },
     "Hacker News": {
       "name": "Hacker News",
@@ -347,11 +429,17 @@
           "articles_fetched": 54,
           "articles_scored": 13,
           "hit_rate": 0.24074074074074073
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 53,
+          "articles_scored": 16,
+          "hit_rate": 0.3018867924528302
         }
       ],
-      "avg_hit_rate": 0.24074074074074073,
-      "total_fetched": 54,
-      "total_scored": 13
+      "avg_hit_rate": 0.27102803738317754,
+      "total_fetched": 107,
+      "total_scored": 29
     },
     "HashiCorp Blog": {
       "name": "HashiCorp Blog",
@@ -362,11 +450,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 1,
-      "total_scored": 1
+      "total_fetched": 2,
+      "total_scored": 2
     },
     "IEEE Spectrum - AI": {
       "name": "IEEE Spectrum - AI",
@@ -377,11 +471,17 @@
           "articles_fetched": 5,
           "articles_scored": 5,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 5,
+          "articles_scored": 4,
+          "hit_rate": 0.8
         }
       ],
-      "avg_hit_rate": 1,
-      "total_fetched": 5,
-      "total_scored": 5
+      "avg_hit_rate": 0.9,
+      "total_fetched": 10,
+      "total_scored": 9
     },
     "Krebs on Security": {
       "name": "Krebs on Security",
@@ -392,11 +492,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "MIT News - AI": {
       "name": "MIT News - AI",
@@ -407,11 +513,17 @@
           "articles_fetched": 4,
           "articles_scored": 2,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 4,
+          "articles_scored": 2,
+          "hit_rate": 0.5
         }
       ],
       "avg_hit_rate": 0.5,
-      "total_fetched": 4,
-      "total_scored": 2
+      "total_fetched": 8,
+      "total_scored": 4
     },
     "MIT Technology Review": {
       "name": "MIT Technology Review",
@@ -422,11 +534,17 @@
           "articles_fetched": 10,
           "articles_scored": 2,
           "hit_rate": 0.2
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 10,
+          "articles_scored": 2,
+          "hit_rate": 0.2
         }
       ],
       "avg_hit_rate": 0.2,
-      "total_fetched": 10,
-      "total_scored": 2
+      "total_fetched": 20,
+      "total_scored": 4
     },
     "Nathan Lambert (Interconnects)": {
       "name": "Nathan Lambert (Interconnects)",
@@ -437,11 +555,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "OpenAI Blog": {
       "name": "OpenAI Blog",
@@ -452,11 +576,17 @@
           "articles_fetched": 31,
           "articles_scored": 6,
           "hit_rate": 0.1935483870967742
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 31,
+          "articles_scored": 6,
+          "hit_rate": 0.1935483870967742
         }
       ],
       "avg_hit_rate": 0.1935483870967742,
-      "total_fetched": 31,
-      "total_scored": 6
+      "total_fetched": 62,
+      "total_scored": 12
     },
     "OpenTofu Blog": {
       "name": "OpenTofu Blog",
@@ -467,11 +597,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 1,
-      "total_scored": 1
+      "total_fetched": 2,
+      "total_scored": 2
     },
     "Pragmatic Engineer (Gergely Orosz)": {
       "name": "Pragmatic Engineer (Gergely Orosz)",
@@ -482,11 +618,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "Schneier on Security": {
       "name": "Schneier on Security",
@@ -497,11 +639,17 @@
           "articles_fetched": 8,
           "articles_scored": 7,
           "hit_rate": 0.875
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 8,
+          "articles_scored": 7,
+          "hit_rate": 0.875
         }
       ],
       "avg_hit_rate": 0.875,
-      "total_fetched": 8,
-      "total_scored": 7
+      "total_fetched": 16,
+      "total_scored": 14
     },
     "Simon Willison": {
       "name": "Simon Willison",
@@ -512,11 +660,17 @@
           "articles_fetched": 18,
           "articles_scored": 9,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 18,
+          "articles_scored": 10,
+          "hit_rate": 0.5555555555555556
         }
       ],
-      "avg_hit_rate": 0.5,
-      "total_fetched": 18,
-      "total_scored": 9
+      "avg_hit_rate": 0.5277777777777778,
+      "total_fetched": 36,
+      "total_scored": 19
     },
     "Terraform GitHub Releases": {
       "name": "Terraform GitHub Releases",
@@ -527,11 +681,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 1,
-      "total_scored": 1
+      "total_fetched": 2,
+      "total_scored": 2
     },
     "The New Stack": {
       "name": "The New Stack",
@@ -542,11 +702,17 @@
           "articles_fetched": 26,
           "articles_scored": 23,
           "hit_rate": 0.8846153846153846
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 26,
+          "articles_scored": 25,
+          "hit_rate": 0.9615384615384616
         }
       ],
-      "avg_hit_rate": 0.8846153846153846,
-      "total_fetched": 26,
-      "total_scored": 23
+      "avg_hit_rate": 0.9230769230769231,
+      "total_fetched": 52,
+      "total_scored": 48
     },
     "Timothy B. Lee": {
       "name": "Timothy B. Lee",
@@ -557,11 +723,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 2,
-      "total_scored": 2
+      "total_fetched": 4,
+      "total_scored": 4
     },
     "Windsurf Next Changelog": {
       "name": "Windsurf Next Changelog",
@@ -572,10 +744,16 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 1,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
       "avg_hit_rate": 0,
-      "total_fetched": 1,
+      "total_fetched": 2,
       "total_scored": 0
     },
     "Wired": {
@@ -587,11 +765,17 @@
           "articles_fetched": 45,
           "articles_scored": 11,
           "hit_rate": 0.24444444444444444
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 45,
+          "articles_scored": 9,
+          "hit_rate": 0.2
         }
       ],
-      "avg_hit_rate": 0.24444444444444444,
-      "total_fetched": 45,
-      "total_scored": 11
+      "avg_hit_rate": 0.2222222222222222,
+      "total_fetched": 90,
+      "total_scored": 20
     },
     "swyx (Latent Space)": {
       "name": "swyx (Latent Space)",
@@ -602,11 +786,17 @@
           "articles_fetched": 5,
           "articles_scored": 4,
           "hit_rate": 0.8
+        },
+        {
+          "date": "2026-04-12",
+          "articles_fetched": 5,
+          "articles_scored": 4,
+          "hit_rate": 0.8
         }
       ],
       "avg_hit_rate": 0.8,
-      "total_fetched": 5,
-      "total_scored": 4
+      "total_fetched": 10,
+      "total_scored": 8
     }
   }
 }
