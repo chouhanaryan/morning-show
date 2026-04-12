@@ -71,6 +71,11 @@ func (f *RSSFetcher) Fetch(ctx context.Context, src config.Source) ([]Article, e
 		}
 		title := cleanText(it.Title)
 		link := strings.TrimSpace(it.Link)
+		if link == "" {
+			// Some feeds (e.g. bullrich.dev/tldr-rss) omit <link> but set
+			// <guid isPermaLink="true">URL</guid>. Fall back to GUID.
+			link = strings.TrimSpace(it.GUID)
+		}
 		if title == "" || link == "" {
 			// Can't index or present an article without at least these two.
 			continue
