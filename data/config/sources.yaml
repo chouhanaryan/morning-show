@@ -3,7 +3,7 @@ llm:
   # OpenRouter model slug. Pick any model from https://openrouter.ai/models.
   # Examples: anthropic/claude-3.5-sonnet, anthropic/claude-sonnet-4.5,
   # openai/gpt-4o, google/gemini-2.5-pro, meta-llama/llama-3.1-70b-instruct.
-  model: anthropic/claude-sonnet-4.5
+  model: anthropic/claude-sonnet-4.6
   api_key_env: OPENROUTER_API_KEY
   max_concurrent: 5
   requests_per_minute: 50
