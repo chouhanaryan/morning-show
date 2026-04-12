@@ -196,7 +196,7 @@ sources:
 
   # ---------- Tech news / newsletters ----------
   - name: TLDR Newsletter
-    url: https://tldr.tech/tech/rss
+    url: https://tldr.tech/api/rss/tech
     category: tech
   - name: Ars Technica
     url: https://feeds.arstechnica.com/arstechnica/index
