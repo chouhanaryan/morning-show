@@ -1,10 +1,11 @@
 {
   "standing_interests": [
-    "frontier LLM capabilities and evaluation",
+    "frontier LLM capabilities and eval",
     "AI and society",
     "cloud infrastructure and tooling",
     "infrastructure as code",
-    "AI in cloud management",
+    "AI in cloud",
+    "platform engineering",
     "AI agents, agent frameworks, and agent infrastructure",
     "new AWS service launches and major feature announcements",
     "developer tools and developer experience"
