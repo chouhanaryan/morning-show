@@ -33,11 +33,29 @@ type Source struct {
 type LLMConfig struct {
 	Provider          string  `yaml:"provider"`
 	Model             string  `yaml:"model"`
+	Pass1Model        string  `yaml:"pass1_model"`
+	Pass2Model        string  `yaml:"pass2_model"`
 	APIKeyEnv         string  `yaml:"api_key_env"`
 	MaxConcurrent     int     `yaml:"max_concurrent"`
 	RequestsPerMinute int     `yaml:"requests_per_minute"`
 	MaxTokens         int     `yaml:"max_tokens"`
 	Temperature       float64 `yaml:"temperature"`
+}
+
+// ModelForPass returns the model to use for a given pass (1, 2, or 3).
+// Pass-specific overrides fall back to the default Model.
+func (c *LLMConfig) ModelForPass(pass int) string {
+	switch pass {
+	case 1:
+		if c.Pass1Model != "" {
+			return c.Pass1Model
+		}
+	case 2:
+		if c.Pass2Model != "" {
+			return c.Pass2Model
+		}
+	}
+	return c.Model
 }
 
 // PipelineConfig controls pass sizing and filtering thresholds.

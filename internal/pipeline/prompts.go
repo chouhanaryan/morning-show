@@ -34,46 +34,44 @@ Every input id once. No prose, no fences. JSON only. Claims must be factual.`
 const pass2RetrySuffix = `
 
 REMINDER: your last attempt was not parseable. Respond with ONLY the JSON
-object described above \u2014 no commentary, no markdown fences.`
+object described above — no commentary, no markdown fences.`
 
 // Pass 3 (synthesize) prompt.
-const pass3System = `You are the author of a concise weekly intelligence briefing.
+const pass3System = `You write a concise weekly intelligence briefing.
 
-You will be given:
-  1. Structured extractions from this week's top articles (JSON with "url" fields).
-  2. Active threads from the last few weeks with short summaries.
-  3. User preferences: standing interests, active corrections, one-time notes.
+Input: article extractions (JSON with "url" fields), active threads, user prefs.
 
-TASK: synthesize a concise weekly briefing in markdown. Structure:
+Output markdown with these sections only:
 
-  # Weekly Briefing \u2014 <date>
+  # Weekly Briefing — <date>
 
   ## Top Stories
-  (3-5 items. Each: bold title, 2-3 sentence synthesis \u2014 be tight, no filler.
-  Link to ACTUAL article URLs from the "url" field, e.g. [title](url).
-  Each story should cite 1-3 inline links to specific articles, NOT source homepages.)
+  3-5 items. Bold title (NOT a hyperlink). 2-3 sentence factual synthesis.
+  After each story, list source URLs as numbered references:
+    [1]: url1
+    [2]: url2
+  Use the "url" field from the data. Never link to source homepages.
 
-  ## This Week in Continuing Threads
-  (For each active thread with new developments, 1-2 sentences. Skip threads
-  with no new reporting this week.)
+  ## Continuing Threads
+  1-2 sentences per thread with new developments. Skip quiet threads.
 
-  ## Signals & Smaller Items
-  (8-15 bullets max. One line each. Prioritize user interests, skip noise.)
+  ## Signals
+  8-12 bullets. One line each. Prioritize items matching user interests.
 
   ## What To Watch
-  (2-3 short bullets.)
+  2-3 bullets.
 
   ## Source Recommendations
-  (Only if COVERAGE GAPS data is provided. 2-3 sources per gap. Omit otherwise.)
+  Only if COVERAGE GAPS data is provided. Omit otherwise.
 
-STRICT RULES:
-  - Markdown only. No JSON, no code fences.
-  - Ground every claim in provided articles \u2014 do not speculate.
-  - Respect user corrections and interests.
-  - LINKS: use actual article URLs from the "url" field in the data. NEVER
-    fabricate URLs or link to source homepages. Format: [Source: Title](url).
-  - Be concise. Avoid restating what the title already says. No preambles.
-  - Only include Source Recommendations if COVERAGE GAPS data is present.`
+RULES:
+  - Synthesize facts into unified analysis. Do NOT attribute opinions to
+    individual sources ("X argues... Y disagrees..."). State what happened
+    and why it matters. Combine insights from multiple sources seamlessly.
+  - Be direct and factual. No filler, no preambles, no editorializing.
+  - Ground claims in the provided articles only.
+  - Respect user interests and corrections — surface matching stories prominently.
+  - Markdown only. No JSON, no code fences.`
 
 // pass1SystemWithInterests appends user interests to the system prompt once,
 // rather than repeating them in every user message.
@@ -139,7 +137,7 @@ func buildPass3User(
 	if len(threads) > 0 {
 		b.WriteString("ACTIVE THREADS (last several weeks):\n")
 		for _, t := range threads {
-			fmt.Fprintf(&b, "  - [%s] %s (last seen %s) \u2014 %s\n",
+			fmt.Fprintf(&b, "  - [%s] %s (last seen %s) — %s\n",
 				t.ID, t.Topic, t.LastSeen.Format("2006-01-02"), t.Summary)
 		}
 		b.WriteString("\n")

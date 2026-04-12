@@ -53,9 +53,6 @@ func (d *Deliverer) Deliver(md string, usage UsageSummary, dryRun bool) (*Delive
 		return out, nil
 	}
 	if err := d.sendEmail(full); err != nil {
-		// Plan says: SMTP rejection is a hard fail for email (Actions step
-		// should surface it), but the report is already on disk. Return the
-		// error — main decides whether to exit non-zero.
 		return out, fmt.Errorf("email delivery failed: %w", err)
 	}
 	out.Emailed = true
@@ -110,11 +107,17 @@ type UsageSummary struct {
 	FeedsTotal        int
 	Provider          string
 	Model             string
+	Pass1Model        string
+	Pass2Model        string
 	Duration          time.Duration
 }
 
 // Markdown renders the footer block.
 func (u UsageSummary) Markdown() string {
+	modelLine := u.Model
+	if u.Pass1Model != "" && u.Pass1Model != u.Model {
+		modelLine += fmt.Sprintf("\n- Pass 1/2 model: %s", u.Pass1Model)
+	}
 	return fmt.Sprintf(`## Run Metadata
 
 - Provider: %s
@@ -131,7 +134,7 @@ func (u UsageSummary) Markdown() string {
 | 3 (synthesize) | %d | %d | %d |
 | **Total**      |    | **%d** | **%d** |
 `,
-		u.Provider, u.Model, u.Duration.Round(time.Second),
+		u.Provider, modelLine, u.Duration.Round(time.Second),
 		u.FeedsReached, u.FeedsTotal,
 		u.Pass1Batches, u.Pass1In, u.Pass1Out,
 		u.Pass2Batches, u.Pass2In, u.Pass2Out,
