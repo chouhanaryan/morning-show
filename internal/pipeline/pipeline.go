@@ -251,8 +251,9 @@ func (p *Pipeline) runPass1(
 
 func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, interests []string) ([]scoreResult, llm.Usage, error) {
 	var total llm.Usage
+	model := p.cfg.LLM.ModelForPass(1)
 	sys := pass1SystemWithInterests(interests)
-	content, usage, err := p.callLLM(ctx, sys, user, false)
+	content, usage, err := p.callLLM(ctx, model, sys, user, false)
 	total.Add(usage)
 	if err == nil {
 		if scores, perr := parseScoreResponse(content); perr == nil {
@@ -265,7 +266,7 @@ func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, interes
 	}
 
 	// Attempt 2: stricter suffix.
-	content, usage, err = p.callLLM(ctx, sys+pass1RetrySuffix, user, false)
+	content, usage, err = p.callLLM(ctx, model, sys+pass1RetrySuffix, user, false)
 	total.Add(usage)
 	if err != nil {
 		return nil, total, err
@@ -389,7 +390,8 @@ func (p *Pipeline) runPass2(
 
 func (p *Pipeline) extractBatchWithRetry(ctx context.Context, user string) ([]ExtractedItem, llm.Usage, error) {
 	var total llm.Usage
-	content, usage, err := p.callLLM(ctx, pass2System, user, true)
+	model := p.cfg.LLM.ModelForPass(2)
+	content, usage, err := p.callLLM(ctx, model, pass2System, user, true)
 	total.Add(usage)
 	if err == nil {
 		if items, perr := parseExtractResponse(content); perr == nil {
@@ -401,7 +403,7 @@ func (p *Pipeline) extractBatchWithRetry(ctx context.Context, user string) ([]Ex
 		return nil, total, err
 	}
 
-	content, usage, err = p.callLLM(ctx, pass2System+pass2RetrySuffix, user, true)
+	content, usage, err = p.callLLM(ctx, model, pass2System+pass2RetrySuffix, user, true)
 	total.Add(usage)
 	if err != nil {
 		return nil, total, err
@@ -433,7 +435,8 @@ func (p *Pipeline) runPass3(
 	user := buildPass3User(weekOf, items, threads, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
 
 	// Pass 3 is a single call; we still share the rate limiter.
-	content, usage, err := p.callLLM(ctx, pass3System, user, false)
+	model := p.cfg.LLM.ModelForPass(3)
+	content, usage, err := p.callLLM(ctx, model, pass3System, user, false)
 	if err != nil {
 		return "", usage, err
 	}
@@ -441,7 +444,7 @@ func (p *Pipeline) runPass3(
 	if verr := validateMarkdown(cleaned); verr != nil {
 		// One retry with an explicit reminder appended to the user message.
 		retryUser := user + "\n\nREMINDER: return markdown only. Do not wrap your output in code fences and do not emit JSON."
-		content, u2, err := p.callLLM(ctx, pass3System, retryUser, false)
+		content, u2, err := p.callLLM(ctx, model, pass3System, retryUser, false)
 		usage.Add(u2)
 		if err != nil {
 			return "", usage, err
@@ -515,8 +518,8 @@ func detectCoverageGaps(items []ExtractedItem, minArticles, maxSources int) []Co
 // ----------------------------------------------------------------------
 
 // callLLM does a rate-limited, semaphore-bounded provider call and returns
-// the raw response content.
-func (p *Pipeline) callLLM(ctx context.Context, system, user string, jsonMode bool) (string, llm.Usage, error) {
+// the raw response content. The model parameter allows per-pass model selection.
+func (p *Pipeline) callLLM(ctx context.Context, model, system, user string, jsonMode bool) (string, llm.Usage, error) {
 	if err := p.limiter.Wait(ctx); err != nil {
 		return "", llm.Usage{}, err
 	}
@@ -528,7 +531,7 @@ func (p *Pipeline) callLLM(ctx context.Context, system, user string, jsonMode bo
 	defer func() { <-p.sem }()
 
 	req := llm.Request{
-		Model:       p.cfg.LLM.Model,
+		Model:       model,
 		MaxTokens:   p.cfg.LLM.MaxTokens,
 		Temperature: p.cfg.LLM.Temperature,
 		JSONMode:    jsonMode,
@@ -542,7 +545,7 @@ func (p *Pipeline) callLLM(ctx context.Context, system, user string, jsonMode bo
 	latency := time.Since(start)
 	p.log.Debug("llm call",
 		"provider", p.provider.Name(),
-		"model", p.cfg.LLM.Model,
+		"model", model,
 		"input_tokens", resp.Usage.InputTokens,
 		"output_tokens", resp.Usage.OutputTokens,
 		"latency_ms", latency.Milliseconds(),
