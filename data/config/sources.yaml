@@ -194,10 +194,7 @@ sources:
     url: https://eugeneyan.com/rss
     category: ml-engineering
 
-  # ---------- Tech news / newsletters ----------
-  - name: TLDR Newsletter
-    url: https://tldr.tech/api/rss/tech
-    category: tech
+  # ---------- Tech news ----------
   - name: Ars Technica
     url: https://feeds.arstechnica.com/arstechnica/index
     category: tech
