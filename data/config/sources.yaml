@@ -194,6 +194,17 @@ sources:
     url: https://eugeneyan.com/rss
     category: ml-engineering
 
+  # ---------- TLDR newsletters (via bullrich.dev splitter) ----------
+  - name: TLDR Tech
+    url: https://bullrich.dev/tldr-rss/tech.rss
+    category: tech
+  - name: TLDR AI
+    url: https://bullrich.dev/tldr-rss/ai.rss
+    category: ai-commentary
+  - name: TLDR DevOps
+    url: https://bullrich.dev/tldr-rss/devops.rss
+    category: cloud
+
   # ---------- Tech news ----------
   - name: Ars Technica
     url: https://feeds.arstechnica.com/arstechnica/index
