@@ -21,7 +21,7 @@ pipeline:
 fetch:
   max_concurrent: 10
   timeout_seconds: 30
-  user_agent: "Mozilla/5.0 (compatible; Feedfetcher/1.0; +https://github.com/chouhanaryan/late-show)"
+  user_agent: "Mozilla/5.0 (compatible; Feedfetcher/1.0; +https://github.com/chouhanaryan/morning-show)"
 
 deliver:
   reports_dir: data/reports

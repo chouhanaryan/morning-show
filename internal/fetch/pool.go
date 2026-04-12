@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/config"
+	"github.com/chouhanaryan/morning-show/internal/config"
 )
 
 // Result is the per-source outcome from a pool fetch.

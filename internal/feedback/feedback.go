@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/memory"
+	"github.com/chouhanaryan/morning-show/internal/memory"
 )
 
 // Preferences is the schema of feedback.json.

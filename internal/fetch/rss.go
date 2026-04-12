@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/config"
+	"github.com/chouhanaryan/morning-show/internal/config"
 	"github.com/mmcdole/gofeed"
 )
 

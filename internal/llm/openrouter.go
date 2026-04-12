@@ -36,8 +36,8 @@ func NewOpenRouterProvider(apiKey string, opts ...Option) Provider {
 		apiKey:  apiKey,
 		http:    o.httpClient,
 		base:    base,
-		referer: "https://github.com/chouhanaryan/late-show",
-		title:   "late-show-briefing",
+		referer: "https://github.com/chouhanaryan/morning-show",
+		title:   "morning-show-briefing",
 	}
 }
 

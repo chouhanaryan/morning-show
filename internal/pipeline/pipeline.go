@@ -14,11 +14,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/config"
-	"github.com/chouhanaryan/late-show/internal/feedback"
-	"github.com/chouhanaryan/late-show/internal/fetch"
-	"github.com/chouhanaryan/late-show/internal/llm"
-	"github.com/chouhanaryan/late-show/internal/memory"
+	"github.com/chouhanaryan/morning-show/internal/config"
+	"github.com/chouhanaryan/morning-show/internal/feedback"
+	"github.com/chouhanaryan/morning-show/internal/fetch"
+	"github.com/chouhanaryan/morning-show/internal/llm"
+	"github.com/chouhanaryan/morning-show/internal/memory"
 	"golang.org/x/time/rate"
 )
 

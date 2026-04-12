@@ -1,4 +1,4 @@
-module github.com/chouhanaryan/late-show
+module github.com/chouhanaryan/morning-show
 
 go 1.25.0
 

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/config"
-	"github.com/chouhanaryan/late-show/internal/fetch"
+	"github.com/chouhanaryan/morning-show/internal/config"
+	"github.com/chouhanaryan/morning-show/internal/fetch"
 )
 
 type fakeSeen struct {

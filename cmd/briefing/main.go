@@ -12,14 +12,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/chouhanaryan/late-show/internal/config"
-	"github.com/chouhanaryan/late-show/internal/deliver"
-	"github.com/chouhanaryan/late-show/internal/feedback"
-	"github.com/chouhanaryan/late-show/internal/fetch"
-	"github.com/chouhanaryan/late-show/internal/filter"
-	"github.com/chouhanaryan/late-show/internal/llm"
-	"github.com/chouhanaryan/late-show/internal/memory"
-	"github.com/chouhanaryan/late-show/internal/pipeline"
+	"github.com/chouhanaryan/morning-show/internal/config"
+	"github.com/chouhanaryan/morning-show/internal/deliver"
+	"github.com/chouhanaryan/morning-show/internal/feedback"
+	"github.com/chouhanaryan/morning-show/internal/fetch"
+	"github.com/chouhanaryan/morning-show/internal/filter"
+	"github.com/chouhanaryan/morning-show/internal/llm"
+	"github.com/chouhanaryan/morning-show/internal/memory"
+	"github.com/chouhanaryan/morning-show/internal/pipeline"
 )
 
 // flags collects CLI options in one place.

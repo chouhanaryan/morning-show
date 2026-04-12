@@ -1,4 +1,4 @@
-# late-show
+# morning-show
 
 A Go intelligence briefing agent. It pulls RSS/Atom feeds and Hacker News top
 stories, pre-filters locally, runs a three-pass LLM pipeline (score → extract

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/chouhanaryan/late-show/internal/feedback"
-	"github.com/chouhanaryan/late-show/internal/memory"
+	"github.com/chouhanaryan/morning-show/internal/feedback"
+	"github.com/chouhanaryan/morning-show/internal/memory"
 )
 
 // Pass 1 (score) prompts. Input is a JSON array of {id, title, snippet}; the

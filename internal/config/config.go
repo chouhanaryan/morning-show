@@ -155,7 +155,7 @@ func (c *Config) applyDefaults() {
 		c.Fetch.TimeoutSeconds = 30
 	}
 	if c.Fetch.UserAgent == "" {
-		c.Fetch.UserAgent = "late-show-briefing/1.0"
+		c.Fetch.UserAgent = "morning-show-briefing/1.0"
 	}
 	if c.Deliver.ReportsDir == "" {
 		c.Deliver.ReportsDir = "data/reports"
