@@ -53,9 +53,6 @@ sources:
   - name: Schneier on Security
     url: https://schneier.com/feed
     category: security
-  - name: The Hacker News
-    url: https://feeds.feedburner.com/TheHackersNews
-    category: security
   - name: BleepingComputer
     url: https://www.bleepingcomputer.com/feed
     category: security
