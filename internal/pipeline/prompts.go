@@ -10,32 +10,13 @@ import (
 
 // Pass 1 (score) prompts. Input is a JSON array of {id, title, snippet}; the
 // model must emit a JSON array of {id, score:0-10} with no prose.
-const pass1System = `You are a relevance scorer for a weekly intelligence briefing.
+const pass1System = `Score articles 0-10 for a weekly tech/AI briefing.
 
-INPUT: a JSON array of articles, each with fields:
-  - id: integer
-  - title: string
-  - snippet: first ~200 chars of the article description
-  - source: source name
-  - category: topic category
+Higher: novel analysis, primary-source announcements, durable insights, research.
+Lower: marketing, rehashed coverage, low-signal wire recycling.
 
-TASK: score each article 0-10 for inclusion in a thoughtful weekly briefing
-on technology, AI, security, and adjacent topics. Higher scores for:
-  - substantive, novel reporting or analysis
-  - primary-source announcements from significant organizations
-  - trends, research, and durable insights
-Lower scores for:
-  - marketing posts, product launches with no surprise
-  - duplicated or rehashed coverage
-  - low-signal wire-service recycling
-
-OUTPUT: a single JSON array, one object per input article, in the SAME ORDER:
-  [{"id": <int>, "score": <int 0-10>}, ...]
-
-STRICT RULES:
-  - Every input id must appear exactly once.
-  - No explanations, no markdown fences, no prose. JSON only.
-  - Integer scores only.`
+Output JSON array in SAME order: [{"id":<int>,"score":<int>},...]
+Every input id must appear exactly once. No prose, no fences. JSON only.`
 
 const pass1RetrySuffix = `
 
@@ -43,23 +24,12 @@ REMINDER: your last attempt was not parseable JSON. Output ONLY a JSON array
 matching the schema above. No code fences, no commentary, no surrounding text.`
 
 // Pass 2 (extract + detect) prompt.
-const pass2System = `You are an analyst extracting structured data from an article batch.
+const pass2System = `Extract structured data from each article.
 
-For each input article, return:
-  - id: matching input id
-  - key_claims: 2-5 concise factual claims (short sentences)
-  - entities: list of named organizations, people, products, places
-  - topic_tags: 1-4 short tags (lowercase, hyphen-separated, e.g. "ai-safety")
-  - thread_signal: short phrase describing any cross-article storyline this
-    article belongs to (e.g. "EU AI Act enforcement"), or "" if none
+Per article return: id, key_claims (2-5 factual sentences), entities (orgs/people/products), topic_tags (1-4, lowercase-hyphenated), thread_signal (cross-article storyline or "").
 
-OUTPUT a single JSON object:
-  {"items":[{"id":...,"key_claims":[...],"entities":[...],"topic_tags":[...],"thread_signal":"..."}]}
-
-STRICT RULES:
-  - Every input id must appear exactly once in "items".
-  - No prose outside the JSON object. No markdown fences.
-  - Keep key_claims factual — no speculation.`
+Output: {"items":[{"id":...,"key_claims":[...],"entities":[...],"topic_tags":[...],"thread_signal":"..."}]}
+Every input id once. No prose, no fences. JSON only. Claims must be factual.`
 
 const pass2RetrySuffix = `
 
@@ -107,19 +77,22 @@ STRICT RULES:
   - Reference articles by their source name so the reader can find them.
   - Only include Source Recommendations if COVERAGE GAPS data is present.`
 
-// buildPass1User renders a batch of articles for Pass 1.
-func buildPass1User(items []scoreInput, interests []string) string {
-	var b strings.Builder
-	if len(interests) > 0 {
-		b.WriteString("USER TOPIC INTERESTS (up-weight related articles):\n")
-		for _, i := range interests {
-			fmt.Fprintf(&b, "  - %s\n", i)
-		}
-		b.WriteString("\n")
+// pass1SystemWithInterests appends user interests to the system prompt once,
+// rather than repeating them in every user message.
+func pass1SystemWithInterests(interests []string) string {
+	if len(interests) == 0 {
+		return pass1System
 	}
-	b.WriteString("ARTICLES:\n")
-	b.WriteString(mustJSON(items))
+	var b strings.Builder
+	b.WriteString(pass1System)
+	b.WriteString("\n\nUp-weight articles matching these interests: ")
+	b.WriteString(strings.Join(interests, "; "))
 	return b.String()
+}
+
+// buildPass1User renders a batch of articles for Pass 1.
+func buildPass1User(items []scoreInput) string {
+	return mustJSON(items)
 }
 
 // buildPass2User renders a batch of articles for Pass 2 extraction.
@@ -183,6 +156,32 @@ func buildPass3User(
 	}
 
 	b.WriteString("THIS WEEK'S EXTRACTIONS (JSON):\n")
-	b.WriteString(mustJSON(extractions))
+	b.WriteString(mustJSON(compactForPass3(extractions)))
 	return b.String()
+}
+
+// pass3Item is a lighter projection of ExtractedItem for Pass 3 input.
+// Drops: id (meaningless to synthesis), entities (used by Pass 2 only).
+type pass3Item struct {
+	Title    string   `json:"t"`
+	Source   string   `json:"src"`
+	Link     string   `json:"url"`
+	Claims   []string `json:"claims"`
+	Tags     []string `json:"tags"`
+	Thread   string   `json:"thread,omitempty"`
+}
+
+func compactForPass3(items []ExtractedItem) []pass3Item {
+	out := make([]pass3Item, len(items))
+	for i, it := range items {
+		out[i] = pass3Item{
+			Title:  it.SourceTitle,
+			Source: it.Source,
+			Link:   it.Link,
+			Claims: it.KeyClaims,
+			Tags:   it.TopicTags,
+			Thread: it.ThreadSignal,
+		}
+	}
+	return out
 }

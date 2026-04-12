@@ -217,10 +217,8 @@ func validateMarkdown(s string) error {
 }
 
 func mustJSON(v any) string {
-	b, err := json.MarshalIndent(v, "", "  ")
+	b, err := json.Marshal(v)
 	if err != nil {
-		// mustJSON is only called on simple structs we control; marshalling
-		// cannot fail unless the caller breaks the contract.
 		return fmt.Sprintf("/* marshal error: %v */", err)
 	}
 	return string(b)

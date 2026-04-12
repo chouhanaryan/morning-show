@@ -161,11 +161,10 @@ func (p *Pipeline) Run(
 // ----------------------------------------------------------------------
 
 type scoreInput struct {
-	ID       int    `json:"id"`
-	Title    string `json:"title"`
-	Snippet  string `json:"snippet"`
-	Source   string `json:"source"`
-	Category string `json:"category,omitempty"`
+	ID      int    `json:"id"`
+	Title   string `json:"title"`
+	Snippet string `json:"snippet"`
+	Source  string `json:"source"`
 }
 
 type scoreResult struct {
@@ -208,13 +207,12 @@ func (p *Pipeline) runPass1(
 				items[k] = scoreInput{
 					ID:       k,
 					Title:    a.Title,
-					Snippet:  a.SummaryText(200),
+					Snippet:  a.SummaryText(150),
 					Source:   a.SourceName,
-					Category: a.Category,
 				}
 			}
-			user := buildPass1User(items, interests)
-			scores, usage, err := p.scoreBatchWithRetry(ctx, user)
+			user := buildPass1User(items)
+			scores, usage, err := p.scoreBatchWithRetry(ctx, user, interests)
 			results[i] = batchOut{
 				scores: scores,
 				usage:  usage,
@@ -251,16 +249,10 @@ func (p *Pipeline) runPass1(
 	return kept, total, batchesRun, nil
 }
 
-func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string) ([]scoreResult, llm.Usage, error) {
+func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, interests []string) ([]scoreResult, llm.Usage, error) {
 	var total llm.Usage
-	// Pass 1 asks for a JSON array, so we must NOT set the provider's
-	// json_object response mode — that mode forces an object envelope and
-	// the model will wrap the array in {"scores": [...]}. The parser
-	// tolerates the envelope form as a safety net, but the bare array is
-	// the canonical shape.
-	//
-	// Attempt 1: normal system prompt.
-	content, usage, err := p.callLLM(ctx, pass1System, user, false)
+	sys := pass1SystemWithInterests(interests)
+	content, usage, err := p.callLLM(ctx, sys, user, false)
 	total.Add(usage)
 	if err == nil {
 		if scores, perr := parseScoreResponse(content); perr == nil {
@@ -273,7 +265,7 @@ func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string) ([]scor
 	}
 
 	// Attempt 2: stricter suffix.
-	content, usage, err = p.callLLM(ctx, pass1System+pass1RetrySuffix, user, false)
+	content, usage, err = p.callLLM(ctx, sys+pass1RetrySuffix, user, false)
 	total.Add(usage)
 	if err != nil {
 		return nil, total, err
@@ -339,13 +331,13 @@ func (p *Pipeline) runPass2(
 				if body == "" {
 					body = a.Description
 				}
-				// Cap body at ~2000 chars to keep Pass 2 tokens bounded.
+				// Cap body at ~1200 chars — enough for claim extraction
+				// without wasting tokens on tail content.
 				items[k] = extractInput{
 					ID:       k,
 					Title:    a.Title,
 					Source:   a.SourceName,
-					Category: a.Category,
-					Content:  truncate(body, 2000),
+					Content:  truncate(body, 1200),
 				}
 			}
 			user := buildPass2User(items)
