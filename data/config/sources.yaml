@@ -4,6 +4,10 @@ llm:
   # Examples: anthropic/claude-3.5-sonnet, anthropic/claude-sonnet-4.5,
   # openai/gpt-4o, google/gemini-2.5-pro, meta-llama/llama-3.1-70b-instruct.
   model: anthropic/claude-sonnet-4.6
+  # Cheaper model for mechanical JSON passes (scoring + extraction).
+  # Falls back to model above if omitted.
+  pass1_model: anthropic/claude-haiku-4-5-20251001
+  pass2_model: anthropic/claude-haiku-4-5-20251001
   api_key_env: OPENROUTER_API_KEY
   max_concurrent: 5
   requests_per_minute: 50

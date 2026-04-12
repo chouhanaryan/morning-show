@@ -80,8 +80,6 @@ func run(f flags, log *slog.Logger) error {
 	}
 	if f.provider != "" {
 		cfg.LLM.Provider = f.provider
-		// When overriding the provider on the CLI, swap the default api key
-		// env to match the conventional name unless one is already set.
 		if cfg.LLM.APIKeyEnv == "" || cfg.LLM.Provider != "anthropic" {
 			cfg.LLM.APIKeyEnv = defaultAPIKeyEnv(cfg.LLM.Provider, cfg.LLM.APIKeyEnv)
 		}
@@ -93,6 +91,8 @@ func run(f flags, log *slog.Logger) error {
 		"sources", len(cfg.Sources),
 		"provider", cfg.LLM.Provider,
 		"model", cfg.LLM.Model,
+		"pass1_model", cfg.LLM.ModelForPass(1),
+		"pass2_model", cfg.LLM.ModelForPass(2),
 	)
 
 	sources := cfg.Sources
@@ -126,13 +126,11 @@ func run(f flags, log *slog.Logger) error {
 	}
 	prefs := prefsStore.Snapshot()
 
-	// --reset-memory: wipe seen URLs so all articles are considered fresh.
 	if f.resetMemory {
 		mem.ResetSeenURLs()
-		log.Info("reset memory — all seen URLs cleared")
+		log.Info("reset memory \u2014 all seen URLs cleared")
 	}
 
-	// Prune seen URLs older than the memory window to keep the store bounded.
 	maxSeenAge := time.Duration(cfg.Pipeline.MemoryWeeks*2) * 7 * 24 * time.Hour
 	if pruned := mem.PruneSeen(maxSeenAge); pruned > 0 {
 		log.Info("pruned stale seen urls", "count", pruned)
@@ -154,7 +152,7 @@ func run(f flags, log *slog.Logger) error {
 	// ---- Filter ----
 	kept, _ := filter.Filter(allArts, cfg, mem, log)
 	if len(kept) == 0 {
-		return fmt.Errorf("no articles survived local filter — nothing to brief")
+		return fmt.Errorf("no articles survived local filter \u2014 nothing to brief")
 	}
 
 	// ---- Pipeline ----
@@ -179,15 +177,14 @@ func run(f flags, log *slog.Logger) error {
 		FeedsReached: stats.Reached,
 		FeedsTotal:   stats.Total,
 		Provider:     provider.Name(),
-		Model:        cfg.LLM.Model,
+		Model:        cfg.LLM.ModelForPass(3),
+		Pass1Model:   cfg.LLM.ModelForPass(1),
+		Pass2Model:   cfg.LLM.ModelForPass(2),
 		Duration:     time.Since(startedAt),
 	}
 	d := deliver.New(cfg, log)
 	delivery, err := d.Deliver(result.Markdown, usage, f.dryRun)
 	if err != nil {
-		// Report is on disk if delivery succeeded to the filesystem step;
-		// only email delivery errors reach here. Surface as failure so the
-		// Actions workflow notifies.
 		return err
 	}
 	log.Info("delivered",
@@ -197,18 +194,13 @@ func run(f flags, log *slog.Logger) error {
 
 	// ---- State persistence ----
 	if f.dryRun {
-		log.Info("dry run — skipping state mutation")
+		log.Info("dry run \u2014 skipping state mutation")
 		return nil
 	}
 
-	// Mark seen URLs for articles that actually made it through Pass 1
-	// (pass 2 uses the filtered survivors as input). This way a low-score
-	// article can still be re-considered next week if its framing changes,
-	// while "real" coverage is deduplicated.
 	for _, a := range result.KeptArticles {
 		mem.MarkSeen(a.ID)
 	}
-	// Record per-source hit rates from this run.
 	for _, sc := range result.SourceCounts {
 		mem.RecordSourceRun(sc.Name, sc.Category, sc.Fetched, sc.Scored,
 			cfg.Pipeline.SourceStatsMaxHistory)
@@ -223,7 +215,6 @@ func run(f flags, log *slog.Logger) error {
 	if err := mem.Save(); err != nil {
 		return fmt.Errorf("save memory: %w", err)
 	}
-	// Consume any one-time notes so they don't repeat next run.
 	if consumed := prefsStore.ConsumeOneTime(); len(consumed) > 0 {
 		log.Info("consumed one-time notes", "count", len(consumed))
 		if err := prefsStore.Save(); err != nil {
@@ -239,7 +230,6 @@ func run(f flags, log *slog.Logger) error {
 	return nil
 }
 
-// filterSources keeps only sources whose name contains the substring.
 func filterSources(src []config.Source, q string) []config.Source {
 	out := make([]config.Source, 0)
 	for _, s := range src {
@@ -254,7 +244,6 @@ func containsFold(s, substr string) bool {
 	return len(substr) == 0 || len(s) >= len(substr) && indexFold(s, substr) >= 0
 }
 
-// indexFold is a minimal case-insensitive substring search.
 func indexFold(s, sub string) int {
 	ls := toLower(s)
 	lsub := toLower(sub)
@@ -278,7 +267,6 @@ func toLower(s string) string {
 	return string(out)
 }
 
-// defaultAPIKeyEnv maps a provider name to the conventional env var.
 func defaultAPIKeyEnv(provider, fallback string) string {
 	switch provider {
 	case "anthropic":
@@ -293,4 +281,3 @@ func defaultAPIKeyEnv(provider, fallback string) string {
 	}
 	return "API_KEY"
 }
-
