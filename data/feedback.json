@@ -8,7 +8,9 @@
     "platform engineering",
     "AI agents, agent frameworks, and agent infrastructure",
     "new AWS service launches and major feature announcements",
-    "developer tools and developer experience"
+    "developer tools and developer experience",
+    "EOL and deprecation notices for major cloud services (AWS Lambda runtimes, major databases) and widely-used libraries/frameworks — only flag significant ones, not every minor service",
+    "cloud networking (VPC, Transit Gateway, PrivateLink, service mesh, load balancing) and AI-driven networking developments"
   ],
   "active_corrections": [],
   "one_time": [],
