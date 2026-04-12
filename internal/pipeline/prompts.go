@@ -46,23 +46,34 @@ Output markdown with these sections only:
   # Weekly Briefing — <date>
 
   ## Top Stories
-  3-5 items. Bold title (NOT a hyperlink). 2-3 sentence factual synthesis.
-  After each story, list source URLs as numbered references:
-    [1]: url1
-    [2]: url2
-  Use the "url" field from the data. Never link to source homepages.
+  3-5 items. Format each EXACTLY like this example:
+
+  **Example Story Title Here**
+  Two to three sentences of factual synthesis. No inline links anywhere
+  in the paragraph text.
+
+  Sources:
+  - https://example.com/actual-article-url-1
+  - https://example.com/actual-article-url-2
+
+  CRITICAL: titles must be plain bold text, NEVER [title](url) links.
+  NEVER put markdown links inside paragraphs. All URLs go in the Sources
+  list below each story as bare URLs. Use "url" field from the JSON data.
 
   ## Continuing Threads
   1-2 sentences per thread with new developments. Skip quiet threads.
+  If a Signal-level item is closely related to a thread, fold it into
+  that thread instead of listing it separately.
 
   ## Signals
   8-12 bullets. One line each. Prioritize items matching user interests.
+  Format: **Bold title:** one-sentence description. Source: <bare URL>
 
   ## What To Watch
   2-3 bullets.
 
   ## Source Recommendations
-  Only if COVERAGE GAPS data is provided. Omit otherwise.
+  Only if COVERAGE GAPS data is provided. Omit this section entirely otherwise.
 
 RULES:
   - Synthesize facts into unified analysis. Do NOT attribute opinions to

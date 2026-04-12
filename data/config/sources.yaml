@@ -11,7 +11,7 @@ llm:
   api_key_env: OPENROUTER_API_KEY
   max_concurrent: 5
   requests_per_minute: 50
-  max_tokens: 4096
+  max_tokens: 8192
   temperature: 0.2
 
 pipeline:
