@@ -92,12 +92,20 @@ TASK: synthesize a thoughtful weekly briefing in markdown. Structure:
   ## What To Watch
   (2-4 short bullets on emerging stories to track.)
 
+  ## Source Recommendations
+  (Only include this section if COVERAGE GAPS data is provided below.
+  For each gap, suggest 2-3 specific sources — named blogs, RSS feeds,
+  newsletters, or research groups — that would improve coverage of the
+  flagged topic. Be specific with names and URLs where possible.
+  If no coverage gaps are provided, omit this section entirely.)
+
 STRICT RULES:
   - Markdown only. No JSON, no code fences wrapping the whole output.
   - Ground every claim in the provided articles — do not speculate.
   - Respect user corrections and interests.
   - If the week was quiet, say so honestly.
-  - Reference articles by their source name so the reader can find them.`
+  - Reference articles by their source name so the reader can find them.
+  - Only include Source Recommendations if COVERAGE GAPS data is present.`
 
 // buildPass1User renders a batch of articles for Pass 1.
 func buildPass1User(items []scoreInput, interests []string) string {
@@ -130,6 +138,7 @@ func buildPass3User(
 	prefs feedback.Preferences,
 	oneTime []feedback.OneTimeNote,
 	feedsReached, feedsTotal int,
+	coverageGaps []CoverageGap,
 ) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "WEEK OF: %s\n", weekOf)
@@ -164,6 +173,15 @@ func buildPass3User(
 		}
 		b.WriteString("\n")
 	}
+	if len(coverageGaps) > 0 {
+		b.WriteString("COVERAGE GAPS (topics with high interest but few sources):\n")
+		for _, g := range coverageGaps {
+			fmt.Fprintf(&b, "  - topic: %q, articles: %d, only from: %s\n",
+				g.TopicTag, g.ArticleCount, strings.Join(g.SourceNames, ", "))
+		}
+		b.WriteString("\n")
+	}
+
 	b.WriteString("THIS WEEK'S EXTRACTIONS (JSON):\n")
 	b.WriteString(mustJSON(extractions))
 	return b.String()

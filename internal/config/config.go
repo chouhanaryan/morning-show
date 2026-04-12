@@ -48,6 +48,12 @@ type PipelineConfig struct {
 	MaxAgeDays           int `yaml:"max_age_days"`
 	MinTitleSummaryChars int `yaml:"min_title_summary_chars"`
 	MemoryWeeks          int `yaml:"memory_weeks"`
+	// Per-source metadata tracking: rolling window of run history entries.
+	SourceStatsMaxHistory int `yaml:"source_stats_max_history"`
+	// Coverage gap detection: minimum articles on a topic to flag a gap.
+	CoverageGapMinArticles int `yaml:"coverage_gap_min_articles"`
+	// Coverage gap detection: max distinct sources before a topic is "well covered".
+	CoverageGapMaxSources int `yaml:"coverage_gap_max_sources"`
 }
 
 // FetchConfig controls concurrency and HTTP behaviour for feed fetching.
@@ -132,6 +138,15 @@ func (c *Config) applyDefaults() {
 	}
 	if c.Pipeline.MemoryWeeks == 0 {
 		c.Pipeline.MemoryWeeks = 4
+	}
+	if c.Pipeline.SourceStatsMaxHistory == 0 {
+		c.Pipeline.SourceStatsMaxHistory = 12
+	}
+	if c.Pipeline.CoverageGapMinArticles == 0 {
+		c.Pipeline.CoverageGapMinArticles = 3
+	}
+	if c.Pipeline.CoverageGapMaxSources == 0 {
+		c.Pipeline.CoverageGapMaxSources = 2
 	}
 	if c.Fetch.MaxConcurrent == 0 {
 		c.Fetch.MaxConcurrent = 10

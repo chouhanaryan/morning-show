@@ -43,6 +43,14 @@ func New(cfg *config.Config, provider llm.Provider, log *slog.Logger) *Pipeline 
 	}
 }
 
+// SourceCount tracks how many articles from a source entered and survived Pass 1.
+type SourceCount struct {
+	Name     string
+	Category string
+	Fetched  int // articles entering Pass 1
+	Scored   int // articles surviving Pass 1
+}
+
 // Result bundles the generated briefing plus everything the caller needs to
 // persist state and report totals.
 type Result struct {
@@ -52,6 +60,7 @@ type Result struct {
 	TotalUsage     llm.Usage
 	PassUsage      [3]llm.Usage
 	PassBatchCount [3]int
+	SourceCounts   map[string]*SourceCount
 }
 
 // Run executes passes 1–3 in sequence.
@@ -87,6 +96,23 @@ func (p *Pipeline) Run(
 		return nil, errors.New("pipeline: no articles survived pass 1 scoring")
 	}
 
+	// Per-source hit-rate tracking.
+	sourceCounts := make(map[string]*SourceCount)
+	for _, a := range arts {
+		sc, ok := sourceCounts[a.SourceName]
+		if !ok {
+			sc = &SourceCount{Name: a.SourceName, Category: a.Category}
+			sourceCounts[a.SourceName] = sc
+		}
+		sc.Fetched++
+	}
+	for _, a := range scored {
+		if sc, ok := sourceCounts[a.SourceName]; ok {
+			sc.Scored++
+		}
+	}
+	res.SourceCounts = sourceCounts
+
 	// ---- PASS 2 ----
 	extractions, pass2Usage, pass2Batches, err := p.runPass2(ctx, scored)
 	if err != nil {
@@ -104,8 +130,16 @@ func (p *Pipeline) Run(
 		"items", len(extractions),
 	)
 
+	// Coverage gap detection — find topics with high interest but few sources.
+	coverageGaps := detectCoverageGaps(extractions,
+		p.cfg.Pipeline.CoverageGapMinArticles,
+		p.cfg.Pipeline.CoverageGapMaxSources)
+	if len(coverageGaps) > 0 {
+		p.log.Info("coverage gaps detected", "count", len(coverageGaps))
+	}
+
 	// ---- PASS 3 ----
-	md, pass3Usage, err := p.runPass3(ctx, extractions, mem, prefs, oneTime, feedsReached, feedsTotal)
+	md, pass3Usage, err := p.runPass3(ctx, extractions, mem, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
 	if err != nil {
 		return nil, fmt.Errorf("pass 3: %w", err)
 	}
@@ -398,12 +432,13 @@ func (p *Pipeline) runPass3(
 	prefs feedback.Preferences,
 	oneTime []feedback.OneTimeNote,
 	feedsReached, feedsTotal int,
+	coverageGaps []CoverageGap,
 ) (string, llm.Usage, error) {
 	window := time.Duration(p.cfg.Pipeline.MemoryWeeks) * 7 * 24 * time.Hour
 	threads := mem.ActiveThreads(window)
 
 	weekOf := time.Now().UTC().Format("2006-01-02")
-	user := buildPass3User(weekOf, items, threads, prefs, oneTime, feedsReached, feedsTotal)
+	user := buildPass3User(weekOf, items, threads, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
 
 	// Pass 3 is a single call; we still share the rate limiter.
 	content, usage, err := p.callLLM(ctx, pass3System, user, false)
@@ -425,6 +460,62 @@ func (p *Pipeline) runPass3(
 		}
 	}
 	return cleaned, usage, nil
+}
+
+// ----------------------------------------------------------------------
+// coverage gap detection
+// ----------------------------------------------------------------------
+
+// CoverageGap represents a topic with high interest but thin source diversity.
+type CoverageGap struct {
+	TopicTag     string   `json:"topic_tag"`
+	ArticleCount int      `json:"article_count"`
+	SourceNames  []string `json:"source_names"`
+}
+
+// detectCoverageGaps finds topic tags that appear in multiple articles but are
+// only covered by a small number of distinct sources — a signal that the user
+// should add more feeds on that topic.
+func detectCoverageGaps(items []ExtractedItem, minArticles, maxSources int) []CoverageGap {
+	type tagInfo struct {
+		sources  map[string]struct{}
+		articles int
+	}
+	tags := make(map[string]*tagInfo)
+	for _, item := range items {
+		for _, tag := range item.TopicTags {
+			ti, ok := tags[tag]
+			if !ok {
+				ti = &tagInfo{sources: make(map[string]struct{})}
+				tags[tag] = ti
+			}
+			ti.sources[item.Source] = struct{}{}
+			ti.articles++
+		}
+	}
+
+	var gaps []CoverageGap
+	for tag, info := range tags {
+		if info.articles >= minArticles && len(info.sources) <= maxSources {
+			sources := make([]string, 0, len(info.sources))
+			for s := range info.sources {
+				sources = append(sources, s)
+			}
+			sort.Strings(sources)
+			gaps = append(gaps, CoverageGap{
+				TopicTag:     tag,
+				ArticleCount: info.articles,
+				SourceNames:  sources,
+			})
+		}
+	}
+	sort.Slice(gaps, func(i, j int) bool {
+		return gaps[i].ArticleCount > gaps[j].ArticleCount
+	})
+	if len(gaps) > 5 {
+		gaps = gaps[:5]
+	}
+	return gaps
 }
 
 // ----------------------------------------------------------------------

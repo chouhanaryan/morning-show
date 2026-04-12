@@ -200,6 +200,12 @@ func run(f flags, log *slog.Logger) error {
 	for _, a := range result.KeptArticles {
 		mem.MarkSeen(a.ID)
 	}
+	// Record per-source hit rates from this run.
+	for _, sc := range result.SourceCounts {
+		mem.RecordSourceRun(sc.Name, sc.Category, sc.Fetched, sc.Scored,
+			cfg.Pipeline.SourceStatsMaxHistory)
+	}
+
 	staleWindow := time.Duration(cfg.Pipeline.MemoryWeeks*2) * 7 * 24 * time.Hour
 	if archived := mem.ArchiveStaleThreads(staleWindow); archived > 0 {
 		log.Info("archived stale threads", "count", archived)

@@ -22,13 +22,46 @@ type Thread struct {
 	ArticleCount int       `json:"article_count"`
 }
 
+// SourceRunStats captures one run's per-source performance.
+type SourceRunStats struct {
+	Date            string  `json:"date"`
+	ArticlesFetched int     `json:"articles_fetched"`
+	ArticlesScored  int     `json:"articles_scored"`
+	HitRate         float64 `json:"hit_rate"`
+}
+
+// SourceMeta accumulates per-source stats across runs with a rolling window.
+type SourceMeta struct {
+	Name         string           `json:"name"`
+	Category     string           `json:"category"`
+	RunHistory   []SourceRunStats `json:"run_history"`
+	AvgHitRate   float64          `json:"avg_hit_rate"`
+	TotalFetched int              `json:"total_fetched"`
+	TotalScored  int              `json:"total_scored"`
+}
+
+func (m *SourceMeta) recomputeAggregates() {
+	m.TotalFetched = 0
+	m.TotalScored = 0
+	for _, r := range m.RunHistory {
+		m.TotalFetched += r.ArticlesFetched
+		m.TotalScored += r.ArticlesScored
+	}
+	if m.TotalFetched > 0 {
+		m.AvgHitRate = float64(m.TotalScored) / float64(m.TotalFetched)
+	} else {
+		m.AvgHitRate = 0
+	}
+}
+
 // State is the full shape of memory.json.
 type State struct {
-	LastRun         time.Time         `json:"last_run"`
-	SeenURLs        map[string]string `json:"seen_urls"`
-	Threads         []Thread          `json:"threads"`
-	ArchivedThreads []Thread          `json:"archived_threads,omitempty"`
-	TopicClusters   map[string]any    `json:"topic_clusters,omitempty"`
+	LastRun         time.Time                `json:"last_run"`
+	SeenURLs        map[string]string        `json:"seen_urls"`
+	Threads         []Thread                 `json:"threads"`
+	ArchivedThreads []Thread                 `json:"archived_threads,omitempty"`
+	TopicClusters   map[string]any           `json:"topic_clusters,omitempty"`
+	SourceStats     map[string]*SourceMeta   `json:"source_stats,omitempty"`
 }
 
 // Store wraps an on-disk State with concurrency-safe accessors.
@@ -59,6 +92,9 @@ func Load(path string) (*Store, error) {
 	}
 	if s.state.SeenURLs == nil {
 		s.state.SeenURLs = map[string]string{}
+	}
+	if s.state.SourceStats == nil {
+		s.state.SourceStats = map[string]*SourceMeta{}
 	}
 	return s, nil
 }
@@ -162,6 +198,47 @@ func (s *Store) Snapshot() State {
 	// Shallow copy is enough for logging; maps/slices are not mutated by the
 	// caller in any of the current usages.
 	out := s.state
+	return out
+}
+
+// RecordSourceRun appends a single-run snapshot for the given source.
+// maxHistory controls the rolling window (e.g. 12 runs ≈ 3 months weekly).
+func (s *Store) RecordSourceRun(name, category string, fetched, scored, maxHistory int) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.state.SourceStats == nil {
+		s.state.SourceStats = map[string]*SourceMeta{}
+	}
+	meta, ok := s.state.SourceStats[name]
+	if !ok {
+		meta = &SourceMeta{Name: name, Category: category}
+		s.state.SourceStats[name] = meta
+	}
+	hitRate := 0.0
+	if fetched > 0 {
+		hitRate = float64(scored) / float64(fetched)
+	}
+	entry := SourceRunStats{
+		Date:            time.Now().UTC().Format("2006-01-02"),
+		ArticlesFetched: fetched,
+		ArticlesScored:  scored,
+		HitRate:         hitRate,
+	}
+	meta.RunHistory = append(meta.RunHistory, entry)
+	if len(meta.RunHistory) > maxHistory {
+		meta.RunHistory = meta.RunHistory[len(meta.RunHistory)-maxHistory:]
+	}
+	meta.recomputeAggregates()
+}
+
+// SourceStatsSnapshot returns a read-only copy of the source stats map.
+func (s *Store) SourceStatsSnapshot() map[string]*SourceMeta {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	out := make(map[string]*SourceMeta, len(s.state.SourceStats))
+	for k, v := range s.state.SourceStats {
+		out[k] = v
+	}
 	return out
 }
 
