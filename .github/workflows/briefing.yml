@@ -13,6 +13,10 @@ on:
         description: 'Substring of a single source name'
         type: string
         default: ''
+      reset_memory:
+        description: 'Clear seen URLs for a fresh run'
+        type: boolean
+        default: false
 
 jobs:
   briefing:
@@ -45,6 +49,9 @@ jobs:
           fi
           if [ -n "${{ inputs.single_source }}" ]; then
             FLAGS="$FLAGS --single-source=${{ inputs.single_source }}"
+          fi
+          if [ "${{ inputs.reset_memory }}" = "true" ]; then
+            FLAGS="$FLAGS --reset-memory"
           fi
           ./briefing $FLAGS
 

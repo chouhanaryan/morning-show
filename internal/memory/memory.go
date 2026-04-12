@@ -107,6 +107,14 @@ func (s *Store) IsSeen(urlHash string) bool {
 	return ok
 }
 
+// ResetSeenURLs clears all seen URL hashes so the next run treats every
+// article as new. Source stats and threads are preserved.
+func (s *Store) ResetSeenURLs() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.state.SeenURLs = map[string]string{}
+}
+
 // MarkSeen records an article fingerprint with today's date.
 func (s *Store) MarkSeen(urlHash string) {
 	s.mu.Lock()

@@ -28,6 +28,7 @@ type flags struct {
 	memoryPath   string
 	feedbackPath string
 	dryRun       bool
+	resetMemory  bool
 	singleSource string
 	provider     string
 	model        string
@@ -49,6 +50,7 @@ func parseFlags() flags {
 	flag.StringVar(&f.memoryPath, "memory", "data/memory.json", "path to memory.json")
 	flag.StringVar(&f.feedbackPath, "feedback", "data/feedback.json", "path to feedback.json")
 	flag.BoolVar(&f.dryRun, "dry-run", false, "do not email or mutate persistent state")
+	flag.BoolVar(&f.resetMemory, "reset-memory", false, "clear seen URLs before this run (fresh start)")
 	flag.StringVar(&f.singleSource, "single-source", "", "only fetch the named source (substring match)")
 	flag.StringVar(&f.provider, "provider", "", "override llm.provider")
 	flag.StringVar(&f.model, "model", "", "override llm.model")
@@ -123,6 +125,12 @@ func run(f flags, log *slog.Logger) error {
 		return err
 	}
 	prefs := prefsStore.Snapshot()
+
+	// --reset-memory: wipe seen URLs so all articles are considered fresh.
+	if f.resetMemory {
+		mem.ResetSeenURLs()
+		log.Info("reset memory — all seen URLs cleared")
+	}
 
 	// Prune seen URLs older than the memory window to keep the store bounded.
 	maxSeenAge := time.Duration(cfg.Pipeline.MemoryWeeks*2) * 7 * 24 * time.Hour
