@@ -87,7 +87,9 @@ RULES:
     and why it matters. Combine insights from multiple sources seamlessly.
   - Be direct and factual. No filler, no preambles, no editorializing.
   - Ground claims in the provided articles only.
-  - Respect user interests and corrections — surface matching stories prominently.
+  - Respect user interests and corrections. Stories matching STANDING INTERESTS
+    should appear in Top Stories or Continuing Threads, NOT buried in Signals.
+    If an interest-matching item would otherwise be a signal, promote it.
   - Markdown only. No JSON, no code fences.`
 
 // pass1SystemWithInterests appends user interests to the system prompt once,

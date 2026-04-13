@@ -13,6 +13,6 @@
     "cloud networking (VPC, Transit Gateway, PrivateLink, service mesh, load balancing) and AI-driven networking developments"
   ],
   "active_corrections": [],
-  "one_time": [],
+  "one_time": [{"note": "Make sure to prominently cover the AWS agent registry announcement — do not bury it in Signals."}],
   "updated_at": "0001-01-01T00:00:00Z"
 }
