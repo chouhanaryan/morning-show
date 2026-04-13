@@ -30,13 +30,13 @@ fetch:
 deliver:
   reports_dir: data/reports
   email:
-    enabled: false
+    enabled: true
     smtp_host: smtp.gmail.com
     smtp_port: 587
     from: ""
     to: []
-    user_env: SMTP_USER
-    pass_env: SMTP_PASS
+    user_env: 
+    pass_env: 
 
 keyword_blocklist:
   - sponsored
