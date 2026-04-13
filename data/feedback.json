@@ -9,10 +9,10 @@
     "AI agents, agent frameworks, and agent infrastructure",
     "new AWS service launches and major feature announcements",
     "developer tools and developer experience",
-    "EOL and deprecation notices for major cloud services (AWS Lambda runtimes, major databases) and widely-used libraries/frameworks — only flag significant ones, not every minor service",
+    "EOL and deprecation notices for major cloud services (AWS Lambda runtimes, major databases) and widely-used libraries/frameworks \u2014 only flag significant ones, not every minor service",
     "cloud networking (VPC, Transit Gateway, PrivateLink, service mesh, load balancing) and AI-driven networking developments"
   ],
   "active_corrections": [],
-  "one_time": [{"note": "Make sure to prominently cover the AWS agent registry announcement — do not bury it in Signals."}],
+  "one_time": [],
   "updated_at": "0001-01-01T00:00:00Z"
 }
