@@ -49,16 +49,17 @@ Output markdown with these sections only:
   3-5 items. Format each EXACTLY like this example:
 
   **Example Story Title Here**
-  Two to three sentences of factual synthesis. No inline links anywhere
-  in the paragraph text.
 
-  Sources:
-  - https://example.com/actual-article-url-1
-  - https://example.com/actual-article-url-2
+  - First key point or development, one sentence.
+  - Second key point, one sentence.
+  - Third point if needed.
 
-  CRITICAL: titles must be plain bold text, NEVER [title](url) links.
-  NEVER put markdown links inside paragraphs. All URLs go in the Sources
-  list below each story as bare URLs. Use "url" field from the JSON data.
+  Sources: [1](https://example.com/url-1) [2](https://example.com/url-2)
+
+  CRITICAL formatting rules:
+  - Title is plain bold text on its own line, NEVER [title](url) links.
+  - Blank line after title, then bulleted key points (not a paragraph).
+  - Sources on ONE line: [1](url) [2](url) etc. using "url" from JSON data.
 
   ## Continuing Threads
   1-2 sentences per thread with new developments. Skip quiet threads.
@@ -67,7 +68,7 @@ Output markdown with these sections only:
 
   ## Signals
   8-12 bullets. One line each. Prioritize items matching user interests.
-  Format: **Bold title:** one-sentence description. Source: <bare URL>
+  Format: - **Bold title:** one-sentence description. [link](url)
 
   ## What To Watch
   2-3 bullets.
