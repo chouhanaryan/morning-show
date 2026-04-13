@@ -1,11 +1,10 @@
 {
-  "last_run": "2026-04-13T14:32:06.199164588Z",
+  "last_run": "2026-04-13T14:48:34.066671848Z",
   "seen_urls": {
     "005d7d529e1a": "2026-04-13",
+    "0070a4e46269": "2026-04-13",
     "009151dd1b43": "2026-04-13",
-    "00992e2696f9": "2026-04-13",
     "0281a115fd1f": "2026-04-13",
-    "02bced3e31c7": "2026-04-13",
     "02c35e5f7cb0": "2026-04-13",
     "0366489bd473": "2026-04-13",
     "03a1a94802ab": "2026-04-13",
@@ -16,14 +15,14 @@
     "0626fe342552": "2026-04-13",
     "062998150fbe": "2026-04-13",
     "0781a222f55e": "2026-04-13",
-    "08750bd39122": "2026-04-13",
     "0a0c7eb03f07": "2026-04-13",
     "0a28fe2f9c0a": "2026-04-13",
     "0a68aaacd510": "2026-04-13",
     "0acc43630b3d": "2026-04-13",
+    "0b4b17d65eae": "2026-04-13",
     "0bc0473a15fe": "2026-04-13",
-    "0bd08eac66be": "2026-04-13",
     "0be86773595e": "2026-04-13",
+    "0bf65c1af533": "2026-04-13",
     "0cb18a7d5f7f": "2026-04-13",
     "0d052fdf77aa": "2026-04-13",
     "0dc2bee09042": "2026-04-13",
@@ -34,9 +33,8 @@
     "1144ba7417c1": "2026-04-13",
     "120812ff60f0": "2026-04-13",
     "126b23e97562": "2026-04-13",
-    "132b444cbe05": "2026-04-13",
-    "132e369fd565": "2026-04-13",
     "137f21fd3b5e": "2026-04-13",
+    "13f00a8915d6": "2026-04-13",
     "140caf223b51": "2026-04-13",
     "144799c7bbde": "2026-04-13",
     "1486f4c30721": "2026-04-13",
@@ -46,37 +44,30 @@
     "14cbce6d8ca8": "2026-04-13",
     "15961585e7db": "2026-04-13",
     "15a7b8c3a624": "2026-04-13",
-    "161789b3eafd": "2026-04-13",
-    "164cd786f182": "2026-04-13",
     "16ce2a8f1f9f": "2026-04-13",
     "16e50ecf09f0": "2026-04-13",
     "16fc935264a6": "2026-04-13",
     "17e22e863f32": "2026-04-13",
     "188c6a9190d9": "2026-04-13",
-    "1a6386a4517c": "2026-04-13",
     "1ab27be833ba": "2026-04-13",
-    "1aea3572c71f": "2026-04-13",
-    "1b18bfac8d7e": "2026-04-13",
     "1b8cf1a433d7": "2026-04-13",
     "1c727997db8f": "2026-04-13",
     "1c89ecda2808": "2026-04-13",
     "1cc43c168265": "2026-04-13",
     "1cc6bbeb4d32": "2026-04-13",
     "1d59fa41ccb7": "2026-04-13",
-    "1d77e768199f": "2026-04-13",
     "1e1df04ab2f3": "2026-04-13",
-    "1f353d104236": "2026-04-13",
+    "1f18b1df217b": "2026-04-13",
     "1ffa87577219": "2026-04-13",
     "200782da46b5": "2026-04-13",
+    "206b7d0ffb97": "2026-04-13",
     "20ebe02a30bb": "2026-04-13",
     "21d9d18874bf": "2026-04-13",
-    "2261e82454dd": "2026-04-13",
-    "22e56b5c4a15": "2026-04-13",
     "2322ee0a7a29": "2026-04-13",
-    "233a1e7f9ba9": "2026-04-13",
     "2382653bd87e": "2026-04-13",
     "2471f1228785": "2026-04-13",
     "24ba590d31b2": "2026-04-13",
+    "24fa90a70403": "2026-04-13",
     "255aa8be3a38": "2026-04-13",
     "27558a368811": "2026-04-13",
     "27e4d8fe9c67": "2026-04-13",
@@ -85,10 +76,9 @@
     "299585a00f13": "2026-04-13",
     "2a4a039b2e89": "2026-04-13",
     "2a8db1803bab": "2026-04-13",
-    "2a9ae0687e85": "2026-04-13",
     "2b68713a2d55": "2026-04-13",
+    "2be36502b618": "2026-04-13",
     "2c09cbf2a963": "2026-04-13",
-    "2d23efb7c548": "2026-04-13",
     "2d747083c4c0": "2026-04-13",
     "2db45123a8f7": "2026-04-13",
     "2deadea2b4e5": "2026-04-13",
@@ -97,25 +87,23 @@
     "2e428659c11b": "2026-04-13",
     "2e5e20fb2a16": "2026-04-13",
     "304d0a947e0b": "2026-04-13",
-    "30aef2bba123": "2026-04-13",
     "30eda00ea795": "2026-04-13",
     "30fdbdf35a0e": "2026-04-13",
     "317bf9a53e88": "2026-04-13",
     "317f3cadeb22": "2026-04-13",
+    "318acb090460": "2026-04-13",
     "3223373d1b9d": "2026-04-13",
     "32a721fd6f08": "2026-04-13",
     "3390e5513293": "2026-04-13",
     "33c474b45dfc": "2026-04-13",
-    "33d4fa73eadf": "2026-04-13",
-    "33dff529d2b4": "2026-04-13",
     "343a2ebc48db": "2026-04-13",
     "34502a5e4f82": "2026-04-13",
     "350d48c08a12": "2026-04-13",
     "35141e6c0c28": "2026-04-13",
     "35268991b137": "2026-04-13",
-    "3565e1863247": "2026-04-13",
     "3579e5a4a9c0": "2026-04-13",
     "365a96ab90c0": "2026-04-13",
+    "37977ff20abc": "2026-04-13",
     "38383b767ee2": "2026-04-13",
     "3845e6543ec3": "2026-04-13",
     "38b08953f217": "2026-04-13",
@@ -124,7 +112,6 @@
     "3a26be23c86d": "2026-04-13",
     "3a45c31869c4": "2026-04-13",
     "3bc38e5a12e2": "2026-04-13",
-    "3bce7a45c209": "2026-04-13",
     "3c5aba7ddae8": "2026-04-13",
     "3c772b13cf86": "2026-04-13",
     "3d69f268caa2": "2026-04-13",
@@ -136,7 +123,6 @@
     "3e49e5da6b1f": "2026-04-13",
     "3f4a26048fc6": "2026-04-13",
     "3f52e2733918": "2026-04-13",
-    "40d3c71ed74a": "2026-04-13",
     "4119a8104b24": "2026-04-13",
     "41b4de09447b": "2026-04-13",
     "41e1b7d48e66": "2026-04-13",
@@ -150,9 +136,7 @@
     "451812d8917f": "2026-04-13",
     "455223126134": "2026-04-13",
     "4586c5f3db35": "2026-04-13",
-    "45b46771554c": "2026-04-13",
     "45bfcecd12c2": "2026-04-13",
-    "460acbc22efd": "2026-04-13",
     "46ff39c24fb6": "2026-04-13",
     "472a6614dbb9": "2026-04-13",
     "479557de8a48": "2026-04-13",
@@ -178,12 +162,10 @@
     "4f1eb1f223fd": "2026-04-13",
     "5078d04117c0": "2026-04-13",
     "50ed31ac80af": "2026-04-13",
-    "50fb3421df25": "2026-04-13",
     "51129ac28088": "2026-04-13",
     "513d4d38af37": "2026-04-13",
     "52b0a5959d05": "2026-04-13",
     "52da7cef8939": "2026-04-13",
-    "5370d8e2a403": "2026-04-13",
     "53833e8172f4": "2026-04-13",
     "53baccd4c65d": "2026-04-13",
     "53f386f19088": "2026-04-13",
@@ -191,8 +173,6 @@
     "543c94cec490": "2026-04-13",
     "54b5815055c5": "2026-04-13",
     "54ff06be3779": "2026-04-13",
-    "5560b55b5c7e": "2026-04-13",
-    "55bad65796a0": "2026-04-13",
     "56031a862021": "2026-04-13",
     "57541cded1b7": "2026-04-13",
     "57c2df41f048": "2026-04-13",
@@ -202,10 +182,8 @@
     "5869935dc007": "2026-04-13",
     "58ef701629c3": "2026-04-13",
     "591fa78a4643": "2026-04-13",
-    "5a85b2433b1e": "2026-04-13",
     "5b184ea4c8a8": "2026-04-13",
     "5b8c0d749383": "2026-04-13",
-    "5bb073f62ff2": "2026-04-13",
     "5c00c84f11b8": "2026-04-13",
     "5c27dd29cfdd": "2026-04-13",
     "5c3d7c8f70cc": "2026-04-13",
@@ -221,8 +199,6 @@
     "5e80114e6435": "2026-04-13",
     "5e9b7b2c0bac": "2026-04-13",
     "5f4680a3963b": "2026-04-13",
-    "5fd7e2f15a62": "2026-04-13",
-    "6114d0b73ac3": "2026-04-13",
     "62032355af4b": "2026-04-13",
     "63f78f0106b9": "2026-04-13",
     "6436a70c5c2c": "2026-04-13",
@@ -232,7 +208,6 @@
     "6610f168e5d8": "2026-04-13",
     "66dd0525d3dc": "2026-04-13",
     "67962bc462fb": "2026-04-13",
-    "689420e537fd": "2026-04-13",
     "693cee73cd09": "2026-04-13",
     "696c9347c8f2": "2026-04-13",
     "69969de92745": "2026-04-13",
@@ -241,32 +216,23 @@
     "6a5750b8fbad": "2026-04-13",
     "6ab0848f337b": "2026-04-13",
     "6af6058153e2": "2026-04-13",
-    "6b5774dd058a": "2026-04-13",
-    "6b986e31e19d": "2026-04-13",
     "6ba575caa7c9": "2026-04-13",
-    "6baaf07d8890": "2026-04-13",
     "6bad31924dfe": "2026-04-13",
     "6c0ef1106d1b": "2026-04-13",
     "6c1dfc44d463": "2026-04-13",
-    "6c232e4ae5c4": "2026-04-13",
     "6c2e3b2cd12a": "2026-04-13",
     "6c44292a06bf": "2026-04-13",
     "6c8469ec848d": "2026-04-13",
     "6ccd5444ee8b": "2026-04-13",
     "6e81a0e95fc0": "2026-04-13",
     "6ec1f57e44d8": "2026-04-13",
-    "6feb34abd5e1": "2026-04-13",
     "6ff938734331": "2026-04-13",
     "700ca58cde63": "2026-04-13",
     "7066762a33db": "2026-04-13",
     "70a6e5af154b": "2026-04-13",
-    "70b89eaa2b20": "2026-04-13",
-    "70e456de82d1": "2026-04-13",
     "7171ec126b33": "2026-04-13",
-    "7188a3dc0fb2": "2026-04-13",
     "7227e5d4e394": "2026-04-13",
     "72cd6ec8d92b": "2026-04-13",
-    "73d243b380ff": "2026-04-13",
     "73e06868ee43": "2026-04-13",
     "7441094102ab": "2026-04-13",
     "74ba1c674273": "2026-04-13",
@@ -277,7 +243,6 @@
     "763647cb9198": "2026-04-13",
     "76ca60613d2c": "2026-04-13",
     "77089bee356e": "2026-04-13",
-    "77baac705023": "2026-04-13",
     "77f1cc82d06d": "2026-04-13",
     "78518004b4ab": "2026-04-13",
     "788eedbceffc": "2026-04-13",
@@ -288,41 +253,28 @@
     "7a4cfa27adfa": "2026-04-13",
     "7ad68ffac1ea": "2026-04-13",
     "7b50e1a9c60d": "2026-04-13",
-    "7bcd68b5d5cb": "2026-04-13",
-    "7c064e397609": "2026-04-13",
-    "7c3ec5bee7f7": "2026-04-13",
-    "7c7bf1977279": "2026-04-13",
-    "7c8f000fa4c6": "2026-04-13",
-    "7ced03a0af32": "2026-04-13",
     "7d8ccedd76b8": "2026-04-13",
-    "7e6599927f0a": "2026-04-13",
     "7f5f213ec3a4": "2026-04-13",
     "8007ed581233": "2026-04-13",
-    "8042f0661ee6": "2026-04-13",
     "80da6953d8dd": "2026-04-13",
-    "813c2f082d62": "2026-04-13",
+    "80dbd7f848db": "2026-04-13",
     "815626978b17": "2026-04-13",
     "81d29c3619a9": "2026-04-13",
     "82434e6453d5": "2026-04-13",
+    "8271e02183ab": "2026-04-13",
     "82870e499fdf": "2026-04-13",
-    "8345a81264bb": "2026-04-13",
     "843f926f022a": "2026-04-13",
     "845f43141319": "2026-04-13",
     "84be0c50bc4f": "2026-04-13",
     "84f8cb741816": "2026-04-13",
-    "858d5ac62aae": "2026-04-13",
+    "8542bcf08929": "2026-04-13",
     "8590de042065": "2026-04-13",
     "85ea4ce989be": "2026-04-13",
     "863ffdd87085": "2026-04-13",
     "8673af40001d": "2026-04-13",
-    "8674d85cb31d": "2026-04-13",
-    "876f5e43f43c": "2026-04-13",
     "8790579b547c": "2026-04-13",
     "88fcadb5be3f": "2026-04-13",
-    "8900d9144a7c": "2026-04-13",
-    "894809403a21": "2026-04-13",
     "897ac4749220": "2026-04-13",
-    "89f56393cd59": "2026-04-13",
     "8aa1d551df92": "2026-04-13",
     "8c613c64af3f": "2026-04-13",
     "8cb2b026d89b": "2026-04-13",
@@ -333,59 +285,47 @@
     "8e9e090abf32": "2026-04-13",
     "8ec918283753": "2026-04-13",
     "8f5db555e16c": "2026-04-13",
-    "9086f5d3b5e9": "2026-04-13",
     "909b8a7bda1f": "2026-04-13",
     "909f1d6964f6": "2026-04-13",
-    "9266837d8a50": "2026-04-13",
+    "90dd6fce8502": "2026-04-13",
+    "920d5463f4c6": "2026-04-13",
     "92ccf54bf62c": "2026-04-13",
     "9314e9be3c94": "2026-04-13",
-    "942c875f371d": "2026-04-13",
+    "95203ab1eaf0": "2026-04-13",
     "956d0629c716": "2026-04-13",
     "95b914cfaa16": "2026-04-13",
     "95e3393b6a1a": "2026-04-13",
-    "96ecb07cbcc2": "2026-04-13",
-    "972cca36be3d": "2026-04-13",
-    "9885b46c0389": "2026-04-13",
     "98bc6683e4c1": "2026-04-13",
     "98d96fa91665": "2026-04-13",
     "99bba97992ba": "2026-04-13",
-    "99bf417142a2": "2026-04-13",
     "9a04933963b4": "2026-04-13",
     "9a209a63e7cd": "2026-04-13",
     "9a24d7d89a21": "2026-04-13",
-    "9b944cc0a4b4": "2026-04-13",
     "9bceebcf52cf": "2026-04-13",
     "9c1699b9cc95": "2026-04-13",
     "9ebc202a17ce": "2026-04-13",
     "9f4eeea15454": "2026-04-13",
-    "9f5102e2e492": "2026-04-13",
-    "9fb9c2e87dee": "2026-04-13",
-    "a00239602892": "2026-04-13",
     "a00b8c86b03a": "2026-04-13",
-    "a04b7545ce8b": "2026-04-13",
     "a04dc9fac64c": "2026-04-13",
     "a0aa88be8e45": "2026-04-13",
     "a0d1eb36bd17": "2026-04-13",
     "a1c7ec2ffd30": "2026-04-13",
-    "a1fb8a0d107c": "2026-04-13",
     "a22b63480a4e": "2026-04-13",
     "a2c7680b758c": "2026-04-13",
     "a2e62f73686a": "2026-04-13",
     "a426d6700661": "2026-04-13",
-    "a43422fe0f90": "2026-04-13",
     "a43c0fd3fa7b": "2026-04-13",
     "a583a4a176cd": "2026-04-13",
-    "a6000fbca329": "2026-04-13",
     "a6c51ba98020": "2026-04-13",
     "a76d763a82ff": "2026-04-13",
     "a8507de6ce43": "2026-04-13",
+    "a99d13a094a7": "2026-04-13",
     "aa11c7bb9a37": "2026-04-13",
     "aa3b9d632a53": "2026-04-13",
     "ab45fe5e540b": "2026-04-13",
     "ab6a4a3587d3": "2026-04-13",
     "aca170fb8550": "2026-04-13",
     "ad55acbcfb0d": "2026-04-13",
-    "ae1d6c8f8190": "2026-04-13",
     "ae28af9b8f58": "2026-04-13",
     "ae34864fb98d": "2026-04-13",
     "ae43fceafe49": "2026-04-13",
@@ -395,23 +335,16 @@
     "af3915f0256a": "2026-04-13",
     "af424b65009b": "2026-04-13",
     "afa35216da4c": "2026-04-13",
-    "afabc68839de": "2026-04-13",
     "b042bff33010": "2026-04-13",
     "b07e25416050": "2026-04-13",
-    "b19a21c64dfa": "2026-04-13",
     "b2b368059484": "2026-04-13",
-    "b3f041d2eab7": "2026-04-13",
     "b4a20ba96aeb": "2026-04-13",
     "b4a7c378a401": "2026-04-13",
-    "b4feb8651521": "2026-04-13",
-    "b560606e1065": "2026-04-13",
     "b5a5cedf7208": "2026-04-13",
-    "b5c9329cb3eb": "2026-04-13",
     "b65c146b91be": "2026-04-13",
     "b6a977ab0e9f": "2026-04-13",
     "b748515113fe": "2026-04-13",
     "b79a8f3b5ba1": "2026-04-13",
-    "b81e3be78dc0": "2026-04-13",
     "b859aa6cf68d": "2026-04-13",
     "b8773f6583bd": "2026-04-13",
     "b87c17c3ee4d": "2026-04-13",
@@ -424,9 +357,6 @@
     "bc04c448eec0": "2026-04-13",
     "bd370588eff4": "2026-04-13",
     "bd8c8820e3bc": "2026-04-13",
-    "bdb849dd443b": "2026-04-13",
-    "bddff6403bea": "2026-04-13",
-    "be1ee9114d0b": "2026-04-13",
     "bed347ee013c": "2026-04-13",
     "bed41ba29da9": "2026-04-13",
     "bfce9545aec9": "2026-04-13",
@@ -435,29 +365,23 @@
     "c110f855d6cc": "2026-04-13",
     "c1565b78bc83": "2026-04-13",
     "c1aaf373859a": "2026-04-13",
-    "c1c6d99f4c14": "2026-04-13",
     "c3059ddcdc3b": "2026-04-13",
     "c30d347a108f": "2026-04-13",
-    "c34bac46714f": "2026-04-13",
     "c3b9e5b8022d": "2026-04-13",
     "c3eb913bbd03": "2026-04-13",
     "c3ee473a8435": "2026-04-13",
+    "c41a478ea226": "2026-04-13",
     "c4b05ca21565": "2026-04-13",
-    "c5952e84cd03": "2026-04-13",
-    "c63da6a00c87": "2026-04-13",
-    "c66f576b8c26": "2026-04-13",
     "c6cbf7a93cfa": "2026-04-13",
     "c84a2e9ce58f": "2026-04-13",
     "c9179ea605fa": "2026-04-13",
     "c91fe1bf978c": "2026-04-13",
     "c9afe85f29f0": "2026-04-13",
-    "ca44bbca187b": "2026-04-13",
     "ca8859d0aa96": "2026-04-13",
     "ca997e53a00d": "2026-04-13",
     "cb0db35dea42": "2026-04-13",
     "cbf1a175b2ad": "2026-04-13",
     "cbfb18416375": "2026-04-13",
-    "cc0ed71e7bf4": "2026-04-13",
     "cc197aea1a49": "2026-04-13",
     "cda994dc7dec": "2026-04-13",
     "ce0488de74bd": "2026-04-13",
@@ -468,7 +392,6 @@
     "cea631c2c82d": "2026-04-13",
     "ceee0da278a4": "2026-04-13",
     "cfa19ef0b17d": "2026-04-13",
-    "d024a654d8de": "2026-04-13",
     "d081ad2d5f86": "2026-04-13",
     "d0858d137329": "2026-04-13",
     "d11a60e8975c": "2026-04-13",
@@ -478,19 +401,14 @@
     "d31db1154f40": "2026-04-13",
     "d3deb905e2d8": "2026-04-13",
     "d3ea832a6fdc": "2026-04-13",
-    "d419ad9fa9fe": "2026-04-13",
-    "d43ff7bc71f4": "2026-04-13",
     "d47bc82910eb": "2026-04-13",
     "d4c77ffb6a7d": "2026-04-13",
     "d4e49381c7f0": "2026-04-13",
     "d60221de4ab2": "2026-04-13",
     "d6a474748549": "2026-04-13",
     "d71fdf383d17": "2026-04-13",
-    "d78a27ea5811": "2026-04-13",
     "d8205c6151b0": "2026-04-13",
-    "d8ac6b91bbdb": "2026-04-13",
     "d8bf4d867e4e": "2026-04-13",
-    "d90777e6610d": "2026-04-13",
     "d9f29418f566": "2026-04-13",
     "dad9d0cc2c6f": "2026-04-13",
     "db3abae02ca3": "2026-04-13",
@@ -499,8 +417,6 @@
     "dd6bdf794d1c": "2026-04-13",
     "de35d22092ae": "2026-04-13",
     "df3aa1d43299": "2026-04-13",
-    "df9caae0a9d3": "2026-04-13",
-    "dfb5390bbac5": "2026-04-13",
     "dff0c4c7b926": "2026-04-13",
     "e0b6eaa1dce1": "2026-04-13",
     "e0c5369c6209": "2026-04-13",
@@ -508,67 +424,57 @@
     "e2a45d48a580": "2026-04-13",
     "e2f22bb38ec6": "2026-04-13",
     "e3ed0056e4da": "2026-04-13",
-    "e437a8fd256b": "2026-04-13",
     "e47adabf270b": "2026-04-13",
     "e4c7fb45b06b": "2026-04-13",
     "e5382d2c5e06": "2026-04-13",
     "e64adc534f37": "2026-04-13",
     "e68b5021fd87": "2026-04-13",
-    "e68c8728aeb9": "2026-04-13",
     "e6bed4fbd7e8": "2026-04-13",
+    "e6f2a8e33890": "2026-04-13",
     "e8c2246c5ab5": "2026-04-13",
     "e9996f524735": "2026-04-13",
     "e9c3b501957e": "2026-04-13",
     "ea88d24745aa": "2026-04-13",
     "eb136e500d13": "2026-04-13",
-    "edc18363a5b1": "2026-04-13",
-    "edd5da7e0641": "2026-04-13",
     "edf6e899e620": "2026-04-13",
     "ee00baf24606": "2026-04-13",
     "ee5a3be206e0": "2026-04-13",
     "ee5e30e3a1d3": "2026-04-13",
     "ee8fc4597888": "2026-04-13",
     "eea86ab9bd39": "2026-04-13",
+    "eeeae445dd4f": "2026-04-13",
+    "ef41d442fc4a": "2026-04-13",
     "eff6d5f5aa18": "2026-04-13",
+    "f0b7c23fddf8": "2026-04-13",
     "f0b89b9f0562": "2026-04-13",
-    "f1d11589eebe": "2026-04-13",
     "f25ff7be545f": "2026-04-13",
     "f29dc8c3736d": "2026-04-13",
-    "f2b3b6043b2a": "2026-04-13",
-    "f33cfa33ad64": "2026-04-13",
     "f3472fddf309": "2026-04-13",
     "f3f43882dc55": "2026-04-13",
+    "f41d3a7f7c8d": "2026-04-13",
     "f42a77118ce9": "2026-04-13",
     "f4f26bc90501": "2026-04-13",
-    "f536979089d8": "2026-04-13",
-    "f587a109c7c8": "2026-04-13",
-    "f5a380ff05a1": "2026-04-13",
     "f5b07e699d0b": "2026-04-13",
     "f6116a5b1da3": "2026-04-13",
     "f6df292a713b": "2026-04-13",
-    "f6e7f3ccd80e": "2026-04-13",
     "f7170892dd94": "2026-04-13",
     "f8264ba2b35f": "2026-04-13",
+    "f8d8410800f2": "2026-04-13",
     "f94b1c639485": "2026-04-13",
     "f95698689d87": "2026-04-13",
     "fa1b2d4f0edd": "2026-04-13",
     "fa4e129b5f42": "2026-04-13",
-    "fa507c15f516": "2026-04-13",
     "fada51ad2278": "2026-04-13",
-    "fb45fbf15642": "2026-04-13",
     "fb47d93f2cc4": "2026-04-13",
     "fb6a824cd997": "2026-04-13",
     "fbb1a3e1b2fd": "2026-04-13",
-    "fbb33e382c3f": "2026-04-13",
     "fc5394c61cf7": "2026-04-13",
     "fc586c85cc7f": "2026-04-13",
     "fd8319d143a6": "2026-04-13",
     "fe1f760c0ddb": "2026-04-13",
     "fe4dbef8be60": "2026-04-13",
     "feb4c2117e76": "2026-04-13",
-    "fed031dfb3a9": "2026-04-13",
-    "ff47a2563678": "2026-04-13",
-    "ff8207387610": "2026-04-13"
+    "fed031dfb3a9": "2026-04-13"
   },
   "threads": [],
   "source_stats": {
@@ -617,11 +523,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.9285714285714286,
-      "total_fetched": 14,
-      "total_scored": 13
+      "avg_hit_rate": 0.9375,
+      "total_fetched": 16,
+      "total_scored": 15
     },
     "AWS Security Blog": {
       "name": "AWS Security Blog",
@@ -668,11 +580,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.7142857142857143,
-      "total_fetched": 14,
-      "total_scored": 10
+      "avg_hit_rate": 0.75,
+      "total_fetched": 16,
+      "total_scored": 12
     },
     "Anthropic News": {
       "name": "Anthropic News",
@@ -758,11 +676,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 7,
-      "total_scored": 7
+      "total_fetched": 8,
+      "total_scored": 8
     },
     "Anthropic Research": {
       "name": "Anthropic Research",
@@ -809,11 +733,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.5263157894736842,
-      "total_fetched": 19,
-      "total_scored": 10
+      "avg_hit_rate": 0.55,
+      "total_fetched": 20,
+      "total_scored": 11
     },
     "Ars Technica": {
       "name": "Ars Technica",
@@ -866,10 +796,16 @@
           "articles_fetched": 18,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 20,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
-      "avg_hit_rate": 0.13924050632911392,
-      "total_fetched": 158,
+      "avg_hit_rate": 0.12359550561797752,
+      "total_fetched": 178,
       "total_scored": 22
     },
     "BleepingComputer": {
@@ -923,11 +859,17 @@
           "articles_fetched": 9,
           "articles_scored": 1,
           "hit_rate": 0.1111111111111111
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 15,
+          "articles_scored": 1,
+          "hit_rate": 0.06666666666666667
         }
       ],
-      "avg_hit_rate": 0.34210526315789475,
-      "total_fetched": 114,
-      "total_scored": 39
+      "avg_hit_rate": 0.31007751937984496,
+      "total_fetched": 129,
+      "total_scored": 40
     },
     "ByteByteGo": {
       "name": "ByteByteGo",
@@ -980,11 +922,17 @@
           "articles_fetched": 4,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 3,
+          "hit_rate": 0.6
         }
       ],
-      "avg_hit_rate": 0.3076923076923077,
-      "total_fetched": 39,
-      "total_scored": 12
+      "avg_hit_rate": 0.3409090909090909,
+      "total_fetched": 44,
+      "total_scored": 15
     },
     "Cloudflare Blog": {
       "name": "Cloudflare Blog",
@@ -1037,11 +985,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 8,
+          "articles_scored": 8,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 30,
-      "total_scored": 30
+      "total_fetched": 38,
+      "total_scored": 38
     },
     "Exponential View": {
       "name": "Exponential View",
@@ -1094,11 +1048,17 @@
           "articles_fetched": 2,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 3,
+          "articles_scored": 1,
+          "hit_rate": 0.3333333333333333
         }
       ],
-      "avg_hit_rate": 0.5172413793103449,
-      "total_fetched": 29,
-      "total_scored": 15
+      "avg_hit_rate": 0.5,
+      "total_fetched": 32,
+      "total_scored": 16
     },
     "Google AI": {
       "name": "Google AI",
@@ -1145,11 +1105,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.9069767441860465,
-      "total_fetched": 43,
-      "total_scored": 39
+      "avg_hit_rate": 0.9090909090909091,
+      "total_fetched": 44,
+      "total_scored": 40
     },
     "Google Research Blog": {
       "name": "Google Research Blog",
@@ -1202,11 +1168,17 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 1,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.5333333333333333,
-      "total_fetched": 15,
-      "total_scored": 8
+      "avg_hit_rate": 0.5294117647058824,
+      "total_fetched": 17,
+      "total_scored": 9
     },
     "Graham Cluley": {
       "name": "Graham Cluley",
@@ -1259,10 +1231,16 @@
           "articles_fetched": 2,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 3,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
-      "avg_hit_rate": 0.21739130434782608,
-      "total_fetched": 23,
+      "avg_hit_rate": 0.19230769230769232,
+      "total_fetched": 26,
       "total_scored": 5
     },
     "Hacker News": {
@@ -1316,11 +1294,17 @@
           "articles_fetched": 45,
           "articles_scored": 7,
           "hit_rate": 0.15555555555555556
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 55,
+          "articles_scored": 11,
+          "hit_rate": 0.2
         }
       ],
-      "avg_hit_rate": 0.18795180722891566,
-      "total_fetched": 415,
-      "total_scored": 78
+      "avg_hit_rate": 0.18936170212765957,
+      "total_fetched": 470,
+      "total_scored": 89
     },
     "HashiCorp Blog": {
       "name": "HashiCorp Blog",
@@ -1367,11 +1351,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 7,
-      "total_scored": 7
+      "total_fetched": 8,
+      "total_scored": 8
     },
     "IEEE Spectrum - AI": {
       "name": "IEEE Spectrum - AI",
@@ -1424,11 +1414,17 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 4,
+          "hit_rate": 0.8
         }
       ],
-      "avg_hit_rate": 0.6486486486486487,
-      "total_fetched": 37,
-      "total_scored": 24
+      "avg_hit_rate": 0.6666666666666666,
+      "total_fetched": 42,
+      "total_scored": 28
     },
     "Krebs on Security": {
       "name": "Krebs on Security",
@@ -1475,10 +1471,16 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
-      "avg_hit_rate": 0.5833333333333334,
-      "total_fetched": 12,
+      "avg_hit_rate": 0.5384615384615384,
+      "total_fetched": 13,
       "total_scored": 7
     },
     "MIT News - AI": {
@@ -1532,11 +1534,17 @@
           "articles_fetched": 2,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 4,
+          "articles_scored": 2,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.4,
-      "total_fetched": 30,
-      "total_scored": 12
+      "avg_hit_rate": 0.4117647058823529,
+      "total_fetched": 34,
+      "total_scored": 14
     },
     "MIT Technology Review": {
       "name": "MIT Technology Review",
@@ -1589,11 +1597,17 @@
           "articles_fetched": 9,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 10,
+          "articles_scored": 1,
+          "hit_rate": 0.1
         }
       ],
-      "avg_hit_rate": 0.16455696202531644,
-      "total_fetched": 79,
-      "total_scored": 13
+      "avg_hit_rate": 0.15730337078651685,
+      "total_fetched": 89,
+      "total_scored": 14
     },
     "Nathan Lambert (Interconnects)": {
       "name": "Nathan Lambert (Interconnects)",
@@ -1646,11 +1660,17 @@
           "articles_fetched": 2,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 1,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.6875,
-      "total_fetched": 16,
-      "total_scored": 11
+      "avg_hit_rate": 0.6666666666666666,
+      "total_fetched": 18,
+      "total_scored": 12
     },
     "OpenAI Blog": {
       "name": "OpenAI Blog",
@@ -1703,11 +1723,17 @@
           "articles_fetched": 27,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 30,
+          "articles_scored": 1,
+          "hit_rate": 0.03333333333333333
         }
       ],
-      "avg_hit_rate": 0.09917355371900827,
-      "total_fetched": 242,
-      "total_scored": 24
+      "avg_hit_rate": 0.09191176470588236,
+      "total_fetched": 272,
+      "total_scored": 25
     },
     "OpenTofu Blog": {
       "name": "OpenTofu Blog",
@@ -1754,11 +1780,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 7,
-      "total_scored": 7
+      "total_fetched": 8,
+      "total_scored": 8
     },
     "Pragmatic Engineer (Gergely Orosz)": {
       "name": "Pragmatic Engineer (Gergely Orosz)",
@@ -1805,11 +1837,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 14,
-      "total_scored": 14
+      "total_fetched": 16,
+      "total_scored": 16
     },
     "Schneier on Security": {
       "name": "Schneier on Security",
@@ -1862,11 +1900,17 @@
           "articles_fetched": 4,
           "articles_scored": 1,
           "hit_rate": 0.25
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 8,
+          "articles_scored": 5,
+          "hit_rate": 0.625
         }
       ],
-      "avg_hit_rate": 0.6,
-      "total_fetched": 60,
-      "total_scored": 36
+      "avg_hit_rate": 0.6029411764705882,
+      "total_fetched": 68,
+      "total_scored": 41
     },
     "Simon Willison": {
       "name": "Simon Willison",
@@ -1919,11 +1963,17 @@
           "articles_fetched": 7,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 13,
+          "articles_scored": 6,
+          "hit_rate": 0.46153846153846156
         }
       ],
-      "avg_hit_rate": 0.4146341463414634,
-      "total_fetched": 123,
-      "total_scored": 51
+      "avg_hit_rate": 0.41911764705882354,
+      "total_fetched": 136,
+      "total_scored": 57
     },
     "TLDR AI": {
       "name": "TLDR AI",
@@ -1970,11 +2020,17 @@
           "articles_fetched": 21,
           "articles_scored": 7,
           "hit_rate": 0.3333333333333333
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 71,
+          "articles_scored": 50,
+          "hit_rate": 0.704225352112676
         }
       ],
-      "avg_hit_rate": 0.6228239845261122,
-      "total_fetched": 517,
-      "total_scored": 322
+      "avg_hit_rate": 0.6326530612244898,
+      "total_fetched": 588,
+      "total_scored": 372
     },
     "TLDR DevOps": {
       "name": "TLDR DevOps",
@@ -2021,11 +2077,17 @@
           "articles_fetched": 12,
           "articles_scored": 7,
           "hit_rate": 0.5833333333333334
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 29,
+          "articles_scored": 22,
+          "hit_rate": 0.7586206896551724
         }
       ],
-      "avg_hit_rate": 0.7456647398843931,
-      "total_fetched": 173,
-      "total_scored": 129
+      "avg_hit_rate": 0.7475247524752475,
+      "total_fetched": 202,
+      "total_scored": 151
     },
     "TLDR Tech": {
       "name": "TLDR Tech",
@@ -2072,11 +2134,17 @@
           "articles_fetched": 47,
           "articles_scored": 4,
           "hit_rate": 0.0851063829787234
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 84,
+          "articles_scored": 37,
+          "hit_rate": 0.44047619047619047
         }
       ],
-      "avg_hit_rate": 0.37592592592592594,
-      "total_fetched": 540,
-      "total_scored": 203
+      "avg_hit_rate": 0.38461538461538464,
+      "total_fetched": 624,
+      "total_scored": 240
     },
     "Terraform GitHub Releases": {
       "name": "Terraform GitHub Releases",
@@ -2123,11 +2191,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 7,
-      "total_scored": 7
+      "total_fetched": 8,
+      "total_scored": 8
     },
     "The New Stack": {
       "name": "The New Stack",
@@ -2180,11 +2254,17 @@
           "articles_fetched": 7,
           "articles_scored": 4,
           "hit_rate": 0.5714285714285714
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 26,
+          "articles_scored": 19,
+          "hit_rate": 0.7307692307692307
         }
       ],
-      "avg_hit_rate": 0.7566137566137566,
-      "total_fetched": 189,
-      "total_scored": 143
+      "avg_hit_rate": 0.7534883720930232,
+      "total_fetched": 215,
+      "total_scored": 162
     },
     "Timothy B. Lee": {
       "name": "Timothy B. Lee",
@@ -2237,11 +2317,17 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 1,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.6,
-      "total_fetched": 15,
-      "total_scored": 9
+      "avg_hit_rate": 0.5882352941176471,
+      "total_fetched": 17,
+      "total_scored": 10
     },
     "Windsurf Next Changelog": {
       "name": "Windsurf Next Changelog",
@@ -2294,10 +2380,16 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
       "avg_hit_rate": 0,
-      "total_fetched": 8,
+      "total_fetched": 9,
       "total_scored": 0
     },
     "Wired": {
@@ -2351,11 +2443,17 @@
           "articles_fetched": 41,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 45,
+          "articles_scored": 5,
+          "hit_rate": 0.1111111111111111
         }
       ],
-      "avg_hit_rate": 0.11299435028248588,
-      "total_fetched": 354,
-      "total_scored": 40
+      "avg_hit_rate": 0.11278195488721804,
+      "total_fetched": 399,
+      "total_scored": 45
     },
     "arXiv CS": {
       "name": "arXiv CS",
@@ -2372,11 +2470,17 @@
           "articles_fetched": 605,
           "articles_scored": 38,
           "hit_rate": 0.0628099173553719
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 904,
+          "articles_scored": 279,
+          "hit_rate": 0.3086283185840708
         }
       ],
-      "avg_hit_rate": 0.22332670642809807,
-      "total_fetched": 1509,
-      "total_scored": 337
+      "avg_hit_rate": 0.2552838789888106,
+      "total_fetched": 2413,
+      "total_scored": 616
     },
     "swyx (Latent Space)": {
       "name": "swyx (Latent Space)",
@@ -2429,11 +2533,17 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 4,
+          "hit_rate": 0.8
         }
       ],
-      "avg_hit_rate": 0.7222222222222222,
-      "total_fetched": 36,
-      "total_scored": 26
+      "avg_hit_rate": 0.7317073170731707,
+      "total_fetched": 41,
+      "total_scored": 30
     }
   }
 }
