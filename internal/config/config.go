@@ -83,13 +83,13 @@ type FetchConfig struct {
 
 // EmailConfig captures the SMTP delivery target.
 type EmailConfig struct {
-	Enabled  bool     `yaml:"enabled"`
-	SMTPHost string   `yaml:"smtp_host"`
-	SMTPPort int      `yaml:"smtp_port"`
-	From     string   `yaml:"from"`
-	To       []string `yaml:"to"`
-	UserEnv  string   `yaml:"user_env"`
-	PassEnv  string   `yaml:"pass_env"`
+	Enabled  bool   `yaml:"enabled"`
+	SMTPHost string `yaml:"smtp_host"`
+	SMTPPort int    `yaml:"smtp_port"`
+	FromEnv  string `yaml:"from_env"`
+	ToEnv    string `yaml:"to_env"`
+	UserEnv  string `yaml:"user_env"`
+	PassEnv  string `yaml:"pass_env"`
 }
 
 // DeliverConfig captures delivery settings (file + optional email).

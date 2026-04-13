@@ -33,10 +33,10 @@ deliver:
     enabled: true
     smtp_host: smtp.gmail.com
     smtp_port: 587
-    from: ""
-    to: []
-    user_env: 
-    pass_env: 
+    from_env: SMTP_FROM
+    to_env: SMTP_TO
+    user_env: SMTP_USER
+    pass_env: SMTP_PASS
 
 keyword_blocklist:
   - sponsored

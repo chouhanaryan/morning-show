@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/chouhanaryan/morning-show/internal/config"
@@ -61,8 +62,14 @@ func (d *Deliverer) Deliver(md string, usage UsageSummary, dryRun bool) (*Delive
 
 func (d *Deliverer) sendEmail(markdown string) error {
 	ec := d.cfg.Deliver.Email
-	if ec.From == "" || len(ec.To) == 0 {
-		return fmt.Errorf("email: from and to are required")
+	from := os.Getenv(ec.FromEnv)
+	toRaw := os.Getenv(ec.ToEnv)
+	if from == "" || toRaw == "" {
+		return fmt.Errorf("email: %s/%s not set", ec.FromEnv, ec.ToEnv)
+	}
+	to := splitAddresses(toRaw)
+	if len(to) == 0 {
+		return fmt.Errorf("email: %s contains no valid addresses", ec.ToEnv)
 	}
 	user := os.Getenv(ec.UserEnv)
 	pass := os.Getenv(ec.PassEnv)
@@ -70,13 +77,13 @@ func (d *Deliverer) sendEmail(markdown string) error {
 		return fmt.Errorf("email: %s/%s not set", ec.UserEnv, ec.PassEnv)
 	}
 	msg := mail.NewMsg()
-	if err := msg.From(ec.From); err != nil {
+	if err := msg.From(from); err != nil {
 		return fmt.Errorf("set from: %w", err)
 	}
-	if err := msg.To(ec.To...); err != nil {
+	if err := msg.To(to...); err != nil {
 		return fmt.Errorf("set to: %w", err)
 	}
-	msg.Subject(fmt.Sprintf("Weekly Briefing — %s", time.Now().UTC().Format("2006-01-02")))
+	msg.Subject(fmt.Sprintf("Weekly Briefing \u2014 %s", time.Now().UTC().Format("2006-01-02")))
 	msg.SetBodyString(mail.TypeTextPlain, markdown)
 
 	client, err := mail.NewClient(ec.SMTPHost,
@@ -142,4 +149,18 @@ func (u UsageSummary) Markdown() string {
 		u.Pass1In+u.Pass2In+u.Pass3In,
 		u.Pass1Out+u.Pass2Out+u.Pass3Out,
 	)
+}
+
+// splitAddresses splits a comma-separated list of email addresses,
+// trimming whitespace from each entry and skipping empty strings.
+func splitAddresses(raw string) []string {
+	parts := strings.Split(raw, ",")
+	out := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			out = append(out, p)
+		}
+	}
+	return out
 }
