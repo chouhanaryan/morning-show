@@ -1,6 +1,504 @@
 {
-  "last_run": "2026-04-13T02:40:39.567442361Z",
-  "seen_urls": {},
+  "last_run": "2026-04-13T13:25:56.103955502Z",
+  "seen_urls": {
+    "005d7d529e1a": "2026-04-13",
+    "009151dd1b43": "2026-04-13",
+    "00992e2696f9": "2026-04-13",
+    "0281a115fd1f": "2026-04-13",
+    "02c35e5f7cb0": "2026-04-13",
+    "0366489bd473": "2026-04-13",
+    "03a1a94802ab": "2026-04-13",
+    "03b707df8a0d": "2026-04-13",
+    "0469295040a2": "2026-04-13",
+    "05b48d37c8a4": "2026-04-13",
+    "05c9d038fefa": "2026-04-13",
+    "0626fe342552": "2026-04-13",
+    "062998150fbe": "2026-04-13",
+    "0781a222f55e": "2026-04-13",
+    "0a0c7eb03f07": "2026-04-13",
+    "0a28fe2f9c0a": "2026-04-13",
+    "0a68aaacd510": "2026-04-13",
+    "0acc43630b3d": "2026-04-13",
+    "0bc0473a15fe": "2026-04-13",
+    "0be86773595e": "2026-04-13",
+    "0d052fdf77aa": "2026-04-13",
+    "0dc2bee09042": "2026-04-13",
+    "0ef516168897": "2026-04-13",
+    "0faf6408803e": "2026-04-13",
+    "10533f96fa15": "2026-04-13",
+    "10a6e0fedbc7": "2026-04-13",
+    "1144ba7417c1": "2026-04-13",
+    "126b23e97562": "2026-04-13",
+    "132e369fd565": "2026-04-13",
+    "137f21fd3b5e": "2026-04-13",
+    "140caf223b51": "2026-04-13",
+    "144799c7bbde": "2026-04-13",
+    "1486f4c30721": "2026-04-13",
+    "14983d7eae93": "2026-04-13",
+    "14a2c8805b0c": "2026-04-13",
+    "14cbce6d8ca8": "2026-04-13",
+    "15961585e7db": "2026-04-13",
+    "15a7b8c3a624": "2026-04-13",
+    "161789b3eafd": "2026-04-13",
+    "16ce2a8f1f9f": "2026-04-13",
+    "16e50ecf09f0": "2026-04-13",
+    "16fc935264a6": "2026-04-13",
+    "17e22e863f32": "2026-04-13",
+    "188c6a9190d9": "2026-04-13",
+    "1a6386a4517c": "2026-04-13",
+    "1ab27be833ba": "2026-04-13",
+    "1aea3572c71f": "2026-04-13",
+    "1b8cf1a433d7": "2026-04-13",
+    "1c727997db8f": "2026-04-13",
+    "1c89ecda2808": "2026-04-13",
+    "1cc43c168265": "2026-04-13",
+    "1cc6bbeb4d32": "2026-04-13",
+    "1d59fa41ccb7": "2026-04-13",
+    "1d77e768199f": "2026-04-13",
+    "1e1df04ab2f3": "2026-04-13",
+    "1ffa87577219": "2026-04-13",
+    "200782da46b5": "2026-04-13",
+    "20ebe02a30bb": "2026-04-13",
+    "21d9d18874bf": "2026-04-13",
+    "2322ee0a7a29": "2026-04-13",
+    "2382653bd87e": "2026-04-13",
+    "2471f1228785": "2026-04-13",
+    "24ba590d31b2": "2026-04-13",
+    "255aa8be3a38": "2026-04-13",
+    "27558a368811": "2026-04-13",
+    "27e4d8fe9c67": "2026-04-13",
+    "2808f84e2cc8": "2026-04-13",
+    "28904eae1a24": "2026-04-13",
+    "299585a00f13": "2026-04-13",
+    "2a4a039b2e89": "2026-04-13",
+    "2a8db1803bab": "2026-04-13",
+    "2a9ae0687e85": "2026-04-13",
+    "2b68713a2d55": "2026-04-13",
+    "2c09cbf2a963": "2026-04-13",
+    "2d23efb7c548": "2026-04-13",
+    "2d747083c4c0": "2026-04-13",
+    "2db45123a8f7": "2026-04-13",
+    "2e1445e846e3": "2026-04-13",
+    "2e144635bef5": "2026-04-13",
+    "2e428659c11b": "2026-04-13",
+    "304d0a947e0b": "2026-04-13",
+    "30aef2bba123": "2026-04-13",
+    "30eda00ea795": "2026-04-13",
+    "30fdbdf35a0e": "2026-04-13",
+    "317bf9a53e88": "2026-04-13",
+    "317f3cadeb22": "2026-04-13",
+    "3223373d1b9d": "2026-04-13",
+    "32a721fd6f08": "2026-04-13",
+    "3390e5513293": "2026-04-13",
+    "33c474b45dfc": "2026-04-13",
+    "343a2ebc48db": "2026-04-13",
+    "34502a5e4f82": "2026-04-13",
+    "350d48c08a12": "2026-04-13",
+    "35141e6c0c28": "2026-04-13",
+    "35268991b137": "2026-04-13",
+    "3565e1863247": "2026-04-13",
+    "3579e5a4a9c0": "2026-04-13",
+    "365a96ab90c0": "2026-04-13",
+    "38383b767ee2": "2026-04-13",
+    "3845e6543ec3": "2026-04-13",
+    "38b08953f217": "2026-04-13",
+    "3931f495e769": "2026-04-13",
+    "39c1545ebc6c": "2026-04-13",
+    "3a26be23c86d": "2026-04-13",
+    "3a45c31869c4": "2026-04-13",
+    "3bc38e5a12e2": "2026-04-13",
+    "3bce7a45c209": "2026-04-13",
+    "3c5aba7ddae8": "2026-04-13",
+    "3c772b13cf86": "2026-04-13",
+    "3d69f268caa2": "2026-04-13",
+    "3d7ce7dc3b1b": "2026-04-13",
+    "3d94b7a9d23c": "2026-04-13",
+    "3de28e49a51c": "2026-04-13",
+    "3e04c836b21c": "2026-04-13",
+    "3e29439aee7d": "2026-04-13",
+    "3e49e5da6b1f": "2026-04-13",
+    "3f4a26048fc6": "2026-04-13",
+    "3f52e2733918": "2026-04-13",
+    "40d3c71ed74a": "2026-04-13",
+    "4119a8104b24": "2026-04-13",
+    "41e1b7d48e66": "2026-04-13",
+    "4242b0407447": "2026-04-13",
+    "42575be9308f": "2026-04-13",
+    "4263c85bdead": "2026-04-13",
+    "42e2ef1c914b": "2026-04-13",
+    "4398f56a5546": "2026-04-13",
+    "43c97dc974df": "2026-04-13",
+    "43e5b49c343a": "2026-04-13",
+    "451812d8917f": "2026-04-13",
+    "455223126134": "2026-04-13",
+    "4586c5f3db35": "2026-04-13",
+    "45bfcecd12c2": "2026-04-13",
+    "46ff39c24fb6": "2026-04-13",
+    "472a6614dbb9": "2026-04-13",
+    "479557de8a48": "2026-04-13",
+    "47fa28acfdc2": "2026-04-13",
+    "4804de9dfe8b": "2026-04-13",
+    "48278beeff3b": "2026-04-13",
+    "4908c835f0a3": "2026-04-13",
+    "49cdb25b132a": "2026-04-13",
+    "4a10802ac87c": "2026-04-13",
+    "4bc7b1981df9": "2026-04-13",
+    "4bc86b2ae001": "2026-04-13",
+    "4bda537b6145": "2026-04-13",
+    "4cb9d21af2f3": "2026-04-13",
+    "4d31e4cdb4d4": "2026-04-13",
+    "4d6bdcc8e42a": "2026-04-13",
+    "4d6d63525fc2": "2026-04-13",
+    "4d9b60269f76": "2026-04-13",
+    "4da53f247644": "2026-04-13",
+    "4daaec5f49b0": "2026-04-13",
+    "4dc0d81e6498": "2026-04-13",
+    "4e6575cd75ba": "2026-04-13",
+    "4ef94be58586": "2026-04-13",
+    "4f1eb1f223fd": "2026-04-13",
+    "5078d04117c0": "2026-04-13",
+    "50ed31ac80af": "2026-04-13",
+    "51129ac28088": "2026-04-13",
+    "513d4d38af37": "2026-04-13",
+    "52b0a5959d05": "2026-04-13",
+    "52da7cef8939": "2026-04-13",
+    "5370d8e2a403": "2026-04-13",
+    "53833e8172f4": "2026-04-13",
+    "53baccd4c65d": "2026-04-13",
+    "53f386f19088": "2026-04-13",
+    "54054cbcacde": "2026-04-13",
+    "543c94cec490": "2026-04-13",
+    "54b5815055c5": "2026-04-13",
+    "54ff06be3779": "2026-04-13",
+    "5560b55b5c7e": "2026-04-13",
+    "55bad65796a0": "2026-04-13",
+    "56031a862021": "2026-04-13",
+    "57541cded1b7": "2026-04-13",
+    "57c2df41f048": "2026-04-13",
+    "58098e0fc160": "2026-04-13",
+    "5849a56ab769": "2026-04-13",
+    "584b1854081d": "2026-04-13",
+    "5869935dc007": "2026-04-13",
+    "58ef701629c3": "2026-04-13",
+    "591fa78a4643": "2026-04-13",
+    "5a85b2433b1e": "2026-04-13",
+    "5b184ea4c8a8": "2026-04-13",
+    "5b8c0d749383": "2026-04-13",
+    "5c00c84f11b8": "2026-04-13",
+    "5c27dd29cfdd": "2026-04-13",
+    "5c3d7c8f70cc": "2026-04-13",
+    "5c51c057a48b": "2026-04-13",
+    "5c95308d0418": "2026-04-13",
+    "5d136dd2a2ab": "2026-04-13",
+    "5d312c854e15": "2026-04-13",
+    "5d6d883c2daf": "2026-04-13",
+    "5dba85dbd661": "2026-04-13",
+    "5e042d5bf772": "2026-04-13",
+    "5e2a5a86f803": "2026-04-13",
+    "5e80114e6435": "2026-04-13",
+    "5e9b7b2c0bac": "2026-04-13",
+    "5f4680a3963b": "2026-04-13",
+    "5fd7e2f15a62": "2026-04-13",
+    "6114d0b73ac3": "2026-04-13",
+    "62032355af4b": "2026-04-13",
+    "63f78f0106b9": "2026-04-13",
+    "6436a70c5c2c": "2026-04-13",
+    "644a5fbc5e1c": "2026-04-13",
+    "654716bdc21e": "2026-04-13",
+    "659e3143c4a5": "2026-04-13",
+    "6610f168e5d8": "2026-04-13",
+    "66dd0525d3dc": "2026-04-13",
+    "67962bc462fb": "2026-04-13",
+    "693cee73cd09": "2026-04-13",
+    "696c9347c8f2": "2026-04-13",
+    "69969de92745": "2026-04-13",
+    "699b904b2823": "2026-04-13",
+    "69dcaec02cad": "2026-04-13",
+    "6a5750b8fbad": "2026-04-13",
+    "6ab0848f337b": "2026-04-13",
+    "6af6058153e2": "2026-04-13",
+    "6b5774dd058a": "2026-04-13",
+    "6b986e31e19d": "2026-04-13",
+    "6ba575caa7c9": "2026-04-13",
+    "6baaf07d8890": "2026-04-13",
+    "6bad31924dfe": "2026-04-13",
+    "6c0ef1106d1b": "2026-04-13",
+    "6c1dfc44d463": "2026-04-13",
+    "6c232e4ae5c4": "2026-04-13",
+    "6c2e3b2cd12a": "2026-04-13",
+    "6c44292a06bf": "2026-04-13",
+    "6c8469ec848d": "2026-04-13",
+    "6ccd5444ee8b": "2026-04-13",
+    "6e81a0e95fc0": "2026-04-13",
+    "6ec1f57e44d8": "2026-04-13",
+    "6ff938734331": "2026-04-13",
+    "700ca58cde63": "2026-04-13",
+    "7066762a33db": "2026-04-13",
+    "70a6e5af154b": "2026-04-13",
+    "70e456de82d1": "2026-04-13",
+    "7171ec126b33": "2026-04-13",
+    "7188a3dc0fb2": "2026-04-13",
+    "7227e5d4e394": "2026-04-13",
+    "72cd6ec8d92b": "2026-04-13",
+    "73d243b380ff": "2026-04-13",
+    "73e06868ee43": "2026-04-13",
+    "7441094102ab": "2026-04-13",
+    "74ba1c674273": "2026-04-13",
+    "74df87e50a0f": "2026-04-13",
+    "74fde57c5ec6": "2026-04-13",
+    "7560b9fc7a6c": "2026-04-13",
+    "75632d648b1d": "2026-04-13",
+    "763647cb9198": "2026-04-13",
+    "76ca60613d2c": "2026-04-13",
+    "77089bee356e": "2026-04-13",
+    "77f1cc82d06d": "2026-04-13",
+    "78518004b4ab": "2026-04-13",
+    "788eedbceffc": "2026-04-13",
+    "78f7bc4ce776": "2026-04-13",
+    "791369130d91": "2026-04-13",
+    "79f0cffdd577": "2026-04-13",
+    "7a4cfa27adfa": "2026-04-13",
+    "7ad68ffac1ea": "2026-04-13",
+    "7b50e1a9c60d": "2026-04-13",
+    "7bcd68b5d5cb": "2026-04-13",
+    "7c064e397609": "2026-04-13",
+    "7c8f000fa4c6": "2026-04-13",
+    "7d8ccedd76b8": "2026-04-13",
+    "7e6599927f0a": "2026-04-13",
+    "8007ed581233": "2026-04-13",
+    "8042f0661ee6": "2026-04-13",
+    "80da6953d8dd": "2026-04-13",
+    "813c2f082d62": "2026-04-13",
+    "815626978b17": "2026-04-13",
+    "81d29c3619a9": "2026-04-13",
+    "82434e6453d5": "2026-04-13",
+    "82870e499fdf": "2026-04-13",
+    "843f926f022a": "2026-04-13",
+    "84be0c50bc4f": "2026-04-13",
+    "858d5ac62aae": "2026-04-13",
+    "8590de042065": "2026-04-13",
+    "85ea4ce989be": "2026-04-13",
+    "863ffdd87085": "2026-04-13",
+    "8673af40001d": "2026-04-13",
+    "8674d85cb31d": "2026-04-13",
+    "8790579b547c": "2026-04-13",
+    "88fcadb5be3f": "2026-04-13",
+    "897ac4749220": "2026-04-13",
+    "89f56393cd59": "2026-04-13",
+    "8aa1d551df92": "2026-04-13",
+    "8c613c64af3f": "2026-04-13",
+    "8cb2b026d89b": "2026-04-13",
+    "8d302c93cc3b": "2026-04-13",
+    "8dca3d6055ae": "2026-04-13",
+    "8e910f4b39eb": "2026-04-13",
+    "8e9e090abf32": "2026-04-13",
+    "8ec918283753": "2026-04-13",
+    "8f5db555e16c": "2026-04-13",
+    "909b8a7bda1f": "2026-04-13",
+    "909f1d6964f6": "2026-04-13",
+    "9266837d8a50": "2026-04-13",
+    "92ccf54bf62c": "2026-04-13",
+    "9314e9be3c94": "2026-04-13",
+    "95b914cfaa16": "2026-04-13",
+    "95e3393b6a1a": "2026-04-13",
+    "96ecb07cbcc2": "2026-04-13",
+    "98bc6683e4c1": "2026-04-13",
+    "98d96fa91665": "2026-04-13",
+    "99bba97992ba": "2026-04-13",
+    "9a04933963b4": "2026-04-13",
+    "9a209a63e7cd": "2026-04-13",
+    "9a24d7d89a21": "2026-04-13",
+    "9b944cc0a4b4": "2026-04-13",
+    "9bceebcf52cf": "2026-04-13",
+    "9c1699b9cc95": "2026-04-13",
+    "9ebc202a17ce": "2026-04-13",
+    "9f4eeea15454": "2026-04-13",
+    "9fb9c2e87dee": "2026-04-13",
+    "a00b8c86b03a": "2026-04-13",
+    "a04b7545ce8b": "2026-04-13",
+    "a04dc9fac64c": "2026-04-13",
+    "a0aa88be8e45": "2026-04-13",
+    "a0d1eb36bd17": "2026-04-13",
+    "a1c7ec2ffd30": "2026-04-13",
+    "a1fb8a0d107c": "2026-04-13",
+    "a22b63480a4e": "2026-04-13",
+    "a2c7680b758c": "2026-04-13",
+    "a2e62f73686a": "2026-04-13",
+    "a426d6700661": "2026-04-13",
+    "a43422fe0f90": "2026-04-13",
+    "a43c0fd3fa7b": "2026-04-13",
+    "a583a4a176cd": "2026-04-13",
+    "a6c51ba98020": "2026-04-13",
+    "a76d763a82ff": "2026-04-13",
+    "a8507de6ce43": "2026-04-13",
+    "aa11c7bb9a37": "2026-04-13",
+    "aa3b9d632a53": "2026-04-13",
+    "ab45fe5e540b": "2026-04-13",
+    "ab6a4a3587d3": "2026-04-13",
+    "aca170fb8550": "2026-04-13",
+    "ad55acbcfb0d": "2026-04-13",
+    "ae28af9b8f58": "2026-04-13",
+    "ae34864fb98d": "2026-04-13",
+    "ae43fceafe49": "2026-04-13",
+    "aee37c52d5fb": "2026-04-13",
+    "af21098ed624": "2026-04-13",
+    "af302e0f3c91": "2026-04-13",
+    "af3915f0256a": "2026-04-13",
+    "af424b65009b": "2026-04-13",
+    "afa35216da4c": "2026-04-13",
+    "afabc68839de": "2026-04-13",
+    "b042bff33010": "2026-04-13",
+    "b07e25416050": "2026-04-13",
+    "b2b368059484": "2026-04-13",
+    "b4a20ba96aeb": "2026-04-13",
+    "b4a7c378a401": "2026-04-13",
+    "b4feb8651521": "2026-04-13",
+    "b5a5cedf7208": "2026-04-13",
+    "b5c9329cb3eb": "2026-04-13",
+    "b65c146b91be": "2026-04-13",
+    "b6a977ab0e9f": "2026-04-13",
+    "b748515113fe": "2026-04-13",
+    "b79a8f3b5ba1": "2026-04-13",
+    "b81e3be78dc0": "2026-04-13",
+    "b859aa6cf68d": "2026-04-13",
+    "b8773f6583bd": "2026-04-13",
+    "b87c17c3ee4d": "2026-04-13",
+    "b90ef08e4f08": "2026-04-13",
+    "b9f4f0aed9f7": "2026-04-13",
+    "ba4a36097b65": "2026-04-13",
+    "bb0968daf6eb": "2026-04-13",
+    "bb3c243fdc67": "2026-04-13",
+    "bbf38d61be82": "2026-04-13",
+    "bc04c448eec0": "2026-04-13",
+    "bd370588eff4": "2026-04-13",
+    "bd8c8820e3bc": "2026-04-13",
+    "bdb849dd443b": "2026-04-13",
+    "bddff6403bea": "2026-04-13",
+    "be1ee9114d0b": "2026-04-13",
+    "bed347ee013c": "2026-04-13",
+    "bed41ba29da9": "2026-04-13",
+    "bfce9545aec9": "2026-04-13",
+    "bff17e8588c4": "2026-04-13",
+    "bff64da99e8b": "2026-04-13",
+    "c110f855d6cc": "2026-04-13",
+    "c1565b78bc83": "2026-04-13",
+    "c1aaf373859a": "2026-04-13",
+    "c3059ddcdc3b": "2026-04-13",
+    "c30d347a108f": "2026-04-13",
+    "c3b9e5b8022d": "2026-04-13",
+    "c3eb913bbd03": "2026-04-13",
+    "c3ee473a8435": "2026-04-13",
+    "c4b05ca21565": "2026-04-13",
+    "c63da6a00c87": "2026-04-13",
+    "c6cbf7a93cfa": "2026-04-13",
+    "c84a2e9ce58f": "2026-04-13",
+    "c9179ea605fa": "2026-04-13",
+    "c9afe85f29f0": "2026-04-13",
+    "ca44bbca187b": "2026-04-13",
+    "ca8859d0aa96": "2026-04-13",
+    "ca997e53a00d": "2026-04-13",
+    "cbf1a175b2ad": "2026-04-13",
+    "cbfb18416375": "2026-04-13",
+    "cc0ed71e7bf4": "2026-04-13",
+    "cc197aea1a49": "2026-04-13",
+    "cda994dc7dec": "2026-04-13",
+    "ce0488de74bd": "2026-04-13",
+    "ce08e375f0fb": "2026-04-13",
+    "ce39dc128b8f": "2026-04-13",
+    "ce5b28a32e04": "2026-04-13",
+    "ce9cba594e2e": "2026-04-13",
+    "cea631c2c82d": "2026-04-13",
+    "ceee0da278a4": "2026-04-13",
+    "cfa19ef0b17d": "2026-04-13",
+    "d024a654d8de": "2026-04-13",
+    "d081ad2d5f86": "2026-04-13",
+    "d0858d137329": "2026-04-13",
+    "d11a60e8975c": "2026-04-13",
+    "d12b0fc5e504": "2026-04-13",
+    "d2579b44b71d": "2026-04-13",
+    "d2accbfd33b3": "2026-04-13",
+    "d31db1154f40": "2026-04-13",
+    "d3deb905e2d8": "2026-04-13",
+    "d3ea832a6fdc": "2026-04-13",
+    "d43ff7bc71f4": "2026-04-13",
+    "d47bc82910eb": "2026-04-13",
+    "d4c77ffb6a7d": "2026-04-13",
+    "d4e49381c7f0": "2026-04-13",
+    "d60221de4ab2": "2026-04-13",
+    "d6a474748549": "2026-04-13",
+    "d71fdf383d17": "2026-04-13",
+    "d78a27ea5811": "2026-04-13",
+    "d8ac6b91bbdb": "2026-04-13",
+    "d8bf4d867e4e": "2026-04-13",
+    "d90777e6610d": "2026-04-13",
+    "d9f29418f566": "2026-04-13",
+    "dad9d0cc2c6f": "2026-04-13",
+    "db3abae02ca3": "2026-04-13",
+    "dd44fb3c11fb": "2026-04-13",
+    "dd6bdf794d1c": "2026-04-13",
+    "de35d22092ae": "2026-04-13",
+    "df3aa1d43299": "2026-04-13",
+    "df9caae0a9d3": "2026-04-13",
+    "dff0c4c7b926": "2026-04-13",
+    "e0b6eaa1dce1": "2026-04-13",
+    "e0c5369c6209": "2026-04-13",
+    "e11e1213928f": "2026-04-13",
+    "e2a45d48a580": "2026-04-13",
+    "e2f22bb38ec6": "2026-04-13",
+    "e3ed0056e4da": "2026-04-13",
+    "e437a8fd256b": "2026-04-13",
+    "e47adabf270b": "2026-04-13",
+    "e4c7fb45b06b": "2026-04-13",
+    "e5382d2c5e06": "2026-04-13",
+    "e64adc534f37": "2026-04-13",
+    "e68b5021fd87": "2026-04-13",
+    "e6bed4fbd7e8": "2026-04-13",
+    "e8c2246c5ab5": "2026-04-13",
+    "e9996f524735": "2026-04-13",
+    "e9c3b501957e": "2026-04-13",
+    "ea88d24745aa": "2026-04-13",
+    "eb136e500d13": "2026-04-13",
+    "edd5da7e0641": "2026-04-13",
+    "edf6e899e620": "2026-04-13",
+    "ee00baf24606": "2026-04-13",
+    "ee5a3be206e0": "2026-04-13",
+    "ee5e30e3a1d3": "2026-04-13",
+    "ee8fc4597888": "2026-04-13",
+    "eea86ab9bd39": "2026-04-13",
+    "eff6d5f5aa18": "2026-04-13",
+    "f0b89b9f0562": "2026-04-13",
+    "f1d11589eebe": "2026-04-13",
+    "f25ff7be545f": "2026-04-13",
+    "f29dc8c3736d": "2026-04-13",
+    "f3472fddf309": "2026-04-13",
+    "f3f43882dc55": "2026-04-13",
+    "f42a77118ce9": "2026-04-13",
+    "f4f26bc90501": "2026-04-13",
+    "f536979089d8": "2026-04-13",
+    "f5a380ff05a1": "2026-04-13",
+    "f5b07e699d0b": "2026-04-13",
+    "f6116a5b1da3": "2026-04-13",
+    "f6df292a713b": "2026-04-13",
+    "f6e7f3ccd80e": "2026-04-13",
+    "f7170892dd94": "2026-04-13",
+    "f8264ba2b35f": "2026-04-13",
+    "f94b1c639485": "2026-04-13",
+    "f95698689d87": "2026-04-13",
+    "fa1b2d4f0edd": "2026-04-13",
+    "fa4e129b5f42": "2026-04-13",
+    "fada51ad2278": "2026-04-13",
+    "fb47d93f2cc4": "2026-04-13",
+    "fb6a824cd997": "2026-04-13",
+    "fbb1a3e1b2fd": "2026-04-13",
+    "fbb33e382c3f": "2026-04-13",
+    "fc5394c61cf7": "2026-04-13",
+    "fc586c85cc7f": "2026-04-13",
+    "fd8319d143a6": "2026-04-13",
+    "fe1f760c0ddb": "2026-04-13",
+    "fe4dbef8be60": "2026-04-13",
+    "feb4c2117e76": "2026-04-13",
+    "fed031dfb3a9": "2026-04-13"
+  },
   "threads": [],
   "source_stats": {
     "AWS News Blog": {
@@ -42,11 +540,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.9166666666666666,
-      "total_fetched": 12,
-      "total_scored": 11
+      "avg_hit_rate": 0.9285714285714286,
+      "total_fetched": 14,
+      "total_scored": 13
     },
     "AWS Security Blog": {
       "name": "AWS Security Blog",
@@ -87,11 +591,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.6666666666666666,
-      "total_fetched": 12,
-      "total_scored": 8
+      "avg_hit_rate": 0.7142857142857143,
+      "total_fetched": 14,
+      "total_scored": 10
     },
     "Anthropic News": {
       "name": "Anthropic News",
@@ -171,11 +681,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 6,
-      "total_scored": 6
+      "total_fetched": 7,
+      "total_scored": 7
     },
     "Anthropic Research": {
       "name": "Anthropic Research",
@@ -216,11 +732,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.5,
-      "total_fetched": 18,
-      "total_scored": 9
+      "avg_hit_rate": 0.5263157894736842,
+      "total_fetched": 19,
+      "total_scored": 10
     },
     "Ars Technica": {
       "name": "Ars Technica",
@@ -261,11 +783,17 @@
           "articles_fetched": 20,
           "articles_scored": 3,
           "hit_rate": 0.15
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 20,
+          "articles_scored": 2,
+          "hit_rate": 0.1
         }
       ],
-      "avg_hit_rate": 0.16666666666666666,
-      "total_fetched": 120,
-      "total_scored": 20
+      "avg_hit_rate": 0.15714285714285714,
+      "total_fetched": 140,
+      "total_scored": 22
     },
     "BleepingComputer": {
       "name": "BleepingComputer",
@@ -306,11 +834,17 @@
           "articles_fetched": 15,
           "articles_scored": 1,
           "hit_rate": 0.06666666666666667
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 15,
+          "articles_scored": 6,
+          "hit_rate": 0.4
         }
       ],
-      "avg_hit_rate": 0.35555555555555557,
-      "total_fetched": 90,
-      "total_scored": 32
+      "avg_hit_rate": 0.3619047619047619,
+      "total_fetched": 105,
+      "total_scored": 38
     },
     "ByteByteGo": {
       "name": "ByteByteGo",
@@ -351,11 +885,17 @@
           "articles_fetched": 5,
           "articles_scored": 1,
           "hit_rate": 0.2
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 1,
+          "hit_rate": 0.2
         }
       ],
-      "avg_hit_rate": 0.36666666666666664,
-      "total_fetched": 30,
-      "total_scored": 11
+      "avg_hit_rate": 0.34285714285714286,
+      "total_fetched": 35,
+      "total_scored": 12
     },
     "Cloudflare Blog": {
       "name": "Cloudflare Blog",
@@ -396,11 +936,17 @@
           "articles_fetched": 4,
           "articles_scored": 4,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 5,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 23,
-      "total_scored": 23
+      "total_fetched": 28,
+      "total_scored": 28
     },
     "Exponential View": {
       "name": "Exponential View",
@@ -441,11 +987,17 @@
           "articles_fetched": 4,
           "articles_scored": 2,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 3,
+          "articles_scored": 1,
+          "hit_rate": 0.3333333333333333
         }
       ],
-      "avg_hit_rate": 0.5833333333333334,
-      "total_fetched": 24,
-      "total_scored": 14
+      "avg_hit_rate": 0.5555555555555556,
+      "total_fetched": 27,
+      "total_scored": 15
     },
     "Google AI": {
       "name": "Google AI",
@@ -486,11 +1038,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.9047619047619048,
-      "total_fetched": 42,
-      "total_scored": 38
+      "avg_hit_rate": 0.9069767441860465,
+      "total_fetched": 43,
+      "total_scored": 39
     },
     "Google Research Blog": {
       "name": "Google Research Blog",
@@ -531,11 +1089,17 @@
           "articles_fetched": 2,
           "articles_scored": 1,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 1,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.5833333333333334,
-      "total_fetched": 12,
-      "total_scored": 7
+      "avg_hit_rate": 0.5714285714285714,
+      "total_fetched": 14,
+      "total_scored": 8
     },
     "Graham Cluley": {
       "name": "Graham Cluley",
@@ -576,11 +1140,17 @@
           "articles_fetched": 3,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 3,
+          "articles_scored": 1,
+          "hit_rate": 0.3333333333333333
         }
       ],
-      "avg_hit_rate": 0.2222222222222222,
-      "total_fetched": 18,
-      "total_scored": 4
+      "avg_hit_rate": 0.23809523809523808,
+      "total_fetched": 21,
+      "total_scored": 5
     },
     "Hacker News": {
       "name": "Hacker News",
@@ -621,11 +1191,17 @@
           "articles_fetched": 54,
           "articles_scored": 9,
           "hit_rate": 0.16666666666666666
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 53,
+          "articles_scored": 9,
+          "hit_rate": 0.16981132075471697
         }
       ],
-      "avg_hit_rate": 0.19558359621451105,
-      "total_fetched": 317,
-      "total_scored": 62
+      "avg_hit_rate": 0.1918918918918919,
+      "total_fetched": 370,
+      "total_scored": 71
     },
     "HashiCorp Blog": {
       "name": "HashiCorp Blog",
@@ -666,11 +1242,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 6,
-      "total_scored": 6
+      "total_fetched": 7,
+      "total_scored": 7
     },
     "IEEE Spectrum - AI": {
       "name": "IEEE Spectrum - AI",
@@ -711,11 +1293,17 @@
           "articles_fetched": 5,
           "articles_scored": 3,
           "hit_rate": 0.6
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 6,
+          "articles_scored": 4,
+          "hit_rate": 0.6666666666666666
         }
       ],
       "avg_hit_rate": 0.6666666666666666,
-      "total_fetched": 30,
-      "total_scored": 20
+      "total_fetched": 36,
+      "total_scored": 24
     },
     "Krebs on Security": {
       "name": "Krebs on Security",
@@ -756,11 +1344,17 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
-      "avg_hit_rate": 0.5454545454545454,
-      "total_fetched": 11,
-      "total_scored": 6
+      "avg_hit_rate": 0.5833333333333334,
+      "total_fetched": 12,
+      "total_scored": 7
     },
     "MIT News - AI": {
       "name": "MIT News - AI",
@@ -801,11 +1395,17 @@
           "articles_fetched": 4,
           "articles_scored": 2,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 4,
+          "articles_scored": 2,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.4166666666666667,
-      "total_fetched": 24,
-      "total_scored": 10
+      "avg_hit_rate": 0.42857142857142855,
+      "total_fetched": 28,
+      "total_scored": 12
     },
     "MIT Technology Review": {
       "name": "MIT Technology Review",
@@ -846,11 +1446,17 @@
           "articles_fetched": 10,
           "articles_scored": 2,
           "hit_rate": 0.2
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 10,
+          "articles_scored": 1,
+          "hit_rate": 0.1
         }
       ],
-      "avg_hit_rate": 0.2,
-      "total_fetched": 60,
-      "total_scored": 12
+      "avg_hit_rate": 0.18571428571428572,
+      "total_fetched": 70,
+      "total_scored": 13
     },
     "Nathan Lambert (Interconnects)": {
       "name": "Nathan Lambert (Interconnects)",
@@ -891,10 +1497,16 @@
           "articles_fetched": 2,
           "articles_scored": 1,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
-      "avg_hit_rate": 0.9166666666666666,
-      "total_fetched": 12,
+      "avg_hit_rate": 0.7857142857142857,
+      "total_fetched": 14,
       "total_scored": 11
     },
     "OpenAI Blog": {
@@ -936,11 +1548,17 @@
           "articles_fetched": 30,
           "articles_scored": 4,
           "hit_rate": 0.13333333333333333
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 30,
+          "articles_scored": 3,
+          "hit_rate": 0.1
         }
       ],
-      "avg_hit_rate": 0.11351351351351352,
-      "total_fetched": 185,
-      "total_scored": 21
+      "avg_hit_rate": 0.11162790697674418,
+      "total_fetched": 215,
+      "total_scored": 24
     },
     "OpenTofu Blog": {
       "name": "OpenTofu Blog",
@@ -981,11 +1599,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 6,
-      "total_scored": 6
+      "total_fetched": 7,
+      "total_scored": 7
     },
     "Pragmatic Engineer (Gergely Orosz)": {
       "name": "Pragmatic Engineer (Gergely Orosz)",
@@ -1026,11 +1650,17 @@
           "articles_fetched": 2,
           "articles_scored": 2,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 2,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 12,
-      "total_scored": 12
+      "total_fetched": 14,
+      "total_scored": 14
     },
     "Schneier on Security": {
       "name": "Schneier on Security",
@@ -1071,11 +1701,17 @@
           "articles_fetched": 8,
           "articles_scored": 4,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 8,
+          "articles_scored": 4,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.6458333333333334,
-      "total_fetched": 48,
-      "total_scored": 31
+      "avg_hit_rate": 0.625,
+      "total_fetched": 56,
+      "total_scored": 35
     },
     "Simon Willison": {
       "name": "Simon Willison",
@@ -1116,11 +1752,17 @@
           "articles_fetched": 16,
           "articles_scored": 7,
           "hit_rate": 0.4375
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 13,
+          "articles_scored": 6,
+          "hit_rate": 0.46153846153846156
         }
       ],
-      "avg_hit_rate": 0.4368932038834951,
-      "total_fetched": 103,
-      "total_scored": 45
+      "avg_hit_rate": 0.4396551724137931,
+      "total_fetched": 116,
+      "total_scored": 51
     },
     "TLDR AI": {
       "name": "TLDR AI",
@@ -1155,11 +1797,17 @@
           "articles_fetched": 71,
           "articles_scored": 49,
           "hit_rate": 0.6901408450704225
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 71,
+          "articles_scored": 51,
+          "hit_rate": 0.7183098591549296
         }
       ],
-      "avg_hit_rate": 0.6211764705882353,
-      "total_fetched": 425,
-      "total_scored": 264
+      "avg_hit_rate": 0.6350806451612904,
+      "total_fetched": 496,
+      "total_scored": 315
     },
     "TLDR DevOps": {
       "name": "TLDR DevOps",
@@ -1194,11 +1842,17 @@
           "articles_fetched": 17,
           "articles_scored": 11,
           "hit_rate": 0.6470588235294118
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 29,
+          "articles_scored": 22,
+          "hit_rate": 0.7586206896551724
         }
       ],
-      "avg_hit_rate": 0.7575757575757576,
-      "total_fetched": 132,
-      "total_scored": 100
+      "avg_hit_rate": 0.7577639751552795,
+      "total_fetched": 161,
+      "total_scored": 122
     },
     "TLDR Tech": {
       "name": "TLDR Tech",
@@ -1233,11 +1887,17 @@
           "articles_fetched": 68,
           "articles_scored": 28,
           "hit_rate": 0.4117647058823529
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 84,
+          "articles_scored": 37,
+          "hit_rate": 0.44047619047619047
         }
       ],
-      "avg_hit_rate": 0.3960880195599022,
-      "total_fetched": 409,
-      "total_scored": 162
+      "avg_hit_rate": 0.40365111561866124,
+      "total_fetched": 493,
+      "total_scored": 199
     },
     "Terraform GitHub Releases": {
       "name": "Terraform GitHub Releases",
@@ -1278,11 +1938,17 @@
           "articles_fetched": 1,
           "articles_scored": 1,
           "hit_rate": 1
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 1,
+          "hit_rate": 1
         }
       ],
       "avg_hit_rate": 1,
-      "total_fetched": 6,
-      "total_scored": 6
+      "total_fetched": 7,
+      "total_scored": 7
     },
     "The New Stack": {
       "name": "The New Stack",
@@ -1323,11 +1989,17 @@
           "articles_fetched": 26,
           "articles_scored": 19,
           "hit_rate": 0.7307692307692307
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 26,
+          "articles_scored": 19,
+          "hit_rate": 0.7307692307692307
         }
       ],
-      "avg_hit_rate": 0.7692307692307693,
-      "total_fetched": 156,
-      "total_scored": 120
+      "avg_hit_rate": 0.7637362637362637,
+      "total_fetched": 182,
+      "total_scored": 139
     },
     "Timothy B. Lee": {
       "name": "Timothy B. Lee",
@@ -1368,11 +2040,17 @@
           "articles_fetched": 2,
           "articles_scored": 1,
           "hit_rate": 0.5
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 2,
+          "articles_scored": 1,
+          "hit_rate": 0.5
         }
       ],
-      "avg_hit_rate": 0.6666666666666666,
-      "total_fetched": 12,
-      "total_scored": 8
+      "avg_hit_rate": 0.6428571428571429,
+      "total_fetched": 14,
+      "total_scored": 9
     },
     "Windsurf Next Changelog": {
       "name": "Windsurf Next Changelog",
@@ -1413,10 +2091,16 @@
           "articles_fetched": 1,
           "articles_scored": 0,
           "hit_rate": 0
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 1,
+          "articles_scored": 0,
+          "hit_rate": 0
         }
       ],
       "avg_hit_rate": 0,
-      "total_fetched": 6,
+      "total_fetched": 7,
       "total_scored": 0
     },
     "Wired": {
@@ -1458,11 +2142,32 @@
           "articles_fetched": 45,
           "articles_scored": 5,
           "hit_rate": 0.1111111111111111
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 45,
+          "articles_scored": 5,
+          "hit_rate": 0.1111111111111111
         }
       ],
-      "avg_hit_rate": 0.13059701492537312,
-      "total_fetched": 268,
-      "total_scored": 35
+      "avg_hit_rate": 0.12779552715654952,
+      "total_fetched": 313,
+      "total_scored": 40
+    },
+    "arXiv CS": {
+      "name": "arXiv CS",
+      "category": "ai-research",
+      "run_history": [
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 904,
+          "articles_scored": 299,
+          "hit_rate": 0.3307522123893805
+        }
+      ],
+      "avg_hit_rate": 0.3307522123893805,
+      "total_fetched": 904,
+      "total_scored": 299
     },
     "swyx (Latent Space)": {
       "name": "swyx (Latent Space)",
@@ -1503,11 +2208,17 @@
           "articles_fetched": 5,
           "articles_scored": 4,
           "hit_rate": 0.8
+        },
+        {
+          "date": "2026-04-13",
+          "articles_fetched": 5,
+          "articles_scored": 4,
+          "hit_rate": 0.8
         }
       ],
-      "avg_hit_rate": 0.7333333333333333,
-      "total_fetched": 30,
-      "total_scored": 22
+      "avg_hit_rate": 0.7428571428571429,
+      "total_fetched": 35,
+      "total_scored": 26
     }
   }
 }
