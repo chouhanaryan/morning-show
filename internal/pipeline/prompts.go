@@ -54,11 +54,16 @@ Output markdown with these sections only:
   - Second key point, one sentence.
   - Third point if needed.
 
+  *Why it matters: 1-2 sentences of YOUR OWN analysis on real-world impact,
+  strategic implications, or what this means for practitioners. This is your
+  opinion, not sourced — be direct and specific.*
+
   Sources: [1](https://example.com/url-1) [2](https://example.com/url-2)
 
   CRITICAL formatting rules:
   - Title is plain bold text on its own line, NEVER [title](url) links.
   - Blank line after title, then bulleted key points (not a paragraph).
+  - "Why it matters" is italic, your own analysis — not a restatement of facts.
   - Sources on ONE line: [1](url) [2](url) etc. using "url" from JSON data.
 
   ## Continuing Threads
