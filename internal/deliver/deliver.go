@@ -83,8 +83,16 @@ func (d *Deliverer) sendEmail(markdown string) error {
 	if err := msg.To(to...); err != nil {
 		return fmt.Errorf("set to: %w", err)
 	}
-	msg.Subject(fmt.Sprintf("Weekly Briefing \u2014 %s", time.Now().UTC().Format("2006-01-02")))
+	subject := fmt.Sprintf("Weekly Briefing \u2014 %s", time.Now().UTC().Format("2006-01-02"))
+	msg.Subject(subject)
+	// multipart/alternative: markdown as the plain-text part, rendered HTML
+	// as the preferred part.
 	msg.SetBodyString(mail.TypeTextPlain, markdown)
+	htmlBody, err := RenderHTML(subject, markdown)
+	if err != nil {
+		return err
+	}
+	msg.AddAlternativeString(mail.TypeTextHTML, htmlBody)
 
 	client, err := mail.NewClient(ec.SMTPHost,
 		mail.WithPort(ec.SMTPPort),
@@ -102,53 +110,119 @@ func (d *Deliverer) sendEmail(markdown string) error {
 	return nil
 }
 
+// PassUsage is one row of the token-usage footer.
+type PassUsage struct {
+	Name    string // e.g. "1 (score)"
+	Model   string
+	Batches int
+	Failed  int // batches that failed and were skipped
+	In, Out int
+}
+
+// cost returns the estimated USD cost of this pass, and false when the
+// model has no configured price.
+func (p PassUsage) cost(pricing map[string]config.ModelPrice) (float64, bool) {
+	price, ok := pricing[p.Model]
+	if !ok {
+		return 0, false
+	}
+	return (float64(p.In)*price.Input + float64(p.Out)*price.Output) / 1e6, true
+}
+
 // UsageSummary is a pipeline-agnostic view of token totals for the footer.
 type UsageSummary struct {
-	Pass1In, Pass1Out int
-	Pass2In, Pass2Out int
-	Pass3In, Pass3Out int
-	Pass1Batches      int
-	Pass2Batches      int
-	Pass3Batches      int
-	FeedsReached      int
-	FeedsTotal        int
-	Provider          string
-	Model             string
-	Pass1Model        string
-	Pass2Model        string
-	Duration          time.Duration
+	Passes       []PassUsage
+	FeedsReached int
+	FeedsTotal   int
+	FailedFeeds  []string
+	Provider     string
+	Model        string
+	Pass1Model   string
+	Pass2Model   string
+	Duration     time.Duration
+	Pricing      map[string]config.ModelPrice
+	// Quality checks on the briefing text.
+	RemovedLinks    int
+	MissingSections []string
+	Pass3Retried    bool
+	// SourceHealth lists sources needing attention, as "Name: issue".
+	SourceHealth []string
 }
 
 // Markdown renders the footer block.
 func (u UsageSummary) Markdown() string {
-	modelLine := u.Model
-	if u.Pass1Model != "" && u.Pass1Model != u.Model {
-		modelLine += fmt.Sprintf("\n- Pass 1/2 model: %s", u.Pass1Model)
+	var b strings.Builder
+	b.WriteString("## Run Metadata\n\n")
+	fmt.Fprintf(&b, "- Provider: %s\n", u.Provider)
+	fmt.Fprintf(&b, "- Model: %s\n", u.Model)
+	switch {
+	case u.Pass1Model == u.Pass2Model && u.Pass1Model != u.Model:
+		fmt.Fprintf(&b, "- Pass 1/2/4 model: %s\n", u.Pass1Model)
+	default:
+		if u.Pass1Model != u.Model {
+			fmt.Fprintf(&b, "- Pass 1 model: %s\n", u.Pass1Model)
+		}
+		if u.Pass2Model != u.Model {
+			fmt.Fprintf(&b, "- Pass 2/4 model: %s\n", u.Pass2Model)
+		}
 	}
-	return fmt.Sprintf(`## Run Metadata
+	fmt.Fprintf(&b, "- Duration: %s\n", u.Duration.Round(time.Second))
+	fmt.Fprintf(&b, "- Feeds reached: %d/%d\n", u.FeedsReached, u.FeedsTotal)
+	if len(u.FailedFeeds) > 0 {
+		fmt.Fprintf(&b, "- Feeds failed: %s\n", strings.Join(u.FailedFeeds, ", "))
+	}
+	var checks []string
+	if u.Pass3Retried {
+		checks = append(checks, "synthesis retried once")
+	}
+	if u.RemovedLinks > 0 {
+		checks = append(checks, fmt.Sprintf("%d unverifiable link(s) removed", u.RemovedLinks))
+	}
+	if len(u.MissingSections) > 0 {
+		checks = append(checks, "missing sections: "+strings.Join(u.MissingSections, ", "))
+	}
+	if len(checks) > 0 {
+		fmt.Fprintf(&b, "- Quality checks: %s\n", strings.Join(checks, "; "))
+	} else {
+		b.WriteString("- Quality checks: passed\n")
+	}
 
-- Provider: %s
-- Model: %s
-- Duration: %s
-- Feeds reached: %d/%d
+	if len(u.SourceHealth) > 0 {
+		b.WriteString("\n### Source health\n\n")
+		for _, line := range u.SourceHealth {
+			fmt.Fprintf(&b, "- %s\n", line)
+		}
+	}
 
-### Token usage
-
-| Pass | Batches | Input | Output |
-|------|---------|-------|--------|
-| 1 (score)      | %d | %d | %d |
-| 2 (extract)    | %d | %d | %d |
-| 3 (synthesize) | %d | %d | %d |
-| **Total**      |    | **%d** | **%d** |
-`,
-		u.Provider, modelLine, u.Duration.Round(time.Second),
-		u.FeedsReached, u.FeedsTotal,
-		u.Pass1Batches, u.Pass1In, u.Pass1Out,
-		u.Pass2Batches, u.Pass2In, u.Pass2Out,
-		u.Pass3Batches, u.Pass3In, u.Pass3Out,
-		u.Pass1In+u.Pass2In+u.Pass3In,
-		u.Pass1Out+u.Pass2Out+u.Pass3Out,
-	)
+	b.WriteString("\n### Token usage\n\n")
+	b.WriteString("| Pass | Batches | Input | Output | Est. cost |\n")
+	b.WriteString("|------|---------|-------|--------|-----------|\n")
+	var totalIn, totalOut int
+	var totalCost float64
+	allPriced := true
+	for _, p := range u.Passes {
+		batches := fmt.Sprintf("%d", p.Batches)
+		if p.Failed > 0 {
+			batches += fmt.Sprintf(" (%d failed)", p.Failed)
+		}
+		costCell := "n/a"
+		if c, ok := p.cost(u.Pricing); ok {
+			costCell = fmt.Sprintf("$%.2f", c)
+			totalCost += c
+		} else if p.In+p.Out > 0 {
+			allPriced = false
+		}
+		fmt.Fprintf(&b, "| %s | %s | %d | %d | %s |\n", p.Name, batches, p.In, p.Out, costCell)
+		totalIn += p.In
+		totalOut += p.Out
+	}
+	totalCell := fmt.Sprintf("**$%.2f**", totalCost)
+	if !allPriced {
+		totalCell += " (partial)"
+	}
+	fmt.Fprintf(&b, "| **Total** | | **%d** | **%d** | %s |\n", totalIn, totalOut, totalCell)
+	b.WriteString("\nCost is an estimate from list prices in `llm.pricing`; it ignores refusal-fallback reruns.\n")
+	return b.String()
 }
 
 // splitAddresses splits a comma-separated list of email addresses,

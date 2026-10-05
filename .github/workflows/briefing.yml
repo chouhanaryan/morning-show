@@ -17,6 +17,35 @@ on:
         description: 'Clear seen URLs for a fresh run'
         type: boolean
         default: false
+      one_time_note:
+        description: 'One-off instruction for this briefing, e.g. "focus on re:Invent launches"'
+        type: string
+        default: ''
+      add_interest:
+        description: 'Add a standing interest (saved)'
+        type: string
+        default: ''
+      remove_interest:
+        description: 'Remove a standing interest (exact text, saved)'
+        type: string
+        default: ''
+      add_correction:
+        description: 'Add an active correction, e.g. "less crypto" (saved)'
+        type: string
+        default: ''
+      clear_corrections:
+        description: 'Remove all active corrections (saved)'
+        type: boolean
+        default: false
+      feedback_only:
+        description: 'Only save the feedback edits above; skip the briefing'
+        type: boolean
+        default: false
+
+# A manual run and the scheduled run must never race on the data/ commit.
+concurrency:
+  group: briefing
+  cancel-in-progress: false
 
 jobs:
   briefing:
@@ -24,41 +53,93 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: write
+      # Lets the job request a GitHub OIDC token, which the binary exchanges
+      # for short-lived Anthropic tokens (Workload Identity Federation).
+      id-token: write
+    env:
+      # Federation identifiers, not secrets: a token is only minted for runs
+      # whose GitHub OIDC claims match the federation rule.
+      ANTHROPIC_FEDERATION_RULE_ID: fdrl_01PoBME6Wc7EzLzk5mCMmNAn
+      ANTHROPIC_ORGANIZATION_ID: 56622357-726a-4c11-a090-a2324e83884a
+      ANTHROPIC_SERVICE_ACCOUNT_ID: svac_016uQKNKAJVcxdiKAoG82GYK
+      ANTHROPIC_WORKSPACE_ID: wrkspc_011yEkcM1ZwNcHg3JqwKakEQ
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
-          go-version: 'stable'
+          go-version-file: go.mod
 
       - name: Build
         run: go build -o briefing ./cmd/briefing
 
       - name: Run briefing
         env:
+          # No ANTHROPIC_API_KEY here on purpose: if set, it would take
+          # precedence over federation.
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           SMTP_TO: ${{ secrets.SMTP_TO }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          # Inputs go through env vars, never inline ${{ }} in the script, so
+          # free-text inputs can't inject shell commands.
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+          IN_SINGLE_SOURCE: ${{ inputs.single_source }}
+          IN_RESET_MEMORY: ${{ inputs.reset_memory }}
+          IN_NOTE: ${{ inputs.one_time_note }}
+          IN_ADD_INTEREST: ${{ inputs.add_interest }}
+          IN_REMOVE_INTEREST: ${{ inputs.remove_interest }}
+          IN_ADD_CORRECTION: ${{ inputs.add_correction }}
+          IN_CLEAR_CORRECTIONS: ${{ inputs.clear_corrections }}
+          IN_FEEDBACK_ONLY: ${{ inputs.feedback_only }}
         run: |
           set -euo pipefail
-          FLAGS=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            FLAGS="$FLAGS --dry-run"
+          args=(--debug-out=out/run-debug.json)
+          if [ "$IN_DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
           fi
-          if [ -n "${{ inputs.single_source }}" ]; then
-            FLAGS="$FLAGS --single-source=${{ inputs.single_source }}"
+          if [ -n "$IN_SINGLE_SOURCE" ]; then
+            args+=("--single-source=$IN_SINGLE_SOURCE")
           fi
-          if [ "${{ inputs.reset_memory }}" = "true" ]; then
-            FLAGS="$FLAGS --reset-memory"
+          if [ "$IN_RESET_MEMORY" = "true" ]; then
+            args+=(--reset-memory)
           fi
-          ./briefing $FLAGS
+          if [ -n "$IN_NOTE" ]; then
+            args+=("--note=$IN_NOTE")
+          fi
+          if [ -n "$IN_ADD_INTEREST" ]; then
+            args+=("--add-interest=$IN_ADD_INTEREST")
+          fi
+          if [ -n "$IN_REMOVE_INTEREST" ]; then
+            args+=("--remove-interest=$IN_REMOVE_INTEREST")
+          fi
+          if [ -n "$IN_ADD_CORRECTION" ]; then
+            args+=("--add-correction=$IN_ADD_CORRECTION")
+          fi
+          if [ "$IN_CLEAR_CORRECTIONS" = "true" ]; then
+            args+=(--clear-corrections)
+          fi
+          if [ "$IN_FEEDBACK_ONLY" = "true" ]; then
+            args+=(--feedback-only)
+          fi
+          ./briefing "${args[@]}"
 
+      - name: Upload debug report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-debug-${{ github.run_id }}
+          path: out/run-debug.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      # Runs even if the briefing step failed: the binary only writes data/
+      # after a report is produced (e.g. a failed email still saves the report
+      # and state), and if nothing changed this step is a no-op.
       - name: Commit state
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ !cancelled() && inputs.dry_run != true }}
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |

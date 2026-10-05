@@ -1,6 +1,9 @@
 # build artifacts
 /briefing
 
+# per-run debug output (uploaded as a CI artifact instead)
+/out/
+
 # os
 .DS_Store
 

@@ -109,8 +109,9 @@ func (p *OpenRouterProvider) Complete(ctx context.Context, req Request) (Respons
 		return Response{}, fmt.Errorf("openrouter: empty choices")
 	}
 	return Response{
-		Content: or.Choices[0].Message.Content,
-		Model:   or.Model,
+		Content:    or.Choices[0].Message.Content,
+		Model:      or.Model,
+		StopReason: or.Choices[0].FinishReason,
 		Usage: Usage{
 			InputTokens:  or.Usage.PromptTokens,
 			OutputTokens: or.Usage.CompletionTokens,

@@ -110,10 +110,18 @@ func (p *Pool) FetchAll(ctx context.Context, sources []config.Source) ([]Article
 }
 
 func (p *Pool) fetchOne(ctx context.Context, src config.Source) ([]Article, error) {
+	var (
+		arts []Article
+		err  error
+	)
 	switch src.Type {
 	case config.SourceHackerNews:
-		return p.hn.Fetch(ctx, src)
+		arts, err = p.hn.Fetch(ctx, src)
 	default:
-		return p.rss.Fetch(ctx, src)
+		arts, err = p.rss.Fetch(ctx, src)
 	}
+	if err == nil && src.MaxItems > 0 && len(arts) > src.MaxItems {
+		arts = arts[:src.MaxItems]
+	}
+	return arts, err
 }

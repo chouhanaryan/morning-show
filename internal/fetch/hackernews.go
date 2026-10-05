@@ -102,10 +102,11 @@ func (f *HNFetcher) Fetch(ctx context.Context, src config.Source) ([]Article, er
 			SourceName:  src.Name,
 			Category:    src.Category,
 			Title:       title,
-			Link:        link,
+			Link:        CleanLink(link),
 			Author:      cleanText(it.By),
 			Published:   pub,
 			Description: cleanText(it.Text),
+			Points:      it.Score,
 			FetchedAt:   now,
 		}
 		art.ID = art.URLHash()

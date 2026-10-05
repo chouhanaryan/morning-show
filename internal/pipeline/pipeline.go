@@ -1,7 +1,7 @@
-// Package pipeline orchestrates the three LLM passes (score, extract,
-// synthesize) over a filtered article set. It manages batching, rate
-// limiting, usage accounting, retries for malformed output, and final
-// markdown validation.
+// Package pipeline orchestrates the LLM passes (score, extract, synthesize,
+// then a small thread-tracking pass) over a filtered article set. It manages
+// batching, rate limiting, usage accounting, retries for malformed output,
+// and final markdown validation.
 package pipeline
 
 import (
@@ -51,19 +51,38 @@ type SourceCount struct {
 	Scored   int // articles surviving Pass 1
 }
 
+// NumPasses is the number of LLM passes: score, extract, synthesize, threads.
+const NumPasses = 4
+
 // Result bundles the generated briefing plus everything the caller needs to
-// persist state and report totals.
+// persist state and report totals. Pass-indexed arrays are 0-based (index 0
+// is Pass 1).
 type Result struct {
-	Markdown       string
-	Extractions    []ExtractedItem
-	KeptArticles   []fetch.Article
-	TotalUsage     llm.Usage
-	PassUsage      [3]llm.Usage
-	PassBatchCount [3]int
-	SourceCounts   map[string]*SourceCount
+	Markdown    string
+	Extractions []ExtractedItem
+	// KeptArticles cleared the Pass 1 score threshold, best score first.
+	KeptArticles []fetch.Article
+	// SelectedArticles are the top max_extract of KeptArticles — the ones
+	// sent to Pass 2 and the briefing.
+	SelectedArticles []fetch.Article
+	// ScoredArticles were successfully scored in Pass 1 (kept or not). They
+	// are marked seen so low scorers aren't re-scored on the next run.
+	ScoredArticles []fetch.Article
+	// Scores maps article ID to its Pass 1 score (0–10).
+	Scores map[string]int
+	// Quality reports deterministic checks on the Pass 3 output.
+	Quality QualityReport
+	// ThreadUpdates are storylines touched this week (Pass 4). Empty when
+	// Pass 4 fails — it is best-effort.
+	ThreadUpdates   []ThreadUpdate
+	TotalUsage      llm.Usage
+	PassUsage       [NumPasses]llm.Usage
+	PassBatchCount  [NumPasses]int
+	PassFailedCount [NumPasses]int
+	SourceCounts    map[string]*SourceCount
 }
 
-// Run executes passes 1–3 in sequence.
+// Run executes passes 1–4 in sequence.
 func (p *Pipeline) Run(
 	ctx context.Context,
 	arts []fetch.Article,
@@ -78,12 +97,16 @@ func (p *Pipeline) Run(
 	res := &Result{}
 
 	// ---- PASS 1 ----
-	scored, pass1Usage, pass1Batches, err := p.runPass1(ctx, arts, prefs.StandingInterests)
+	scored, scoredAll, scores, pass1Usage, pass1Batches, pass1Failed, err := p.runPass1(ctx, arts, prefs)
 	if err != nil {
 		return nil, fmt.Errorf("pass 1: %w", err)
 	}
 	res.PassUsage[0] = pass1Usage
 	res.PassBatchCount[0] = pass1Batches
+	res.PassFailedCount[0] = pass1Failed
+	res.ScoredArticles = scoredAll
+	res.Scores = scores
+	res.KeptArticles = scored
 	res.TotalUsage.Add(pass1Usage)
 	p.log.Info("pass completed",
 		"pass", 1, "batches", pass1Batches,
@@ -91,6 +114,7 @@ func (p *Pipeline) Run(
 		"output_tokens", pass1Usage.OutputTokens,
 		"articles_scored", len(arts),
 		"articles_survived", len(scored),
+		"failed_batches", pass1Failed,
 	)
 	if len(scored) == 0 {
 		return nil, errors.New("pipeline: no articles survived pass 1 scoring")
@@ -113,22 +137,37 @@ func (p *Pipeline) Run(
 	}
 	res.SourceCounts = sourceCounts
 
+	// Only the best-scoring articles are worth extracting: the briefing uses
+	// ~25 items, and extraction is the most token-hungry pass.
+	selected := scored
+	if limit := p.cfg.Pipeline.MaxExtract; len(selected) > limit {
+		selected = selected[:limit]
+		p.log.Info("capped articles for extraction",
+			"survived", len(scored), "selected", limit,
+			"min_selected_score", scores[selected[limit-1].ID])
+	}
+	res.SelectedArticles = selected
+
 	// ---- PASS 2 ----
-	extractions, pass2Usage, pass2Batches, err := p.runPass2(ctx, scored)
+	extractions, pass2Usage, pass2Batches, pass2Failed, err := p.runPass2(ctx, selected, scores)
 	if err != nil {
 		return nil, fmt.Errorf("pass 2: %w", err)
 	}
 	res.PassUsage[1] = pass2Usage
 	res.PassBatchCount[1] = pass2Batches
+	res.PassFailedCount[1] = pass2Failed
 	res.TotalUsage.Add(pass2Usage)
 	res.Extractions = extractions
-	res.KeptArticles = scored
 	p.log.Info("pass completed",
 		"pass", 2, "batches", pass2Batches,
 		"input_tokens", pass2Usage.InputTokens,
 		"output_tokens", pass2Usage.OutputTokens,
 		"items", len(extractions),
+		"failed_batches", pass2Failed,
 	)
+	if len(extractions) == 0 {
+		return nil, errors.New("pipeline: pass 2 produced no extractions")
+	}
 
 	// Coverage gap detection — find topics with high interest but few sources.
 	coverageGaps := detectCoverageGaps(extractions,
@@ -139,10 +178,13 @@ func (p *Pipeline) Run(
 	}
 
 	// ---- PASS 3 ----
-	md, pass3Usage, err := p.runPass3(ctx, extractions, mem, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
+	window := time.Duration(p.cfg.Pipeline.MemoryWeeks) * 7 * 24 * time.Hour
+	threads := mem.ActiveThreads(window)
+	md, quality, pass3Usage, err := p.runPass3(ctx, extractions, threads, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
 	if err != nil {
 		return nil, fmt.Errorf("pass 3: %w", err)
 	}
+	res.Quality = quality
 	res.PassUsage[2] = pass3Usage
 	res.PassBatchCount[2] = 1
 	res.TotalUsage.Add(pass3Usage)
@@ -151,6 +193,25 @@ func (p *Pipeline) Run(
 		"pass", 3, "batches", 1,
 		"input_tokens", pass3Usage.InputTokens,
 		"output_tokens", pass3Usage.OutputTokens,
+	)
+
+	// ---- PASS 4 ----
+	// Best-effort: a failure here only costs thread continuity next week.
+	updates, pass4Usage, err := p.runPass4(ctx, md, threads)
+	res.PassUsage[3] = pass4Usage
+	res.PassBatchCount[3] = 1
+	res.TotalUsage.Add(pass4Usage)
+	if err != nil {
+		res.PassFailedCount[3] = 1
+		p.log.Warn("pass 4 (threads) failed, threads not updated", "err", err.Error())
+	} else {
+		res.ThreadUpdates = updates
+	}
+	p.log.Info("pass completed",
+		"pass", 4, "batches", 1,
+		"input_tokens", pass4Usage.InputTokens,
+		"output_tokens", pass4Usage.OutputTokens,
+		"thread_updates", len(updates),
 	)
 
 	return res, nil
@@ -165,6 +226,8 @@ type scoreInput struct {
 	Title   string `json:"title"`
 	Snippet string `json:"snippet"`
 	Source  string `json:"source"`
+	// Points is the Hacker News score; omitted for other sources.
+	Points int `json:"points,omitempty"`
 }
 
 type scoreResult struct {
@@ -182,8 +245,8 @@ type batchJob struct {
 func (p *Pipeline) runPass1(
 	ctx context.Context,
 	arts []fetch.Article,
-	interests []string,
-) ([]fetch.Article, llm.Usage, int, error) {
+	prefs feedback.Preferences,
+) (kept, scoredAll []fetch.Article, scores map[string]int, total llm.Usage, batchesRun, failed int, err error) {
 	batchSize := p.cfg.Pipeline.ScoreBatchSize
 	batches := splitBatches(len(arts), batchSize)
 
@@ -205,14 +268,15 @@ func (p *Pipeline) runPass1(
 			items := make([]scoreInput, len(batchArts))
 			for k, a := range batchArts {
 				items[k] = scoreInput{
-					ID:       k,
-					Title:    a.Title,
-					Snippet:  a.SummaryText(150),
-					Source:   a.SourceName,
+					ID:      k,
+					Title:   a.Title,
+					Snippet: a.SummaryText(150),
+					Source:  a.SourceName,
+					Points:  a.Points,
 				}
 			}
 			user := buildPass1User(items)
-			scores, usage, err := p.scoreBatchWithRetry(ctx, user, interests)
+			scores, usage, err := p.scoreBatchWithRetry(ctx, user, prefs)
 			results[i] = batchOut{
 				scores: scores,
 				usage:  usage,
@@ -224,39 +288,49 @@ func (p *Pipeline) runPass1(
 	}
 	wg.Wait()
 
-	var total llm.Usage
-	kept := make([]fetch.Article, 0, len(arts))
+	kept = make([]fetch.Article, 0, len(arts))
+	scoredAll = make([]fetch.Article, 0, len(arts))
+	scores = make(map[string]int, len(arts))
 	threshold := p.cfg.Pipeline.ScoreThreshold
-	batchesRun := 0
 	for _, r := range results {
 		total.Add(r.usage)
 		batchesRun++
 		if r.err != nil {
+			failed++
 			p.log.Warn("pass 1 batch failed, skipping",
 				"start", r.start, "end", r.end, "err", r.err.Error())
 			continue
 		}
 		batchArts := arts[r.start:r.end]
+		seen := make(map[int]bool, len(r.scores))
 		for _, s := range r.scores {
-			if s.ID < 0 || s.ID >= len(batchArts) {
+			if s.ID < 0 || s.ID >= len(batchArts) || seen[s.ID] {
 				continue
 			}
-			if s.Score >= threshold {
-				kept = append(kept, batchArts[s.ID])
+			seen[s.ID] = true
+			a := batchArts[s.ID]
+			score := min(max(s.Score, 0), 10)
+			scores[a.ID] = score
+			scoredAll = append(scoredAll, a)
+			if score >= threshold {
+				kept = append(kept, a)
 			}
 		}
 	}
-	return kept, total, batchesRun, nil
+	// Best first. Stable, so equal scores keep fetch order.
+	sort.SliceStable(kept, func(i, j int) bool {
+		return scores[kept[i].ID] > scores[kept[j].ID]
+	})
+	return kept, scoredAll, scores, total, batchesRun, failed, nil
 }
 
-func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, interests []string) ([]scoreResult, llm.Usage, error) {
+func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, prefs feedback.Preferences) ([]scoreResult, llm.Usage, error) {
 	var total llm.Usage
-	model := p.cfg.LLM.ModelForPass(1)
-	sys := pass1SystemWithInterests(interests)
-	content, usage, err := p.callLLM(ctx, model, sys, user, false)
-	total.Add(usage)
+	sys := pass1SystemWithPrefs(prefs)
+	resp, err := p.callLLM(ctx, 1, sys, user, false)
+	total.Add(resp.Usage)
 	if err == nil {
-		if scores, perr := parseScoreResponse(content); perr == nil {
+		if scores, perr := parseScoreResponse(resp.Content); perr == nil {
 			return scores, total, nil
 		} else {
 			p.log.Warn("pass 1 parse failed, retrying", "err", perr.Error())
@@ -266,12 +340,12 @@ func (p *Pipeline) scoreBatchWithRetry(ctx context.Context, user string, interes
 	}
 
 	// Attempt 2: stricter suffix.
-	content, usage, err = p.callLLM(ctx, model, sys+pass1RetrySuffix, user, false)
-	total.Add(usage)
+	resp, err = p.callLLM(ctx, 1, sys+pass1RetrySuffix, user, false)
+	total.Add(resp.Usage)
 	if err != nil {
 		return nil, total, err
 	}
-	scores, err := parseScoreResponse(content)
+	scores, err := parseScoreResponse(resp.Content)
 	if err != nil {
 		return nil, total, fmt.Errorf("pass 1: malformed after retry: %w", err)
 	}
@@ -302,12 +376,14 @@ type ExtractedItem struct {
 	SourceTitle string `json:"source_title,omitempty"`
 	Source      string `json:"source_name,omitempty"`
 	Link        string `json:"link,omitempty"`
+	Score       int    `json:"score,omitempty"`
 }
 
 func (p *Pipeline) runPass2(
 	ctx context.Context,
 	arts []fetch.Article,
-) ([]ExtractedItem, llm.Usage, int, error) {
+	scores map[string]int,
+) (out []ExtractedItem, total llm.Usage, batchesRun, failed int, err error) {
 	batchSize := p.cfg.Pipeline.ExtractBatchSize
 	batches := splitBatches(len(arts), batchSize)
 
@@ -335,10 +411,10 @@ func (p *Pipeline) runPass2(
 				// Cap body at ~1200 chars — enough for claim extraction
 				// without wasting tokens on tail content.
 				items[k] = extractInput{
-					ID:       k,
-					Title:    a.Title,
-					Source:   a.SourceName,
-					Content:  truncate(body, 1200),
+					ID:      k,
+					Title:   a.Title,
+					Source:  a.SourceName,
+					Content: truncate(body, 1200),
 				}
 			}
 			user := buildPass2User(items)
@@ -354,13 +430,12 @@ func (p *Pipeline) runPass2(
 	}
 	wg.Wait()
 
-	var total llm.Usage
-	batchesRun := 0
-	out := make([]ExtractedItem, 0, len(arts))
+	out = make([]ExtractedItem, 0, len(arts))
 	for _, r := range results {
 		total.Add(r.usage)
 		batchesRun++
 		if r.err != nil {
+			failed++
 			p.log.Warn("pass 2 batch failed, skipping",
 				"start", r.start, "end", r.end, "err", r.err.Error())
 			continue
@@ -374,27 +449,31 @@ func (p *Pipeline) runPass2(
 			item.SourceTitle = a.Title
 			item.Source = a.SourceName
 			item.Link = a.Link
+			item.Score = scores[a.ID]
 			out = append(out, item)
 		}
 	}
 
-	// Stable order by source then title for deterministic Pass 3 input.
+	// Highest score first so Pass 3 sees priority; source then title break
+	// ties for deterministic input.
 	sort.SliceStable(out, func(i, j int) bool {
+		if out[i].Score != out[j].Score {
+			return out[i].Score > out[j].Score
+		}
 		if out[i].Source != out[j].Source {
 			return out[i].Source < out[j].Source
 		}
 		return out[i].SourceTitle < out[j].SourceTitle
 	})
-	return out, total, batchesRun, nil
+	return out, total, batchesRun, failed, nil
 }
 
 func (p *Pipeline) extractBatchWithRetry(ctx context.Context, user string) ([]ExtractedItem, llm.Usage, error) {
 	var total llm.Usage
-	model := p.cfg.LLM.ModelForPass(2)
-	content, usage, err := p.callLLM(ctx, model, pass2System, user, true)
-	total.Add(usage)
+	resp, err := p.callLLM(ctx, 2, pass2System, user, true)
+	total.Add(resp.Usage)
 	if err == nil {
-		if items, perr := parseExtractResponse(content); perr == nil {
+		if items, perr := parseExtractResponse(resp.Content); perr == nil {
 			return items, total, nil
 		} else {
 			p.log.Warn("pass 2 parse failed, retrying", "err", perr.Error())
@@ -403,12 +482,12 @@ func (p *Pipeline) extractBatchWithRetry(ctx context.Context, user string) ([]Ex
 		return nil, total, err
 	}
 
-	content, usage, err = p.callLLM(ctx, model, pass2System+pass2RetrySuffix, user, true)
-	total.Add(usage)
+	resp, err = p.callLLM(ctx, 2, pass2System+pass2RetrySuffix, user, true)
+	total.Add(resp.Usage)
 	if err != nil {
 		return nil, total, err
 	}
-	items, err := parseExtractResponse(content)
+	items, err := parseExtractResponse(resp.Content)
 	if err != nil {
 		return nil, total, fmt.Errorf("pass 2: malformed after retry: %w", err)
 	}
@@ -422,39 +501,120 @@ func (p *Pipeline) extractBatchWithRetry(ctx context.Context, user string) ([]Ex
 func (p *Pipeline) runPass3(
 	ctx context.Context,
 	items []ExtractedItem,
-	mem *memory.Store,
+	threads []memory.Thread,
 	prefs feedback.Preferences,
 	oneTime []feedback.OneTimeNote,
 	feedsReached, feedsTotal int,
 	coverageGaps []CoverageGap,
-) (string, llm.Usage, error) {
-	window := time.Duration(p.cfg.Pipeline.MemoryWeeks) * 7 * 24 * time.Hour
-	threads := mem.ActiveThreads(window)
-
+) (string, QualityReport, llm.Usage, error) {
 	weekOf := time.Now().UTC().Format("2006-01-02")
 	user := buildPass3User(weekOf, items, threads, prefs, oneTime, feedsReached, feedsTotal, coverageGaps)
 
 	// Pass 3 is a single call; we still share the rate limiter.
-	model := p.cfg.LLM.ModelForPass(3)
-	content, usage, err := p.callLLM(ctx, model, pass3System, user, false)
+	var usage llm.Usage
+	var q QualityReport
+	resp, err := p.callLLM(ctx, 3, pass3System, user, false)
+	usage.Add(resp.Usage)
 	if err != nil {
-		return "", usage, err
+		return "", q, usage, err
 	}
-	cleaned := stripOuterCodeFence(content)
-	if verr := validateMarkdown(cleaned); verr != nil {
-		// One retry with an explicit reminder appended to the user message.
-		retryUser := user + "\n\nREMINDER: return markdown only. Do not wrap your output in code fences and do not emit JSON."
-		content, u2, err := p.callLLM(ctx, model, pass3System, retryUser, false)
-		usage.Add(u2)
+	p.warnIfTruncated(3, resp)
+	cleaned := stripOuterCodeFence(resp.Content)
+	verr := validateMarkdown(cleaned)
+	missing := missingSections(cleaned)
+
+	if verr != nil || len(missing) > 0 {
+		// One retry with a reminder naming what was wrong. Malformed output
+		// is fatal if the retry is malformed too; missing sections are not.
+		reminder := "\n\nREMINDER: return markdown only. Do not wrap your output in code fences and do not emit JSON."
+		if len(missing) > 0 {
+			reminder += " Include every required section: " + strings.Join(requiredSections, ", ") + "."
+		}
+		p.log.Warn("pass 3 output failed checks, retrying",
+			"err", errString(verr), "missing_sections", missing)
+		q.Retried = true
+		resp, err = p.callLLM(ctx, 3, pass3System, user+reminder, false)
+		usage.Add(resp.Usage)
 		if err != nil {
-			return "", usage, err
+			return "", q, usage, err
 		}
-		cleaned = stripOuterCodeFence(content)
-		if verr := validateMarkdown(cleaned); verr != nil {
-			return "", usage, fmt.Errorf("pass 3: invalid markdown after retry: %w", verr)
+		p.warnIfTruncated(3, resp)
+		retry := stripOuterCodeFence(resp.Content)
+		retryErr := validateMarkdown(retry)
+		retryMissing := missingSections(retry)
+		switch {
+		case retryErr != nil && verr != nil:
+			return "", q, usage, fmt.Errorf("pass 3: invalid markdown after retry: %w", retryErr)
+		case retryErr != nil:
+			// Keep the first, well-formed attempt.
+		case verr != nil || len(retryMissing) < len(missing):
+			cleaned, missing = retry, retryMissing
 		}
 	}
-	return cleaned, usage, nil
+	if len(missing) > 0 {
+		p.log.Warn("briefing is missing required sections", "missing", missing)
+	}
+	q.MissingSections = missing
+
+	// Every link must point at an article we actually fed the model.
+	allowed := make(map[string]bool, len(items))
+	for _, it := range items {
+		allowed[fetch.CanonicalURL(it.Link)] = true
+	}
+	cleaned, q.RemovedLinks = sanitizeLinks(cleaned, allowed)
+	if len(q.RemovedLinks) > 0 {
+		p.log.Warn("removed links not present in the input articles",
+			"count", len(q.RemovedLinks), "links", q.RemovedLinks)
+	}
+	return cleaned, q, usage, nil
+}
+
+func (p *Pipeline) warnIfTruncated(pass int, resp llm.Response) {
+	if resp.Truncated() {
+		p.log.Warn("llm output hit max_tokens and was truncated; raise llm.max_tokens",
+			"pass", pass, "max_tokens", p.cfg.LLM.MaxTokens,
+			"output_tokens", resp.Usage.OutputTokens)
+	}
+}
+
+// ----------------------------------------------------------------------
+// Pass 4 — thread tracking
+// ----------------------------------------------------------------------
+
+// ThreadUpdate is one storyline touched by this week's briefing. ID is the
+// existing thread's ID when the model matched one, otherwise empty (new).
+type ThreadUpdate struct {
+	ID      string `json:"id"`
+	Topic   string `json:"topic"`
+	Summary string `json:"summary"`
+}
+
+// runPass4 reads the finished briefing alongside the active threads and
+// returns which storylines advanced this week. It runs on the cheap Pass 2
+// model and settings.
+func (p *Pipeline) runPass4(ctx context.Context, briefing string, threads []memory.Thread) ([]ThreadUpdate, llm.Usage, error) {
+	var total llm.Usage
+	user := buildPass4User(briefing, threads)
+	resp, err := p.callLLM(ctx, 4, pass4System, user, true)
+	total.Add(resp.Usage)
+	if err != nil {
+		return nil, total, err
+	}
+	updates, perr := parseThreadResponse(resp.Content)
+	if perr == nil {
+		return updates, total, nil
+	}
+	p.log.Warn("pass 4 parse failed, retrying", "err", perr.Error())
+	resp, err = p.callLLM(ctx, 4, pass4System+pass4RetrySuffix, user, true)
+	total.Add(resp.Usage)
+	if err != nil {
+		return nil, total, err
+	}
+	updates, err = parseThreadResponse(resp.Content)
+	if err != nil {
+		return nil, total, fmt.Errorf("pass 4: malformed after retry: %w", err)
+	}
+	return updates, total, nil
 }
 
 // ----------------------------------------------------------------------
@@ -517,41 +677,53 @@ func detectCoverageGaps(items []ExtractedItem, minArticles, maxSources int) []Co
 // shared helpers
 // ----------------------------------------------------------------------
 
-// callLLM does a rate-limited, semaphore-bounded provider call and returns
-// the raw response content. The model parameter allows per-pass model selection.
-func (p *Pipeline) callLLM(ctx context.Context, model, system, user string, jsonMode bool) (string, llm.Usage, error) {
+// callLLM does a rate-limited, semaphore-bounded provider call. The pass
+// number (1–4) selects model and sampling settings; Pass 4 reuses Pass 2's
+// cheap-model settings, and effort/refusal fallback apply to Pass 3 only.
+func (p *Pipeline) callLLM(ctx context.Context, pass int, system, user string, jsonMode bool) (llm.Response, error) {
 	if err := p.limiter.Wait(ctx); err != nil {
-		return "", llm.Usage{}, err
+		return llm.Response{}, err
 	}
 	select {
 	case p.sem <- struct{}{}:
 	case <-ctx.Done():
-		return "", llm.Usage{}, ctx.Err()
+		return llm.Response{}, ctx.Err()
 	}
 	defer func() { <-p.sem }()
 
+	cfgPass := pass
+	if pass == 4 {
+		cfgPass = 2
+	}
+	model := p.cfg.LLM.ModelForPass(cfgPass)
 	req := llm.Request{
 		Model:       model,
 		MaxTokens:   p.cfg.LLM.MaxTokens,
-		Temperature: p.cfg.LLM.Temperature,
+		Temperature: p.cfg.LLM.TemperatureForPass(cfgPass),
 		JSONMode:    jsonMode,
 		Messages: []llm.Message{
 			{Role: llm.RoleSystem, Content: system},
 			{Role: llm.RoleUser, Content: user},
 		},
 	}
+	if pass == 3 {
+		req.Effort = p.cfg.LLM.Effort
+		req.RefusalFallback = p.cfg.LLM.RefusalFallback
+	}
 	start := time.Now()
 	resp, err := p.provider.Complete(ctx, req)
 	latency := time.Since(start)
 	p.log.Debug("llm call",
 		"provider", p.provider.Name(),
+		"pass", pass,
 		"model", model,
 		"input_tokens", resp.Usage.InputTokens,
 		"output_tokens", resp.Usage.OutputTokens,
 		"latency_ms", latency.Milliseconds(),
+		"stop_reason", resp.StopReason,
 		"err", errString(err),
 	)
-	return resp.Content, resp.Usage, err
+	return resp, err
 }
 
 func errString(e error) string {

@@ -1,6 +1,7 @@
 package pipeline
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -154,5 +155,65 @@ func TestStripOuterCodeFence(t *testing.T) {
 	plain := "# Title\n\nBody"
 	if stripOuterCodeFence(plain) != plain {
 		t.Error("plain input mutated")
+	}
+}
+
+func TestParseThreadResponse(t *testing.T) {
+	raw := `{"threads":[{"id":"gpt-5-5-rollout","topic":"GPT-5.5 rollout","summary":"Now GA."},{"id":"","topic":"  ","summary":"dropped"}]}`
+	got, err := parseThreadResponse(raw)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if len(got) != 1 || got[0].ID != "gpt-5-5-rollout" {
+		t.Errorf("unexpected: %+v", got)
+	}
+}
+
+func TestParseThreadResponse_EmptyIsValid(t *testing.T) {
+	got, err := parseThreadResponse(`{"threads":[]}`)
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if len(got) != 0 {
+		t.Errorf("expected no threads, got %+v", got)
+	}
+}
+
+func TestSanitizeLinks(t *testing.T) {
+	allowed := map[string]bool{
+		"https://example.com/a": true,
+		"https://example.com/b": true,
+	}
+	md := "**Story**\n\n" +
+		"- Point with [inline](https://made.up/x).\n\n" +
+		"Sources: [1](https://example.com/a?utm_source=tldr) [2](https://made.up/y) [3](https://www.example.com/b/)\n\n" +
+		"Sources: [1](https://made.up/z)\n" +
+		"- **Signal:** text. [link](https://example.com/a)\n"
+	got, removed := sanitizeLinks(md, allowed)
+	if len(removed) != 3 {
+		t.Fatalf("removed = %v, want 3 links", removed)
+	}
+	for _, want := range []string{
+		"- Point with inline.",
+		"Sources: [1](https://example.com/a?utm_source=tldr) [3](https://www.example.com/b/)",
+		"[link](https://example.com/a)",
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("missing %q in:\n%s", want, got)
+		}
+	}
+	if strings.Contains(got, "made.up") {
+		t.Errorf("unverified link survived:\n%s", got)
+	}
+	if strings.Count(got, "Sources:") != 1 {
+		t.Errorf("empty Sources line should be dropped:\n%s", got)
+	}
+}
+
+func TestMissingSections(t *testing.T) {
+	md := "# Weekly Briefing\n\n## Top Stories\n\nx\n\n## signals\n\ny\n"
+	got := missingSections(md)
+	if len(got) != 1 || got[0] != "What To Watch" {
+		t.Errorf("missingSections = %v, want [What To Watch]", got)
 	}
 }

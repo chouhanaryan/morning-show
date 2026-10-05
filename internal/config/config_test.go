@@ -20,7 +20,7 @@ func TestLoad_Defaults(t *testing.T) {
 	p := writeTmp(t, `
 llm:
   provider: anthropic
-  model: claude-sonnet-4-20250514
+  model: claude-sonnet-5-5
   api_key_env: ANTHROPIC_API_KEY
 sources:
   - name: Example
@@ -72,5 +72,48 @@ sources:
 `)
 	if _, err := Load(p); err == nil {
 		t.Error("expected unknown source type to fail validation")
+	}
+}
+
+func TestLoad_TemperatureForPass(t *testing.T) {
+	p := writeTmp(t, `
+llm:
+  provider: anthropic
+  model: claude-sonnet-5-5
+  pass1_model: claude-haiku-4-5
+  api_key_env: ANTHROPIC_API_KEY
+  pass1_temperature: 0.2
+  effort: high
+sources:
+  - name: Example
+    url: https://example.com/feed.xml
+`)
+	c, err := Load(p)
+	if err != nil {
+		t.Fatalf("load: %v", err)
+	}
+	if got := c.LLM.TemperatureForPass(1); got == nil || *got != 0.2 {
+		t.Errorf("pass 1 temperature = %v, want 0.2", got)
+	}
+	// Unset temperature must stay nil so it is omitted from requests to
+	// models that reject sampling parameters.
+	if got := c.LLM.TemperatureForPass(3); got != nil {
+		t.Errorf("pass 3 temperature = %v, want nil", *got)
+	}
+}
+
+func TestLoad_RejectsUnknownEffort(t *testing.T) {
+	p := writeTmp(t, `
+llm:
+  provider: anthropic
+  model: m
+  api_key_env: K
+  effort: extreme
+sources:
+  - name: A
+    url: https://example.com/feed.xml
+`)
+	if _, err := Load(p); err == nil {
+		t.Error("expected unknown effort to fail validation")
 	}
 }

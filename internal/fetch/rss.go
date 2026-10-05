@@ -101,7 +101,7 @@ func (f *RSSFetcher) Fetch(ctx context.Context, src config.Source) ([]Article, e
 			SourceName:  src.Name,
 			Category:    src.Category,
 			Title:       title,
-			Link:        link,
+			Link:        CleanLink(link),
 			Author:      author,
 			Published:   pub.UTC(),
 			Description: desc,

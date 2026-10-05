@@ -19,9 +19,33 @@ func (e *HTTPError) Error() string {
 	return fmt.Sprintf("%s http %d: %s", e.Provider, e.Status, truncate(e.Body, 200))
 }
 
+// RefusalError is returned when the model declines a request
+// (stop_reason "refusal"). Retrying the identical request won't help.
+type RefusalError struct {
+	Provider    string
+	Model       string
+	Category    string
+	Explanation string
+}
+
+func (e *RefusalError) Error() string {
+	msg := fmt.Sprintf("%s: model %s refused the request", e.Provider, e.Model)
+	if e.Category != "" {
+		msg += " (category: " + e.Category + ")"
+	}
+	if e.Explanation != "" {
+		msg += ": " + e.Explanation
+	}
+	return msg
+}
+
 // Retryable reports whether an error is worth retrying.
 func Retryable(err error) bool {
 	if err == nil {
+		return false
+	}
+	var re *RefusalError
+	if errors.As(err, &re) {
 		return false
 	}
 	var he *HTTPError
