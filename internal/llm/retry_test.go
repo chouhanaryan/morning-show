@@ -3,6 +3,7 @@ package llm
 import (
 	"context"
 	"errors"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -85,5 +86,20 @@ func TestRetry_GivesUpAfterMaxAttempts(t *testing.T) {
 	}
 	if atomic.LoadInt32(&inner.calls) != 3 {
 		t.Errorf("expected 3 attempts, got %d", inner.calls)
+	}
+}
+
+func TestRetry_ErrorReportsActualAttempts(t *testing.T) {
+	inner := &fakeProvider{failN: 10, retErr: &HTTPError{Provider: "fake", Status: 401, Body: "denied"}}
+	r := NewRetrying(inner, RetryConfig{MaxAttempts: 3, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond})
+	_, err := r.Complete(context.Background(), Request{})
+	if err == nil || strings.Contains(err.Error(), "attempts") {
+		t.Errorf("non-retryable error should not claim retries: %v", err)
+	}
+
+	inner = &fakeProvider{failN: 10, retErr: &HTTPError{Provider: "fake", Status: 503, Body: "busy"}}
+	r = NewRetrying(inner, RetryConfig{MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond})
+	if _, err := r.Complete(context.Background(), Request{}); err == nil || !strings.Contains(err.Error(), "after 2 attempts") {
+		t.Errorf("retryable error should report 2 attempts: %v", err)
 	}
 }

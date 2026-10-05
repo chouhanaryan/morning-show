@@ -3,6 +3,7 @@ package pipeline
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -155,6 +156,31 @@ func TestRun_RanksCapsAndSanitizes(t *testing.T) {
 	// Pass 4 thread update came through.
 	if len(res.ThreadUpdates) != 1 || res.ThreadUpdates[0].Topic != "Story C saga" {
 		t.Errorf("thread updates = %+v", res.ThreadUpdates)
+	}
+}
+
+type failingProvider struct{ err error }
+
+func (f failingProvider) Name() string { return "failing" }
+func (f failingProvider) Complete(context.Context, llm.Request) (llm.Response, error) {
+	return llm.Response{}, f.err
+}
+
+func TestRun_AllBatchesFailedSurfacesCause(t *testing.T) {
+	mem, err := memory.Load(filepath.Join(t.TempDir(), "memory.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cause := &llm.HTTPError{Provider: "anthropic-oauth", Status: 401, Body: "Authentication failed"}
+	log := slog.New(slog.NewTextHandler(io.Discard, nil))
+	_, err = New(testConfig(), failingProvider{err: cause}, log).Run(context.Background(),
+		[]fetch.Article{article("high A", "https://example.com/a")}, 1, 1, mem, feedback.Preferences{}, nil)
+	var he *llm.HTTPError
+	if !errors.As(err, &he) || he.Status != 401 {
+		t.Fatalf("want the 401 cause in the error chain, got %v", err)
+	}
+	if !strings.Contains(err.Error(), "pass 1: all 1 batches failed") {
+		t.Errorf("error should say every batch failed: %v", err)
 	}
 }
 
