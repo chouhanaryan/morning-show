@@ -35,6 +35,34 @@ verification phase would have surfaced:
 
 ## Compatibility matrix
 
-A live matrix cannot be produced in this environment. When running locally or
-in CI, `./briefing --verify-sources` can be added in a follow-up to dump the
-matrix; for this pass the defensive implementation is the contract.
+There is no `--verify-sources` flag. Instead, each report's "Run Metadata"
+footer lists the feeds that failed that run, and `data/memory.json`
+(`source_stats`) tracks each feed's Pass 1 hit rate over time.
+
+### Manual check — 2026-10-04
+
+Every feed URL was fetched with the configured user agent:
+
+- **404, URL changed:** Honeycomb (`/blog/feed` → `/feed`), Thinking Machines
+  (Olshansk mirror removed → `thinkingmachines.ai/blog/index.xml`), Hamel
+  Husain (Olshansk mirror removed → `hamel.dev/index.xml`). All updated.
+- **429:** HashiCorp Terraform product feed. Removed, because the main
+  HashiCorp blog feed already carries Terraform posts.
+- **Removed for low signal:** Windsurf Next Changelog (0% Pass 1 hit rate).
+- **Capped:** arXiv CS now has `max_items: 40`.
+- **Stale but reachable** (no posts in 3+ months; kept): Eugene Yan,
+  Lilian Weng, Andrej Karpathy.
+
+### Source review — 2026-10-04
+
+Reshaped toward the standing interests in `feedback.json` (cloud networking,
+AWS launches, deprecations, platform engineering, dev tools):
+
+- **Added:** AWS What's New, AWS Networking & Content Delivery, AWS Compute
+  Blog, CNCF Blog, PlatformEngineering.org, Google DeepMind, Import AI,
+  SemiAnalysis, GitHub Changelog.
+- **Removed:** Wired (11% Pass 1 hit rate), Ars Technica (12%), Graham Cluley
+  (16%, overlaps Krebs/BleepingComputer), The Gradient (no posts since
+  2025-06), Chip Huyen (no posts since 2025-01).
+- **Verified:** all 58 feeds fetched and parsed with the real fetcher; 527
+  items survived an 8-day filter.

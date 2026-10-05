@@ -44,12 +44,13 @@ type openaiRequest struct {
 	Model          string                `json:"model"`
 	Messages       []openaiMessage       `json:"messages"`
 	MaxTokens      int                   `json:"max_tokens,omitempty"`
-	Temperature    float64               `json:"temperature"`
+	Temperature    *float64              `json:"temperature,omitempty"`
 	ResponseFormat *openaiResponseFormat `json:"response_format,omitempty"`
 }
 
 type openaiChoice struct {
-	Message openaiMessage `json:"message"`
+	Message      openaiMessage `json:"message"`
+	FinishReason string        `json:"finish_reason"`
 }
 
 type openaiUsage struct {
@@ -122,8 +123,9 @@ func (p *OpenAIProvider) Complete(ctx context.Context, req Request) (Response, e
 		return Response{}, fmt.Errorf("openai: empty choices")
 	}
 	return Response{
-		Content: or.Choices[0].Message.Content,
-		Model:   or.Model,
+		Content:    or.Choices[0].Message.Content,
+		Model:      or.Model,
+		StopReason: or.Choices[0].FinishReason,
 		Usage: Usage{
 			InputTokens:  or.Usage.PromptTokens,
 			OutputTokens: or.Usage.CompletionTokens,

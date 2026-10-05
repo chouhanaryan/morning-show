@@ -17,7 +17,7 @@ func NewProvider(name, apiKey string, opts ...Option) (Provider, error) {
 	if !ok {
 		return nil, fmt.Errorf("unknown llm provider: %q", name)
 	}
-	if apiKey == "" {
+	if apiKey == "" && resolveOptions(opts...).tokenSource == nil {
 		return nil, fmt.Errorf("empty api key for provider %q", name)
 	}
 	return factory(apiKey, opts...), nil

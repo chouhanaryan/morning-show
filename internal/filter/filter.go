@@ -19,21 +19,47 @@ type SeenLookup interface {
 
 // Stats tracks drop reasons for logging.
 type Stats struct {
-	Input       int
-	Seen        int
-	TooOld      int
-	TooShort    int
-	Blocklisted int
-	NearDup     int
-	Output      int
+	Input       int `json:"input"`
+	Seen        int `json:"seen"`
+	TooOld      int `json:"too_old"`
+	TooShort    int `json:"too_short"`
+	Blocklisted int `json:"blocklisted"`
+	NearDup     int `json:"near_dup"`
+	Output      int `json:"output"`
+}
+
+// MaxAge returns the recency window for this run: max_age_days, stretched to
+// cover the time since the last successful run (so a missed week isn't lost),
+// but never beyond max_catchup_days. A zero lastRun means no history.
+func MaxAge(cfg *config.Config, lastRun, now time.Time) time.Duration {
+	day := 24 * time.Hour
+	base := time.Duration(cfg.Pipeline.MaxAgeDays) * day
+	if lastRun.IsZero() {
+		return base
+	}
+	limit := time.Duration(cfg.Pipeline.MaxCatchupDays) * day
+	if limit < base {
+		limit = base
+	}
+	since := now.Sub(lastRun) + day // a day of overlap; seen-URLs dedup the rest
+	switch {
+	case since <= base:
+		return base
+	case since >= limit:
+		return limit
+	default:
+		return since
+	}
 }
 
 // Filter applies all Stage 0 rules in one pass, then a bigram-Jaccard title
-// dedup pass. Order matters — cheapest checks first.
+// dedup pass. Order matters — cheapest checks first. Articles older than
+// maxAge are dropped (see MaxAge).
 func Filter(
 	arts []fetch.Article,
 	cfg *config.Config,
 	seen SeenLookup,
+	maxAge time.Duration,
 	log *slog.Logger,
 ) ([]fetch.Article, Stats) {
 	stats := Stats{Input: len(arts)}
@@ -41,7 +67,6 @@ func Filter(
 		return arts, stats
 	}
 
-	maxAge := time.Duration(cfg.Pipeline.MaxAgeDays) * 24 * time.Hour
 	cutoff := time.Now().UTC().Add(-maxAge)
 
 	// Lowercased blocklist terms for cheap substring match.

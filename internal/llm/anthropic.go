@@ -12,9 +12,16 @@ import (
 const anthropicDefaultBase = "https://api.anthropic.com/v1/messages"
 const anthropicAPIVersion = "2023-06-01"
 
+// anthropicFallbackBeta gates fallbacks: "default" — server-side retry of a
+// safety-classifier refusal on the model Anthropic recommends for that
+// refusal category.
+const anthropicFallbackBeta = "server-side-fallback-2026-07-01"
+
 // AnthropicProvider speaks the Messages API over raw net/http.
 type AnthropicProvider struct {
 	apiKey string
+	// tokens, when set, replaces apiKey with federated bearer tokens.
+	tokens TokenSource
 	http   *http.Client
 	base   string
 }
@@ -27,7 +34,7 @@ func NewAnthropicProvider(apiKey string, opts ...Option) Provider {
 	if base == "" {
 		base = anthropicDefaultBase
 	}
-	return &AnthropicProvider{apiKey: apiKey, http: o.httpClient, base: base}
+	return &AnthropicProvider{apiKey: apiKey, tokens: o.tokenSource, http: o.httpClient, base: base}
 }
 
 // Name implements Provider.
@@ -43,12 +50,18 @@ type anthropicReqMessage struct {
 	Content []anthropicContentBlock `json:"content"`
 }
 
+type anthropicOutputConfig struct {
+	Effort string `json:"effort,omitempty"`
+}
+
 type anthropicRequest struct {
-	Model       string                `json:"model"`
-	MaxTokens   int                   `json:"max_tokens"`
-	Temperature float64               `json:"temperature"`
-	System      string                `json:"system,omitempty"`
-	Messages    []anthropicReqMessage `json:"messages"`
+	Model        string                 `json:"model"`
+	MaxTokens    int                    `json:"max_tokens"`
+	Temperature  *float64               `json:"temperature,omitempty"`
+	System       string                 `json:"system,omitempty"`
+	Messages     []anthropicReqMessage  `json:"messages"`
+	OutputConfig *anthropicOutputConfig `json:"output_config,omitempty"`
+	Fallbacks    string                 `json:"fallbacks,omitempty"`
 }
 
 type anthropicUsage struct {
@@ -57,9 +70,14 @@ type anthropicUsage struct {
 }
 
 type anthropicResponse struct {
-	Content []anthropicContentBlock `json:"content"`
-	Model   string                  `json:"model"`
-	Usage   anthropicUsage          `json:"usage"`
+	Content     []anthropicContentBlock `json:"content"`
+	Model       string                  `json:"model"`
+	Usage       anthropicUsage          `json:"usage"`
+	StopReason  string                  `json:"stop_reason"`
+	StopDetails *struct {
+		Category    string `json:"category"`
+		Explanation string `json:"explanation"`
+	} `json:"stop_details"`
 	// Error envelope returned on 4xx/5xx.
 	Type  string `json:"type"`
 	Error *struct {
@@ -76,6 +94,12 @@ func (p *AnthropicProvider) Complete(ctx context.Context, req Request) (Response
 		MaxTokens:   req.MaxTokens,
 		Temperature: req.Temperature,
 		System:      system,
+	}
+	if req.Effort != "" {
+		areq.OutputConfig = &anthropicOutputConfig{Effort: req.Effort}
+	}
+	if req.RefusalFallback {
+		areq.Fallbacks = "default"
 	}
 	for _, m := range messages {
 		role := string(m.Role)
@@ -97,9 +121,20 @@ func (p *AnthropicProvider) Complete(ctx context.Context, req Request) (Response
 	if err != nil {
 		return Response{}, fmt.Errorf("build anthropic request: %w", err)
 	}
-	httpReq.Header.Set("x-api-key", p.apiKey)
+	if p.tokens != nil {
+		tok, err := p.tokens.Token(ctx)
+		if err != nil {
+			return Response{}, fmt.Errorf("anthropic auth: %w", err)
+		}
+		httpReq.Header.Set("authorization", "Bearer "+tok)
+	} else {
+		httpReq.Header.Set("x-api-key", p.apiKey)
+	}
 	httpReq.Header.Set("anthropic-version", anthropicAPIVersion)
 	httpReq.Header.Set("content-type", "application/json")
+	if req.RefusalFallback {
+		httpReq.Header.Set("anthropic-beta", anthropicFallbackBeta)
+	}
 
 	resp, err := p.http.Do(httpReq)
 	if err != nil {
@@ -126,6 +161,16 @@ func (p *AnthropicProvider) Complete(ctx context.Context, req Request) (Response
 	if ar.Error != nil {
 		return Response{}, fmt.Errorf("anthropic api error: %s: %s", ar.Error.Type, ar.Error.Message)
 	}
+	if ar.StopReason == "refusal" {
+		rerr := &RefusalError{Provider: "anthropic", Model: ar.Model}
+		if ar.StopDetails != nil {
+			rerr.Category = ar.StopDetails.Category
+			rerr.Explanation = ar.StopDetails.Explanation
+		}
+		return Response{}, rerr
+	}
+	// Only text blocks are collected; thinking blocks (adaptive thinking is
+	// on by default for current Sonnet/Opus models) are skipped.
 	var out bytes.Buffer
 	for _, c := range ar.Content {
 		if c.Type == "text" {
@@ -133,8 +178,9 @@ func (p *AnthropicProvider) Complete(ctx context.Context, req Request) (Response
 		}
 	}
 	return Response{
-		Content: out.String(),
-		Model:   ar.Model,
+		Content:    out.String(),
+		Model:      ar.Model,
+		StopReason: ar.StopReason,
 		Usage: Usage{
 			InputTokens:  ar.Usage.InputTokens,
 			OutputTokens: ar.Usage.OutputTokens,

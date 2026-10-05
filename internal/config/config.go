@@ -27,19 +27,59 @@ type Source struct {
 	URL      string     `yaml:"url"`
 	Category string     `yaml:"category"`
 	Type     SourceType `yaml:"type"`
+	// MaxItems caps how many items (in feed order) are kept from this source
+	// per run. 0 means no cap. Useful for firehose feeds like arXiv.
+	MaxItems int `yaml:"max_items"`
+}
+
+// ModelPrice is a model's list price in USD per million tokens.
+type ModelPrice struct {
+	Input  float64 `yaml:"input"`
+	Output float64 `yaml:"output"`
 }
 
 // LLMConfig holds provider/model settings.
 type LLMConfig struct {
-	Provider          string  `yaml:"provider"`
-	Model             string  `yaml:"model"`
-	Pass1Model        string  `yaml:"pass1_model"`
-	Pass2Model        string  `yaml:"pass2_model"`
-	APIKeyEnv         string  `yaml:"api_key_env"`
-	MaxConcurrent     int     `yaml:"max_concurrent"`
-	RequestsPerMinute int     `yaml:"requests_per_minute"`
-	MaxTokens         int     `yaml:"max_tokens"`
-	Temperature       float64 `yaml:"temperature"`
+	Provider          string `yaml:"provider"`
+	Model             string `yaml:"model"`
+	Pass1Model        string `yaml:"pass1_model"`
+	Pass2Model        string `yaml:"pass2_model"`
+	APIKeyEnv         string `yaml:"api_key_env"`
+	MaxConcurrent     int    `yaml:"max_concurrent"`
+	RequestsPerMinute int    `yaml:"requests_per_minute"`
+	MaxTokens         int    `yaml:"max_tokens"`
+	// Temperature applies to Pass 3 and is the fallback for passes 1/2.
+	// Leave unset for models that reject sampling parameters (Claude
+	// Sonnet 5.5, Opus 5.5); nil means the field is omitted from requests.
+	Temperature      *float64 `yaml:"temperature"`
+	Pass1Temperature *float64 `yaml:"pass1_temperature"`
+	Pass2Temperature *float64 `yaml:"pass2_temperature"`
+	// Effort sets output_config.effort on Pass 3 (Anthropic only):
+	// low | medium | high | xhigh | max. Empty uses the model default.
+	// Not sent on passes 1/2 because Claude Haiku 4.5 rejects it.
+	Effort string `yaml:"effort"`
+	// RefusalFallback opts Pass 3 into Anthropic's server-side refusal
+	// fallback (fallbacks: "default"). Anthropic provider only.
+	RefusalFallback bool `yaml:"refusal_fallback"`
+	// Pricing maps model ID to list price, used only for the cost estimate
+	// in the report footer. Models missing here show no cost.
+	Pricing map[string]ModelPrice `yaml:"pricing"`
+}
+
+// TemperatureForPass returns the sampling temperature for a pass, or nil to
+// omit it. Pass-specific overrides fall back to the default Temperature.
+func (c *LLMConfig) TemperatureForPass(pass int) *float64 {
+	switch pass {
+	case 1:
+		if c.Pass1Temperature != nil {
+			return c.Pass1Temperature
+		}
+	case 2:
+		if c.Pass2Temperature != nil {
+			return c.Pass2Temperature
+		}
+	}
+	return c.Temperature
 }
 
 // ModelForPass returns the model to use for a given pass (1, 2, or 3).
@@ -60,12 +100,18 @@ func (c *LLMConfig) ModelForPass(pass int) string {
 
 // PipelineConfig controls pass sizing and filtering thresholds.
 type PipelineConfig struct {
-	ScoreBatchSize       int `yaml:"score_batch_size"`
-	ExtractBatchSize     int `yaml:"extract_batch_size"`
-	ScoreThreshold       int `yaml:"score_threshold"`
-	MaxAgeDays           int `yaml:"max_age_days"`
+	ScoreBatchSize   int `yaml:"score_batch_size"`
+	ExtractBatchSize int `yaml:"extract_batch_size"`
+	ScoreThreshold   int `yaml:"score_threshold"`
+	MaxAgeDays       int `yaml:"max_age_days"`
+	// MaxCatchupDays caps how far the recency window stretches back to cover
+	// the gap since the last run (e.g. after a missed week).
+	MaxCatchupDays       int `yaml:"max_catchup_days"`
 	MinTitleSummaryChars int `yaml:"min_title_summary_chars"`
-	MemoryWeeks          int `yaml:"memory_weeks"`
+	// MaxExtract caps how many threshold survivors (best score first) go to
+	// Pass 2 extraction and the briefing.
+	MaxExtract  int `yaml:"max_extract"`
+	MemoryWeeks int `yaml:"memory_weeks"`
 	// Per-source metadata tracking: rolling window of run history entries.
 	SourceStatsMaxHistory int `yaml:"source_stats_max_history"`
 	// Coverage gap detection: minimum articles on a topic to flag a gap.
@@ -136,9 +182,6 @@ func (c *Config) applyDefaults() {
 	if c.LLM.MaxTokens == 0 {
 		c.LLM.MaxTokens = 4096
 	}
-	if c.LLM.Temperature == 0 {
-		c.LLM.Temperature = 0.2
-	}
 	if c.Pipeline.ScoreBatchSize == 0 {
 		c.Pipeline.ScoreBatchSize = 40
 	}
@@ -150,6 +193,12 @@ func (c *Config) applyDefaults() {
 	}
 	if c.Pipeline.MaxAgeDays == 0 {
 		c.Pipeline.MaxAgeDays = 7
+	}
+	if c.Pipeline.MaxCatchupDays == 0 {
+		c.Pipeline.MaxCatchupDays = 21
+	}
+	if c.Pipeline.MaxExtract == 0 {
+		c.Pipeline.MaxExtract = 80
 	}
 	if c.Pipeline.MinTitleSummaryChars == 0 {
 		c.Pipeline.MinTitleSummaryChars = 20
@@ -194,6 +243,11 @@ func (c *Config) validate() error {
 	}
 	if c.LLM.APIKeyEnv == "" {
 		return errors.New("llm.api_key_env is required")
+	}
+	switch c.LLM.Effort {
+	case "", "low", "medium", "high", "xhigh", "max":
+	default:
+		return fmt.Errorf("llm.effort: unknown value %q", c.LLM.Effort)
 	}
 	if len(c.Sources) == 0 {
 		return errors.New("at least one source is required")

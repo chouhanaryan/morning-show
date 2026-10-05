@@ -8,12 +8,15 @@ import (
 	"github.com/chouhanaryan/morning-show/internal/memory"
 )
 
-// Pass 1 (score) prompts. Input is a JSON array of {id, title, snippet}; the
-// model must emit a JSON array of {id, score:0-10} with no prose.
+// Pass 1 (score) prompts. Input is a JSON array of {id, title, snippet,
+// source, points?}; the model must emit a JSON array of {id, score:0-10}
+// with no prose.
 const pass1System = `Score articles 0-10 for a weekly tech/AI briefing.
 
 Higher: novel analysis, primary-source announcements, durable insights, research.
 Lower: marketing, rehashed coverage, low-signal wire recycling.
+"points" (Hacker News upvotes, when present) signals community interest:
+several hundred is notable. Treat it as a tiebreaker, not a substitute for relevance.
 
 Output JSON array in SAME order: [{"id":<int>,"score":<int>},...]
 Every input id must appear exactly once. No prose, no fences. JSON only.`
@@ -40,6 +43,9 @@ object described above — no commentary, no markdown fences.`
 const pass3System = `You write a concise weekly intelligence briefing.
 
 Input: article extractions (JSON with "url" fields), active threads, user prefs.
+Extractions are ordered by "score" (0-10 relevance from an earlier screening
+pass, highest first). Use it as a strong prior for Top Stories, but apply
+judgment: several articles on one development outweigh a single high score.
 
 Output markdown with these sections only:
 
@@ -92,16 +98,19 @@ RULES:
     If an interest-matching item would otherwise be a signal, promote it.
   - Markdown only. No JSON, no code fences.`
 
-// pass1SystemWithInterests appends user interests to the system prompt once,
-// rather than repeating them in every user message.
-func pass1SystemWithInterests(interests []string) string {
-	if len(interests) == 0 {
-		return pass1System
-	}
+// pass1SystemWithPrefs appends user interests and active corrections to the
+// system prompt once, rather than repeating them in every user message.
+func pass1SystemWithPrefs(prefs feedback.Preferences) string {
 	var b strings.Builder
 	b.WriteString(pass1System)
-	b.WriteString("\n\nUp-weight articles matching these interests: ")
-	b.WriteString(strings.Join(interests, "; "))
+	if len(prefs.StandingInterests) > 0 {
+		b.WriteString("\n\nUp-weight articles matching these interests: ")
+		b.WriteString(strings.Join(prefs.StandingInterests, "; "))
+	}
+	if len(prefs.ActiveCorrections) > 0 {
+		b.WriteString("\n\nApply these reader corrections when scoring: ")
+		b.WriteString(strings.Join(prefs.ActiveCorrections, "; "))
+	}
 	return b.String()
 }
 
@@ -178,18 +187,20 @@ func buildPass3User(
 // pass3Item is a lighter projection of ExtractedItem for Pass 3 input.
 // Drops: id (meaningless to synthesis), entities (used by Pass 2 only).
 type pass3Item struct {
-	Title    string   `json:"t"`
-	Source   string   `json:"src"`
-	Link     string   `json:"url"`
-	Claims   []string `json:"claims"`
-	Tags     []string `json:"tags"`
-	Thread   string   `json:"thread,omitempty"`
+	Score  int      `json:"score"`
+	Title  string   `json:"t"`
+	Source string   `json:"src"`
+	Link   string   `json:"url"`
+	Claims []string `json:"claims"`
+	Tags   []string `json:"tags"`
+	Thread string   `json:"thread,omitempty"`
 }
 
 func compactForPass3(items []ExtractedItem) []pass3Item {
 	out := make([]pass3Item, len(items))
 	for i, it := range items {
 		out[i] = pass3Item{
+			Score:  it.Score,
 			Title:  it.SourceTitle,
 			Source: it.Source,
 			Link:   it.Link,
@@ -199,4 +210,47 @@ func compactForPass3(items []ExtractedItem) []pass3Item {
 		}
 	}
 	return out
+}
+
+// Pass 4 (thread tracking) prompt. Input is the finished briefing plus the
+// active threads; output says which storylines advanced this week so the
+// next run's "Continuing Threads" has memory to work from.
+const pass4System = `You maintain a list of ongoing news storylines ("threads") for a weekly briefing.
+
+Input: the active threads from previous weeks (id, topic, summary) and this week's briefing.
+
+Return the threads that had real developments in THIS week's briefing:
+  - Existing thread with new developments: reuse its exact "id".
+  - New storyline likely to keep developing for weeks (a launch rollout,
+    a lawsuit, a policy fight, a security campaign): use "id": "".
+  - Skip one-off news and threads with no new developments.
+
+Each thread: "topic" is a short stable name (3-8 words); "summary" is 1-2
+sentences on where the storyline stands as of this week.
+
+Output: {"threads":[{"id":"...","topic":"...","summary":"..."}]}
+At most 8 threads. An empty list is valid. No prose, no fences. JSON only.`
+
+const pass4RetrySuffix = `
+
+REMINDER: your last attempt was not parseable. Respond with ONLY the JSON
+object described above — no commentary, no markdown fences.`
+
+// buildPass4User renders the active threads and the finished briefing.
+func buildPass4User(briefing string, threads []memory.Thread) string {
+	type threadIn struct {
+		ID      string `json:"id"`
+		Topic   string `json:"topic"`
+		Summary string `json:"summary"`
+	}
+	in := make([]threadIn, len(threads))
+	for i, t := range threads {
+		in[i] = threadIn{ID: t.ID, Topic: t.Topic, Summary: t.Summary}
+	}
+	var b strings.Builder
+	b.WriteString("ACTIVE THREADS (JSON):\n")
+	b.WriteString(mustJSON(in))
+	b.WriteString("\n\nTHIS WEEK'S BRIEFING:\n")
+	b.WriteString(briefing)
+	return b.String()
 }
