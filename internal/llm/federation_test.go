@@ -132,6 +132,15 @@ func TestFederatedTokenSource_RejectedIsNotRetryable(t *testing.T) {
 	if Retryable(err) {
 		t.Error("a denied exchange must not be retried")
 	}
+
+	// Later calls fail fast without another exchange or identity token.
+	minted := f.minted
+	if _, err2 := ts.Token(context.Background()); !errors.As(err2, &he) {
+		t.Errorf("second call should return the cached denial, got %v", err2)
+	}
+	if f.minted != minted {
+		t.Errorf("denied source minted %d more identity tokens", f.minted-minted)
+	}
 }
 
 func TestAnthropic_UsesBearerFromTokenSource(t *testing.T) {

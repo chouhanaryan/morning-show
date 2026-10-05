@@ -149,6 +149,10 @@ type FederatedTokenSource struct {
 	mu      sync.Mutex
 	token   string
 	expires time.Time
+	// denied holds a client-side (4xx) exchange failure. Rule mismatches
+	// don't fix themselves mid-run, so later calls fail immediately instead
+	// of each minting and spending another identity token.
+	denied error
 }
 
 // NewFederatedTokenSource builds a token source. tokenURL may be empty for
@@ -167,11 +171,20 @@ func NewFederatedTokenSource(cfg FederationConfig, client *http.Client, tokenURL
 func (s *FederatedTokenSource) Token(ctx context.Context) (string, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if s.denied != nil {
+		return "", s.denied
+	}
 	if s.token != "" && s.now().Before(s.expires.Add(-tokenRefreshMargin)) {
 		return s.token, nil
 	}
 	tok, ttl, err := s.exchange(ctx)
 	if err != nil {
+		var he *HTTPError
+		if errors.As(err, &he) && he.Status >= 400 && he.Status < 500 && he.Status != http.StatusTooManyRequests {
+			s.denied = fmt.Errorf("%w (federation exchange was denied; the reason is under "+
+				"Settings → Workload identity → History in the Claude Console)", err)
+			return "", s.denied
+		}
 		return "", err
 	}
 	s.token = tok

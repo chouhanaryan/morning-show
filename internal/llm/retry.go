@@ -116,14 +116,20 @@ func (r *retryingProvider) Name() string { return r.inner.Name() }
 // Complete implements Provider.
 func (r *retryingProvider) Complete(ctx context.Context, req Request) (Response, error) {
 	var lastErr error
+	attempts := 0
 	delay := r.config.BaseDelay
 	for attempt := 1; attempt <= r.config.MaxAttempts; attempt++ {
+		attempts = attempt
 		resp, err := r.inner.Complete(ctx, req)
 		if err == nil {
 			return resp, nil
 		}
 		lastErr = err
-		if !Retryable(err) || attempt == r.config.MaxAttempts {
+		if !Retryable(err) {
+			// Not worth retrying: return the error as-is.
+			return Response{}, err
+		}
+		if attempt == r.config.MaxAttempts {
 			break
 		}
 		// Honor ctx cancellation between attempts.
@@ -142,5 +148,5 @@ func (r *retryingProvider) Complete(ctx context.Context, req Request) (Response,
 			delay = r.config.MaxDelay
 		}
 	}
-	return Response{}, fmt.Errorf("after %d attempts: %w", r.config.MaxAttempts, lastErr)
+	return Response{}, fmt.Errorf("after %d attempts: %w", attempts, lastErr)
 }

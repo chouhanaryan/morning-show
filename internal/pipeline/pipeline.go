@@ -292,11 +292,15 @@ func (p *Pipeline) runPass1(
 	scoredAll = make([]fetch.Article, 0, len(arts))
 	scores = make(map[string]int, len(arts))
 	threshold := p.cfg.Pipeline.ScoreThreshold
+	var firstErr error
 	for _, r := range results {
 		total.Add(r.usage)
 		batchesRun++
 		if r.err != nil {
 			failed++
+			if firstErr == nil {
+				firstErr = r.err
+			}
 			p.log.Warn("pass 1 batch failed, skipping",
 				"start", r.start, "end", r.end, "err", r.err.Error())
 			continue
@@ -316,6 +320,10 @@ func (p *Pipeline) runPass1(
 				kept = append(kept, a)
 			}
 		}
+	}
+	if batchesRun > 0 && failed == batchesRun {
+		return nil, nil, nil, total, batchesRun, failed,
+			fmt.Errorf("all %d batches failed: %w", failed, firstErr)
 	}
 	// Best first. Stable, so equal scores keep fetch order.
 	sort.SliceStable(kept, func(i, j int) bool {
@@ -431,11 +439,15 @@ func (p *Pipeline) runPass2(
 	wg.Wait()
 
 	out = make([]ExtractedItem, 0, len(arts))
+	var firstErr error
 	for _, r := range results {
 		total.Add(r.usage)
 		batchesRun++
 		if r.err != nil {
 			failed++
+			if firstErr == nil {
+				firstErr = r.err
+			}
 			p.log.Warn("pass 2 batch failed, skipping",
 				"start", r.start, "end", r.end, "err", r.err.Error())
 			continue
@@ -452,6 +464,10 @@ func (p *Pipeline) runPass2(
 			item.Score = scores[a.ID]
 			out = append(out, item)
 		}
+	}
+
+	if batchesRun > 0 && failed == batchesRun {
+		return nil, total, batchesRun, failed, fmt.Errorf("all %d batches failed: %w", failed, firstErr)
 	}
 
 	// Highest score first so Pass 3 sees priority; source then title break
